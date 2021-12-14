@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-//import { useError } from "hooks/useError";
 const AuthContext = React.createContext({});
 
 export const AuthProvider = ({ children }) => {
-  //const [user, setUser] = useState(null);
-  //const { dispatchError } = useError();
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState("");
@@ -16,7 +13,7 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setIsAuthenticated(true);
       axios.defaults.headers.common["Authorization"] =
-        "Token " + this.$store.state.token;
+        "Token " + token;
     } else {
       setToken("");
       setIsAuthenticated(false);
@@ -47,17 +44,17 @@ export const AuthProvider = ({ children }) => {
       setJwt(token);
       axios.defaults.headers.common["Authorization"] = "Token " + token;
       localStorage.setItem("token", token);
-      console.log("Zalogowano");
     } catch (e) {
       console.log(e);
+      alert("Don't login");
     }
   };
   const signUp = async ({ username, password }) => {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/users/", {username,password});
-      alert("Konto utworzono");
+      alert("Account create");
     } catch (e) {
-      alert("Nie stworzono konta");
+      alert("Don't create ");
     }
   };
 

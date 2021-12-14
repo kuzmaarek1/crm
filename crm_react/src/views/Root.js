@@ -5,7 +5,6 @@ import UnauthenticatedApp from './UnauthenticatedApp.js';
 
 const Root = () => {
   const auth = useAuth();
-  console.log(auth.isAuthenticated);
   return (<>
     {auth.isAuthenticated ? <AuthenticatedApp />: <UnauthenticatedApp />}
     </>
