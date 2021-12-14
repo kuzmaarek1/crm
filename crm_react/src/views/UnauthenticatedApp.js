@@ -1,18 +1,19 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Menu from "../components/atoms/Menu/Menu.js";
-import Dashboard from "./Dasboard.js";
-import MyAccount from "./MyAccount.js";
-import LoginPage from "./LoginPage.js";
-import RegisterPage from "./RegisterPage.js";
+import LoginPage from "./LoginPage/LoginPage.js";
+import RegisterPage from "./RegisterPage/RegisterPage.js";
+import GlobalStyle from '../theme/GlobalStyle.js';
 
 const AuthenticatedApp = () => {
     return ( 
          <BrowserRouter>
+         <GlobalStyle/>
             <Menu />
             <Routes>
                 <Route path="login-in" element={<LoginPage />} />
                 <Route path="sign-up" element={<RegisterPage />} />
+                <Route path="*" element={<Navigate to="/login-in"/>} />
             </Routes>
       </BrowserRouter>
       )

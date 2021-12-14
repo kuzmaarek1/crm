@@ -1,13 +1,25 @@
 import React from "react";
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth.js";
+import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from './Menu.styles.js';
 
 const Menu = () => {
+  const auth = useAuth();
   return (
-    <div>
-      <NavLink to="sign-up">Sing up</NavLink>
-      <NavLink to="login-in">Log in </NavLink>
-    </div>
+    <MenuWrapper>
+        <MenuTitle to="/">
+        CRM
+      </MenuTitle>
+      {auth.isAuthenticated ? ( 
+          <MenuLinks>
+            <MenuLink to="leads">Leads </MenuLink>
+            <MenuLink to="my-account">My account </MenuLink>
+          </MenuLinks>
+         ):(
+          <MenuLinks>
+            <MenuLink to="sign-up">Sing up</MenuLink>
+            <MenuLink to="login-in">Log in </MenuLink>
+          </MenuLinks>)}
+    </MenuWrapper>
   );
 };
 
