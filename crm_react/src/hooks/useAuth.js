@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }) => {
       await axios
         .post("http://127.0.0.1:8000/api/token/logout/")
         .then((response) => {
-          console.log("Logged out");
         })
         .catch((error) => {
           console.log(JSON.stringify(error));

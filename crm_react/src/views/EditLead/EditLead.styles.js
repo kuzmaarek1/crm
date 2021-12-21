@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const LoginPageWrapper = styled.div`
+export const EditLeadWrapper = styled.div`
 display:flex;
 flex-direction: column;
 justify-content: center;
@@ -10,34 +10,34 @@ background-color: #f7f8fc;
 height: 92.5vh;
 `;
 
-export const LoginHeader=styled.h1`
+export const EditLeadHeader=styled.h1`
  color:#616161;
  margin-bottom:5vh;
- margin-top:-10vh;
+ margin-top:-25vh;
 `;
-export const LoginForm=styled.form`
+export const EditLeadForm=styled.form`
   display:flex;
   width:35%;
   flex-wrap: wrap;
 `
-export const LoginLabel=styled.label`
+export const EditLeadLabel=styled.label`
   display:flex;
   width:40%;
   height: 30%;
-  margin-bottom:5vh;
+  margin-bottom:4vh;
   align-items: center;
 `;
-export const LoginSpan=styled.span`
+export const EditLeadSpan=styled.span`
     display: flex;
     width: 100%;
-    margin-top:-5vh;
+    margin-top:-7vh;
     margin-left:40%;
     color:#a90e46;
     justify-content: center;
 `;
-export const LoginInput = styled.input`
+export const EditLeadInput = styled.input`
   width:60%;
-  height: 30%;
+  height: 20%;
   padding: 10px 12px;
   border: 1px solid '#737C8E';
   box-sizing: border-box;

@@ -11,9 +11,9 @@ const AuthenticatedApp = () => {
          <GlobalStyle/>
             <Menu />
             <Routes>
-                <Route path="login-in" element={<LoginPage />} />
-                <Route path="sign-up" element={<RegisterPage />} />
-                <Route path="*" element={<Navigate to="/login-in"/>} />
+                <Route path="/login-in" element={<LoginPage />} />
+                <Route path="/sign-up" element={<RegisterPage />} />
+                <Route path="/my-account" element={<Navigate to="/login-in"/>} />
             </Routes>
       </BrowserRouter>
       )
