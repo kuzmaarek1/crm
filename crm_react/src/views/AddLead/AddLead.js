@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { AddLeadWrapper, AddLeadHeader,  AddLeadForm, AddLeadLabel, AddLeadInput, AddLeadSpan } from './AddLead.styles.js';
 import { Button } from "../../components/atoms/Button/Button.js";
 
-const Leads = () => {
+const AddLead = () => {
 const lead = useLeads();
  const {
   register,
@@ -14,7 +14,7 @@ const lead = useLeads();
   return (
     <AddLeadWrapper>
       <AddLeadHeader>Add Lead</AddLeadHeader>
-      <AddLeadForm onSubmit={handleSubmit(lead.addLoad)}>
+      <AddLeadForm onSubmit={handleSubmit(lead.addLead)}>
       <AddLeadLabel htmlFor="first_name">First name</AddLeadLabel>
         <AddLeadInput
           type="text"
@@ -54,4 +54,4 @@ const lead = useLeads();
   );
 };
 
-export default Leads;
+export default AddLead;
