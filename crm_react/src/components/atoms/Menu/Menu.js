@@ -12,6 +12,7 @@ const Menu = () => {
       {auth.isAuthenticated ? ( 
           <MenuLinks>
             <MenuLink to="leads">Leads </MenuLink>
+            <MenuLink to="teams">Teams </MenuLink>
             <MenuLink to="my-account">My account </MenuLink>
           </MenuLinks>
          ):(

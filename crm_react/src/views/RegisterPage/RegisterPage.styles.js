@@ -39,7 +39,7 @@ export const RegisterInput = styled.input`
   width:60%;
   height: 20%;
   padding: 10px 12px;
-  border: 1px solid '#737C8E';
+  border: 1px solid #737C8E;
   box-sizing: border-box;
   color:#616161;
   box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);

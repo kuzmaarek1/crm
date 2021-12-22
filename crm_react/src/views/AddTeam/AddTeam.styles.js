@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const LoginPageWrapper = styled.div`
+export const AddTeamWrapper = styled.div`
 display:flex;
 flex-direction: column;
 justify-content: center;
@@ -10,34 +10,34 @@ background-color: #f7f8fc;
 height: 92.5vh;
 `;
 
-export const LoginHeader=styled.h1`
+export const AddTeamHeader=styled.h1`
  color:#616161;
- margin-bottom:5vh;
- margin-top:-10vh;
+ margin-bottom:10vh;
+ margin-top:-25vh;
 `;
-export const LoginForm=styled.form`
+export const AddTeamForm=styled.form`
   display:flex;
   width:35%;
   flex-wrap: wrap;
 `
-export const LoginLabel=styled.label`
+export const AddTeamLabel=styled.label`
   display:flex;
   width:40%;
   height: 30%;
   margin-bottom:5vh;
   align-items: center;
 `;
-export const LoginSpan=styled.span`
+export const AddTeamSpan=styled.span`
     display: flex;
     width: 100%;
-    margin-top:-5vh;
+    margin-top:-7vh;
     margin-left:40%;
     color:#a90e46;
     justify-content: center;
 `;
-export const LoginInput = styled.input`
+export const AddTeamInput = styled.input`
   width:60%;
-  height: 30%;
+  height: 20%;
   padding: 10px 12px;
   border: 1px solid #737C8E;
   box-sizing: border-box;
@@ -46,6 +46,26 @@ export const LoginInput = styled.input`
   font-size: 1rem;
   border-radius: 25px;
   resize: none;
+  &:focus {
+    outline: none;
+    font-size: 1rem;
+    color:#616161;
+    box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
+  }
+`;
+export const AddTeamTextarea  = styled.textarea`
+  display:block;
+  width:60%;
+  height: 60%;
+  padding: 10px 12px;
+  border: 1px solid #737C8E;
+  box-sizing: border-box;
+  color:#616161;
+  box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
+  font-size: 1rem;
+  border-radius: 25px;
+  resize: none;
+  margin-bottom:8vh;
   &:focus {
     outline: none;
     font-size: 1rem;
