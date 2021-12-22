@@ -6,17 +6,29 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState("");
+  const [userid, setUserid] = useState(0);
+  const [username, setUsername] = useState("");
+  const [teamid, setTeamid] = useState(0);
+  const [teamname, setTeamname] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setToken(token);
       setIsAuthenticated(true);
+      setUserid(localStorage.getItem("userid"));
+      setUsername(localStorage.getItem("username"));
+      setTeamid(localStorage.getItem("teamid"));
+      setTeamname(localStorage.getItem("teamname"));
       axios.defaults.headers.common["Authorization"] =
-        "Token " + token;
+        "Token " + token;  
     } else {
       setToken("");
       setIsAuthenticated(false);
+      setUserid(localStorage.getItem(0));
+      setUsername(localStorage.getItem(""));
+      setTeamid(0);
+      setTeamname("");
       axios.defaults.headers.common["Authorization"] = "";
     }
   }, []);
@@ -48,6 +60,27 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
       alert("Don't login");
     }
+
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/users/me/");
+      setUserid(response.data.id);
+      setUsername(response.data.username);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("userid", response.data.id);
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/teams/get_team/");
+      setTeamid(response.data.id);
+      setTeamname(response.data.name);
+      localStorage.setItem("teamname", response.data.name);
+      localStorage.setItem("teamid", response.data.id);
+    } catch (e) {
+      console.log(e);
+    }
+
   };
   const signUp = async ({ username, password }) => {
     try {
@@ -69,6 +102,10 @@ export const AuthProvider = ({ children }) => {
         });
       axios.defaults.headers.common["Authorization"] = "";
       localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("userid");
+      localStorage.removeItem("teamname");
+      localStorage.removeItem("teamid");
       removeToken();
     } catch (e) {
       console.log(e);
@@ -76,7 +113,7 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token }}
+      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname }}
     >
       {children}
     </AuthContext.Provider>

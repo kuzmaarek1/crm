@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-   # 'http://localhost:8081'
 ]
 
 REST_FRAMEWORK = {
@@ -54,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'djoser',
-    'lead.apps.LeadConfig'
+    'lead.apps.LeadConfig',
+    'team.apps.TeamConfig'
 ]
 
 MIDDLEWARE = [

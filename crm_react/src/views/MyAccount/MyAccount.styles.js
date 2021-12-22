@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 
 export const MyAccountWrapper = styled.div`
     display:flex;
@@ -20,3 +20,23 @@ export const MyAccountButton=styled.button`
   border-radius: 100px !important;
   cursor:pointer;
 }`;
+
+export const DetailsWrapper=styled.div`
+  display:grid;
+  grid-template-columns: repeat(2,20vw);
+  grid-gap:1px;
+  margin-bottom:3vh;
+`;
+
+export const DetailsLeadWrapper = styled.div`
+  margin-top:1vh;
+  height: 5vh;
+  width: 100%;
+  text-align: center;
+  line-height: 5vh;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  ${props => props.title && css`
+    font-weight: 800;
+  `}
+`;
