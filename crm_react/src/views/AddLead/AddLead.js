@@ -1,11 +1,13 @@
 import React from "react";
 import { useLeads } from "../../hooks/useLeads.js";
+import { useAuth } from "../../hooks/useAuth.js";
 import { useForm } from "react-hook-form";
-import { AddLeadWrapper, AddLeadHeader,  AddLeadForm, AddLeadLabel, AddLeadInput, AddLeadSpan } from './AddLead.styles.js';
+import { AddLeadWrapper, AddLeadHeader,  AddLeadForm, AddLeadLabel, AddLeadInput, AddLeadSpan, AddLeadTextarea  } from './AddLead.styles.js';
 import { Button } from "../../components/atoms/Button/Button.js";
 
 const AddLead = () => {
 const lead = useLeads();
+const auth = useAuth();
  const {
   register,
   handleSubmit,
@@ -14,7 +16,7 @@ const lead = useLeads();
   return (
     <AddLeadWrapper>
       <AddLeadHeader>Add Lead</AddLeadHeader>
-      <AddLeadForm onSubmit={handleSubmit(lead.addLead)}>
+      <AddLeadForm onSubmit={handleSubmit((register)=>lead.addLead(register,auth.teamid))}>
       <AddLeadLabel htmlFor="first_name">First name</AddLeadLabel>
         <AddLeadInput
           type="text"
@@ -47,7 +49,14 @@ const lead = useLeads();
           {...register("phone", { required: true })}
         />
          {errors.phone && <AddLeadSpan>Phone is required</AddLeadSpan>}
-
+         <AddLeadLabel htmlFor="description">Description</AddLeadLabel>
+         <AddLeadTextarea 
+          type="description"
+          name="description"
+          id="description"
+          {...register("description", { required: true })}
+        />
+        {errors.description && <AddLeadSpan>Description is required</AddLeadSpan>}
         <Button>Submit</Button>
       </AddLeadForm>
     </AddLeadWrapper>

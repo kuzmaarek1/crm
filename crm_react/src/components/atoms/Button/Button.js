@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 export const Button=styled.button`
- width: 100%;
+  width: 100%;
   height: 7vh;
   border: none;
   background:  ${props => props.red ? '#fcd0cf' :'rgba(197, 220, 250, 0.5)'};
@@ -13,4 +13,10 @@ export const Button=styled.button`
   font-size: 1em;
   text-align: center;
   line-height: 7vh;
-}`;
+  ${props => props.team && css`
+      margin-left:40vw;
+      width: 20%;
+      height: 4vh;
+      line-height: 4vh;
+      font-size:0.9em;
+  `}`;

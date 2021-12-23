@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
+//import { useNavigate } from 'react-router-dom';
 const AuthContext = React.createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -10,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [teamid, setTeamid] = useState(0);
   const [teamname, setTeamname] = useState("");
+  //const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -82,6 +84,21 @@ export const AuthProvider = ({ children }) => {
     }
 
   };
+
+  const changeTeams=useCallback(async(id)=>{
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/teams/get_team/${id}/`);
+      if(response){
+      setTeamid(response.data.id);
+      setTeamname(response.data.name);
+      localStorage.setItem("teamname", response.data.name);
+      localStorage.setItem("teamid", response.data.id);
+    }
+    } catch (e) {
+      console.log(e);
+    }
+  },[]);
+
   const signUp = async ({ username, password }) => {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/users/", {username,password});
@@ -106,6 +123,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("userid");
       localStorage.removeItem("teamname");
       localStorage.removeItem("teamid");
+      setTeamid(0);
+      setTeamname('');
       removeToken();
     } catch (e) {
       console.log(e);
@@ -113,7 +132,7 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname }}
+      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname, changeTeams }}
     >
       {children}
     </AuthContext.Provider>

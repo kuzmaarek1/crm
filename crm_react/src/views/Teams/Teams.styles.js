@@ -33,11 +33,11 @@ export const TeamLink=styled(NavLink)`
 
 export const TeamWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin-top:1vh;
-  height: 5vh;
   width: 100%;
   text-align: center;
+  align-items: center;
   line-height: 5vh;
   border: 2px solid #e0e0e0;
   border-radius: 10px;

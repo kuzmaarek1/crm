@@ -1,11 +1,13 @@
 import React, {useEffect, useState,useCallback} from "react";
+import { useAuth } from "../../hooks/useAuth.js";
 import { useMatch } from "react-router-dom";
 import { useLeads } from "../../hooks/useLeads.js";
 import { useForm } from "react-hook-form";
-import { EditLeadWrapper, EditLeadHeader,  EditLeadForm, EditLeadLabel, EditLeadInput, EditLeadSpan } from './EditLead.styles.js';
+import { EditLeadWrapper, EditLeadHeader,  EditLeadForm, EditLeadLabel, EditLeadInput, EditLeadSpan, EditLeadTextarea } from './EditLead.styles.js';
 import { Button } from "../../components/atoms/Button/Button.js";
 
 const EditLead = () => {
+ const auth=useAuth();
  const match = useMatch("/edit-lead/:id");
  const leads = useLeads();
  const { getLeadById } = useLeads();
@@ -17,7 +19,7 @@ const EditLead = () => {
     formState: { errors },
   } = useForm();
 
-  const fetchMyAPI = useCallback(async () => { const leadClient = await getLeadById(match.params.id);  setLead(leadClient);  },[lead.id])
+  const fetchMyAPI = useCallback(async () => { const leadClient = await getLeadById(match.params.id, auth.teamid);  setLead(leadClient[0]);  },[lead.id])
  useEffect(() => {
     if(lead.id !== match.params.id ){   
         fetchMyAPI();
@@ -25,13 +27,13 @@ const EditLead = () => {
         setValue("last_name",lead.last_name);
         setValue("email",lead.email);
         setValue("phone",lead.phone);
+        setValue("description",lead.description);
     }
-   console.log(lead.id !== match.params.id);
   }, [fetchMyAPI]);
   return (
     <EditLeadWrapper>
       <EditLeadHeader>Edit Lead</EditLeadHeader>
-      <EditLeadForm onSubmit={handleSubmit((register)=>leads.editLead(register,match.params.id))}>
+      <EditLeadForm onSubmit={handleSubmit((register)=>leads.editLead(register,match.params.id, auth.teamid))}>
            <EditLeadLabel htmlFor="first_name">First name</EditLeadLabel>
         <EditLeadInput
           type="text"
@@ -65,6 +67,14 @@ const EditLead = () => {
           {...register("phone", { required: true })}
         />
          {errors.phone && <EditLeadSpan>Phone is required</EditLeadSpan>}
+         <EditLeadLabel htmlFor="description">Description</EditLeadLabel>
+         <EditLeadTextarea
+          type="description"
+          name="description"
+          id="description"
+          {...register("description", { required: true })}
+        />
+        {errors.description && <EditLeadSpan>Description is required</EditLeadSpan>}
 
         <Button>Submit</Button>
       </EditLeadForm>

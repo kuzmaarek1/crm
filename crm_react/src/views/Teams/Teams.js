@@ -1,4 +1,6 @@
 import React,{ useEffect, useState }  from "react";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import { TeamsWrapper,TeamTitle, TeamHeader, TeamLink, TeamWrapper, TeamModal, ModalButton, ModalWrapper, ModalTeamWrapper} from './Teams.styles.js';
 import { useTeams } from "../../hooks/useTeams.js";
@@ -6,6 +8,8 @@ import { Button } from "../../components/atoms/Button/Button.js";
 
 
 const Teams = () => {
+ const auth = useAuth();
+ const navigate = useNavigate();
  const [teams, setTeams] = useState([]);
  const [team, setTeam] = useState([]);
  const { getTeams,getTeamsById, deleteTeam } = useTeams();
@@ -27,7 +31,7 @@ const Teams = () => {
       const teamsClient = await getTeams();
       setTeams(teamsClient);
     })();
-  }, [getTeams]);
+  }, [getTeams, auth.teamid]);
 
   const handleDelete=(id)=>{
     (async () => {
@@ -38,6 +42,11 @@ const Teams = () => {
     })();
   }
   
+  const handleChangeTeams=async(id)=>{
+    const respone = await auth.changeTeams(id);
+    navigate("/teams");
+  }
+
   return (
     <TeamsWrapper>
       <TeamTitle>
@@ -50,9 +59,7 @@ const Teams = () => {
       { teams &&( teams.map((team)=>(
           <TeamWrapper onClick={()=>openModal(team.id)}>
             <div>{team.name}</div>
-            <div>{team.last_name}</div>
-            <div>{team.email}</div>
-            <div>{team.phone}</div>
+            {String(auth.teamid) === String(team.id) ? <Button team red>Current</Button>:<Button team onClick={(e)=>{e.stopPropagation();handleChangeTeams(team.id);}}>Active</Button>}
         </TeamWrapper>
       )))}
           <TeamModal
