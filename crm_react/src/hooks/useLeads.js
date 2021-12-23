@@ -4,29 +4,31 @@ import axios from 'axios';
 
 export const useLeads = () => {
 const navigate = useNavigate();
-const getLeads = useCallback(async () => {
+const getLeads = useCallback(async (id) => {
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/leads/`);
+      const result = await axios.get(`http://127.0.0.1:8000/api/leads/get_lead/${id}/`);
       return result.data;
     } catch (e) {
       console.log(e);
     }
   }, []);
-  const getLeadById = useCallback(async (id) => {
+  const getLeadById = useCallback(async (id_lead, id_team) => {
+    console.log (id_team);
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/leads/${id}/`);
+      const result = await axios.get(`http://127.0.0.1:8000/api/leads/get_lead_by_id/${id_lead}/${id_team}/`);
       return result.data;
     } catch (e) {
       console.log(e);
     }
   }, []);
-  const addLead = async ({first_name, last_name, email, phone}) => {
+  const addLead = async ({first_name, last_name, email, phone, description},id) => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/leads/", {
+      const response = await axios.post(`http://127.0.0.1:8000/api/leads/create_lead/${id}/`, {
         first_name,
         last_name,
         email,
         phone,
+        description,
       });
     navigate('/leads');
     }
@@ -34,13 +36,14 @@ const getLeads = useCallback(async () => {
       console.log(e);
     }
   }
-  const editLead = async ({first_name, last_name, email, phone},id) => {
+  const editLead = async ({first_name, last_name, email, phone, description},id_lead, id_team) => {
     try {
-      const response = await axios.patch(`http://127.0.0.1:8000/api/leads/${id}/`, {
+      const response = await axios.post(`http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`, {
         first_name,
         last_name,
         email,
         phone,
+        description
       });
     navigate('/leads');
     }
@@ -48,10 +51,9 @@ const getLeads = useCallback(async () => {
       console.log(e);
     }
   }
-  const deleteLead = async (id) => {
-    console.log(id);
+  const deleteLead = async (id_lead, id_team) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/leads/delete_lead/${id}/`);
+      const response = await axios.post(`http://127.0.0.1:8000/api/leads/delete_lead/${id_lead}/${id_team}/`);
       navigate('/leads');
     }
     catch (e) {

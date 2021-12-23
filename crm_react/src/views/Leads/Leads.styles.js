@@ -87,4 +87,8 @@ export const ModalLeadWrapper = styled.div`
   ${props => props.title && css`
     font-weight: 800;
   `}
+  ${props => props.description && css`
+    height:400%;
+    line-height: 2vh;
+  `}
 `;

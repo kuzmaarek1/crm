@@ -1,4 +1,5 @@
 import React,{ useEffect, useState }  from "react";
+import { useAuth } from "../../hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import { LeadsWrapper,LeadTitle, LeadHeader, LeadLink, LeadWrapper, LeadModal, ModalButton, ModalWrapper, ModalLeadWrapper} from './Leads.styles.js';
 import { useLeads } from "../../hooks/useLeads.js";
@@ -6,15 +7,16 @@ import { Button } from "../../components/atoms/Button/Button.js";
 
 
 const Leads = () => {
+ const auth = useAuth();
  const [leads, setLeads] = useState([]);
  const [lead, setLead] = useState([]);
  const { getLeads,getLeadById, deleteLead } = useLeads();
  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const openModal=(id)=> {
+  const openModal=(id_lead, id_team)=> {
     setIsOpen(true);
    (async () => {
-      const leadClient = await getLeadById(id);
-      setLead(leadClient);
+      const leadClient = await getLeadById(id_lead, id_team);
+      setLead(leadClient[0]);
     })();
   }
 
@@ -24,20 +26,20 @@ const Leads = () => {
 
  useEffect(() => {
     (async () => {
-      const leadsClient = await getLeads();
+      const leadsClient = await getLeads(auth.teamid);
       setLeads(leadsClient);
     })();
-  }, [getLeads]);
+  }, [getLeads, auth.teamid]);
 
   const handleDelete=(id)=>{
+    console.log(id);
     (async () => {
-      const leadsDelete = await deleteLead(id);
-      const leadsClient = await getLeads();
+      const leadsDelete = await deleteLead(id, auth.teamid);
+      const leadsClient = await getLeads(auth.teamid);
       setLeads(leadsClient);
       setIsOpen(false);
     })();
   }
-  
   return (
     <LeadsWrapper>
       <LeadTitle>
@@ -51,7 +53,7 @@ const Leads = () => {
             <div>Phone</div>
       </LeadWrapper>
       { leads &&( leads.map((lead)=>(
-          <LeadWrapper onClick={()=>openModal(lead.id)}>
+          <LeadWrapper onClick={()=>openModal(lead.id, auth.teamid)}>
             <div>{lead.first_name}</div>
             <div>{lead.last_name}</div>
             <div>{lead.email}</div>
@@ -63,6 +65,7 @@ const Leads = () => {
         onRequestClose={closeModal}
       > 
         <ModalButton>
+          {console.log(lead.id)}
           <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead>Edit</Button>
           <Button red onClick={()=>handleDelete(lead.id)}>Delete</Button>
         </ModalButton>
@@ -71,6 +74,7 @@ const Leads = () => {
           <ModalLeadWrapper title>Last name</ModalLeadWrapper><ModalLeadWrapper>{lead.last_name}</ModalLeadWrapper>
           <ModalLeadWrapper title>Email</ModalLeadWrapper><ModalLeadWrapper>{lead.email}</ModalLeadWrapper>
           <ModalLeadWrapper title>Phone</ModalLeadWrapper><ModalLeadWrapper>{lead.phone}</ModalLeadWrapper>
+          <ModalLeadWrapper title description>Description</ModalLeadWrapper><ModalLeadWrapper description>{lead.description}</ModalLeadWrapper>
         </ModalWrapper>
       </LeadModal>
     </LeadsWrapper>

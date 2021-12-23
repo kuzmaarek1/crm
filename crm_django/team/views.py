@@ -9,7 +9,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
 
     def get_queryset(self):
-       return self.queryset.filter(created_by=self.request.user)
+       return self.queryset.filter(members__in=[self.request.user])
 
     def perform_create(self, serializer):
        object=serializer.save(created_by=self.request.user)
@@ -23,6 +23,12 @@ def delete_team(request, team_id):
 
 @api_view(['GET'])
 def get_team(request):
-    team = Team.objects.filter(created_by=request.user).first()
+    team = Team.objects.filter(members__in=[request.user]).first()
+    serializer = TeamSerializer(team)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_team_by_id(request, team_id):
+    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     serializer = TeamSerializer(team)
     return Response(serializer.data)

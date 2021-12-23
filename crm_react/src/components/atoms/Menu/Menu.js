@@ -1,13 +1,14 @@
 import React from "react";
 import { useAuth } from "../../../hooks/useAuth.js";
-import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from './Menu.styles.js';
+import { MenuWrapper, MenuTitle, TeamTitle, MenuLinks, MenuLink } from './Menu.styles.js';
 
 const Menu = () => {
   const auth = useAuth();
+  {console.log(auth.teamname);}
   return (
     <MenuWrapper>
-        <MenuTitle to="/">
-        CRM
+        <MenuTitle to="/teams">
+        {auth.teamname ? auth.teamname: 'CRM'}
       </MenuTitle>
       {auth.isAuthenticated ? ( 
           <MenuLinks>
