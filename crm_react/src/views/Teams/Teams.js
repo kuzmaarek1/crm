@@ -12,6 +12,7 @@ const Teams = () => {
  const navigate = useNavigate();
  const [teams, setTeams] = useState([]);
  const [team, setTeam] = useState([]);
+ const {members} = team;
  const { getTeams,getTeamsById, deleteTeam } = useTeams();
  const [modalIsOpen, setIsOpen] = React.useState(false);
   const openModal=(id)=> {
@@ -62,17 +63,21 @@ const Teams = () => {
             {String(auth.teamid) === String(team.id) ? <Button team red>Current</Button>:<Button team onClick={(e)=>{e.stopPropagation();handleChangeTeams(team.id);}}>Active</Button>}
         </TeamWrapper>
       )))}
-          <TeamModal
+      
+      <TeamModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
       > 
         <ModalButton>
-          <Button to={`/edit-teams/${team.id}`} as={NavLink} lead>Edit</Button>
+          <Button to={`/add-member/${team.id}`} as={NavLink} lead>Add member</Button>
           <Button red onClick={()=>handleDelete(team.id)}>Delete</Button>
         </ModalButton>
         <ModalWrapper>
           <ModalTeamWrapper title>Name</ModalTeamWrapper><ModalTeamWrapper>{team.name}</ModalTeamWrapper>
           <ModalTeamWrapper title description>Description</ModalTeamWrapper><ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
+          {console.log(teams)}
+          {team.members && (console.log(team.members))}
+          {team.members && (members.map((member)=>(<><ModalTeamWrapper title>Member</ModalTeamWrapper><ModalTeamWrapper >{member.username}</ModalTeamWrapper></>)))}
         </ModalWrapper>
       </TeamModal>
     </TeamsWrapper>

@@ -10,5 +10,6 @@ class LeadSerializer(serializers.ModelSerializer):
             'last_name',
             'phone',
             'email',
-            'description'
+            'description',
+            #'created_by'
         )
