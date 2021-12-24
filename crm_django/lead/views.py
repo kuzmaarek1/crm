@@ -1,11 +1,11 @@
-import json
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from .serializers import LeadSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Lead
 from team.models import Team
-
 
 class LeadViewSet(viewsets.ModelViewSet):
     serializer_class = LeadSerializer
@@ -48,12 +48,20 @@ def update_lead(request, lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.get(id=lead_id)
     serializer = LeadSerializer(lead, data=request.data)
+    username = request.data['assigned_to']
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        user = 0
     if serializer.is_valid():
-        serializer.save(team=team)
+        if user:
+            serializer.save(team=team, assigned_to=user)
+        else:
+            serializer.save(team=team)
     return Response({'message':'Update'})
 
 @api_view(['POST'])
 def delete_lead(request,lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    Lead.objects.filter(id=lead_id, created_by=request.user, team=team).delete()
+    Lead.objects.filter(id=lead_id, team=team).delete()
     return Response({'message':'Deleted'})

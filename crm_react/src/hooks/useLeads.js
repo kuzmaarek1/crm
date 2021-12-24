@@ -36,14 +36,16 @@ const getLeads = useCallback(async (id) => {
       console.log(e);
     }
   }
-  const editLead = async ({first_name, last_name, email, phone, description},id_lead, id_team) => {
+  const editLead = async ({first_name, last_name, email, phone, description, assigned_to},id_lead, id_team) => {
+    console.log(assigned_to);
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`, {
         first_name,
         last_name,
         email,
         phone,
-        description
+        description,
+        assigned_to
       });
     navigate('/leads');
     }
