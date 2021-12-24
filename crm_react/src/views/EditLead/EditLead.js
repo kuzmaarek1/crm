@@ -2,8 +2,9 @@ import React, {useEffect, useState,useCallback} from "react";
 import { useAuth } from "../../hooks/useAuth.js";
 import { useMatch } from "react-router-dom";
 import { useLeads } from "../../hooks/useLeads.js";
+import { useTeams } from "../../hooks/useTeams.js";
 import { useForm } from "react-hook-form";
-import { EditLeadWrapper, EditLeadHeader,  EditLeadForm, EditLeadLabel, EditLeadInput, EditLeadSpan, EditLeadTextarea } from './EditLead.styles.js';
+import { EditLeadWrapper, EditLeadHeader,  EditLeadForm, EditLeadLabel, EditLeadInput, EditLeadSpan, EditLeadTextarea, EditLeadSelect } from './EditLead.styles.js';
 import { Button } from "../../components/atoms/Button/Button.js";
 
 const EditLead = () => {
@@ -12,6 +13,8 @@ const EditLead = () => {
  const leads = useLeads();
  const { getLeadById } = useLeads();
  const [lead, setLead] = useState([]);
+ const [team, setTeam] = useState([]);
+ const {getTeamsById} = useTeams();
  const {
     register,
     setValue,
@@ -28,8 +31,16 @@ const EditLead = () => {
         setValue("email",lead.email);
         setValue("phone",lead.phone);
         setValue("description",lead.description);
+        lead.assigned_to && setValue("assigned_to",lead.assigned_to.username);
     }
   }, [fetchMyAPI]);
+  useEffect(() => {
+    (async () => {
+      const teamsClient = await getTeamsById(auth.teamid);
+      setTeam(teamsClient);
+    })();
+  }, [getTeamsById, auth.teamid]);
+  //lead.assigned_to && console.log(lead.assigned_to.username);
   return (
     <EditLeadWrapper>
       <EditLeadHeader>Edit Lead</EditLeadHeader>
@@ -75,7 +86,10 @@ const EditLead = () => {
           {...register("description", { required: true })}
         />
         {errors.description && <EditLeadSpan>Description is required</EditLeadSpan>}
-
+        <EditLeadLabel htmlFor="description">Assigned to</EditLeadLabel>
+        <EditLeadSelect {...register("assigned_to")}>
+          {team.members && team.members.map((member)=><option value={member.username}>{member.username}</option>)}
+        </EditLeadSelect>
         <Button>Submit</Button>
       </EditLeadForm>
     </EditLeadWrapper>)}

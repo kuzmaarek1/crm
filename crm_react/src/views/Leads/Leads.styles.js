@@ -33,7 +33,7 @@ export const LeadLink=styled(NavLink)`
 
 export const LeadWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   margin-top:1vh;
   height: 5vh;
   width: 100%;

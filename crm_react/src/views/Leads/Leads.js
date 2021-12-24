@@ -31,6 +31,7 @@ const Leads = () => {
     })();
   }, [getLeads, auth.teamid]);
 
+
   const handleDelete=(id)=>{
     console.log(id);
     (async () => {
@@ -40,6 +41,7 @@ const Leads = () => {
       setIsOpen(false);
     })();
   }
+  console.log(leads);
   return (
     <LeadsWrapper>
       <LeadTitle>
@@ -51,6 +53,7 @@ const Leads = () => {
             <div>Last name</div>
             <div>Email</div>
             <div>Phone</div>
+            <div>Assigned_to</div>
       </LeadWrapper>
       { leads &&( leads.map((lead)=>(
           <LeadWrapper onClick={()=>openModal(lead.id, auth.teamid)}>
@@ -58,6 +61,7 @@ const Leads = () => {
             <div>{lead.last_name}</div>
             <div>{lead.email}</div>
             <div>{lead.phone}</div>
+            <div>{lead.assigned_to.username}</div>
         </LeadWrapper>
       )))}
           <LeadModal
@@ -74,6 +78,7 @@ const Leads = () => {
           <ModalLeadWrapper title>Last name</ModalLeadWrapper><ModalLeadWrapper>{lead.last_name}</ModalLeadWrapper>
           <ModalLeadWrapper title>Email</ModalLeadWrapper><ModalLeadWrapper>{lead.email}</ModalLeadWrapper>
           <ModalLeadWrapper title>Phone</ModalLeadWrapper><ModalLeadWrapper>{lead.phone}</ModalLeadWrapper>
+          {lead.assigned_to && (<><ModalLeadWrapper title>Assigned</ModalLeadWrapper><ModalLeadWrapper>{lead.assigned_to.username}</ModalLeadWrapper></>)}
           <ModalLeadWrapper title description>Description</ModalLeadWrapper><ModalLeadWrapper description>{lead.description}</ModalLeadWrapper>
         </ModalWrapper>
       </LeadModal>
