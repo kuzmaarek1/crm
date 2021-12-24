@@ -61,7 +61,7 @@ const Leads = () => {
             <div>{lead.last_name}</div>
             <div>{lead.email}</div>
             <div>{lead.phone}</div>
-            <div>{lead.assigned_to.username}</div>
+            {lead.assigned_to ? <div>{lead.assigned_to.username}</div>:<div></div>}
         </LeadWrapper>
       )))}
           <LeadModal

@@ -88,6 +88,7 @@ const EditLead = () => {
         {errors.description && <EditLeadSpan>Description is required</EditLeadSpan>}
         <EditLeadLabel htmlFor="description">Assigned to</EditLeadLabel>
         <EditLeadSelect {...register("assigned_to")}>
+          {!lead.assigned_to && <option value="">None</option>}
           {team.members && team.members.map((member)=><option value={member.username}>{member.username}</option>)}
         </EditLeadSelect>
         <Button>Submit</Button>
