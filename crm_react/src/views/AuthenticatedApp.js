@@ -7,6 +7,7 @@ import MyAccount from "./MyAccount/MyAccount.js";
 import Leads from "./Leads/Leads.js";
 import Teams from "./Teams/Teams.js";
 import AddLead from "./AddLead/AddLead.js";
+import AddMember from "./AddMember/AddMember.js";
 import EditLead from "./EditLead/EditLead.js";
 import AddTeam from "./AddTeam/AddTeam.js";
 import GlobalStyle from '../theme/GlobalStyle.js';
@@ -24,6 +25,7 @@ const AuthenticatedApp = () => {
                         <Route path="/add-lead" element={<AddLead />}/>
                         <Route path="/edit-lead/:id" element={<EditLead />}/>
                         <Route path="/add-team" element={<AddTeam />}/>
+                        <Route path="/add-member/:id" element={<AddMember />}/>
                         <Route path="/my-account" element={<MyAccount />} />
                         <Route  path="*" element={<Navigate to="/my-account"/>}/>
                     </Routes>

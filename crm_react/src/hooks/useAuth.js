@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
-//import { useNavigate } from 'react-router-dom';
+
 const AuthContext = React.createContext({});
 
 export const AuthProvider = ({ children }) => {
@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [teamid, setTeamid] = useState(0);
   const [teamname, setTeamname] = useState("");
-  //const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -100,6 +99,7 @@ export const AuthProvider = ({ children }) => {
   },[]);
 
   const signUp = async ({ username, password }) => {
+    console.log(username);
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/users/", {username,password});
       alert("Account create");
@@ -107,6 +107,17 @@ export const AuthProvider = ({ children }) => {
       alert("Don't create ");
     }
   };
+
+  const signUpAndMember= async (request, id) => {
+    const {username} = request;
+    await signUp(request);
+    try{
+    const response = await axios.post(`http://127.0.0.1:8000/api/teams/add_member/${id}/`, {username});
+   }
+   catch (e) {
+    alert("Don't add member ");
+  }
+  }
 
   const logOut = async () => {
     try {
@@ -132,7 +143,7 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname, changeTeams }}
+      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname, changeTeams, signUpAndMember }}
     >
       {children}
     </AuthContext.Provider>
