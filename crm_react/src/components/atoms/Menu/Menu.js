@@ -4,7 +4,6 @@ import { MenuWrapper, MenuTitle, TeamTitle, MenuLinks, MenuLink } from './Menu.s
 
 const Menu = () => {
   const auth = useAuth();
-  {console.log(auth.teamname);}
   return (
     <MenuWrapper>
         <MenuTitle to="/teams">

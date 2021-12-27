@@ -13,7 +13,6 @@ const getLeads = useCallback(async (id) => {
     }
   }, []);
   const getLeadById = useCallback(async (id_lead, id_team) => {
-    console.log (id_team);
     try {
       const result = await axios.get(`http://127.0.0.1:8000/api/leads/get_lead_by_id/${id_lead}/${id_team}/`);
       return result.data;
@@ -37,7 +36,6 @@ const getLeads = useCallback(async (id) => {
     }
   }
   const editLead = async ({first_name, last_name, email, phone, description, assigned_to},id_lead, id_team) => {
-    console.log(assigned_to);
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`, {
         first_name,
@@ -52,6 +50,21 @@ const getLeads = useCallback(async (id) => {
     catch (e) {
       console.log(e);
     }
+  }
+  const searchLead = async (name, id_team) => {
+    if(!name) try{ return await getLeads(id_team); }
+    catch (e){
+      console.log(e);
+    }
+    else 
+      try{
+        const response = await axios.get(`http://127.0.0.1:8000/api/leads/search_lead/${id_team}/${name}/`);
+        return response.data;
+      }
+      catch(e){
+        console.log(e);
+      }
+    console.log('ddd');
   }
   const deleteLead = async (id_lead, id_team) => {
     try {
@@ -68,5 +81,6 @@ const getLeads = useCallback(async (id) => {
     editLead,
     deleteLead,
     getLeadById,
+    searchLead,
   };
 }

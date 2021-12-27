@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from .serializers import LeadSerializer
@@ -23,6 +24,14 @@ class LeadViewSet(viewsets.ModelViewSet):
 def get_lead(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead=Lead.objects.filter(team=team)
+    serializer = LeadSerializer(lead, many=True)
+    data = serializer.data
+    return Response(data)
+
+@api_view(['GET'])
+def search_lead(request,team_id,search):
+    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
+    lead=Lead.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team))
     serializer = LeadSerializer(lead, many=True)
     data = serializer.data
     return Response(data)

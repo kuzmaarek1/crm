@@ -10,9 +10,10 @@ export const TeamsWrapper=styled.div`
 export const TeamTitle=styled.div`
     display:flex;
     flex-direction: row;
-
+    height: 10vh;
 `
 export const TeamHeader=styled.h1`
+    width:40%;
     margin-left:2vw;
 `;
 export const TeamLink=styled(NavLink)`
@@ -49,13 +50,42 @@ export const TeamWrapper = styled.div`
   }
 `;
 
+export const TeamForm=styled.form`
+    width:20%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+`;
+export const TeamLinkDiv= styled.div`
+  width:40%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 10vh;
+`;
+export const TeamInput = styled.input`
+  width:120%;
+  padding: 10px 12px;
+  border: 1px solid #737C8E;
+  box-sizing: border-box;
+  color:#616161;
+  box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
+  font-size: 1rem;
+  border-radius: 25px;
+  resize: none;
+  &:focus {
+    outline: none;
+    font-size: 1rem;
+    color:#616161;
+    box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
+  }
+`;
+
 export const TeamModal=styled(Modal)`
   display: flex;
   flex-direction: column;
   margin:auto;
   margin-top:25vh;
-  //justify-content: center;
- // align-items: center;
   width: 50%;
   height: 50%;
   background-color: #f7f8fc;
