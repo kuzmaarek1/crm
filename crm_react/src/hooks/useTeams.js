@@ -35,19 +35,33 @@ export const useTeams= () => {
     }
   }, []);
   const deleteTeam = async (id) => {
-    console.log(id);
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/teams/delete_team/${id}/`);
       navigate('/teams');
     }
     catch (e) {
       console.log(e);
-    }
+    }  
   }
+  const searchTeam = async (name) => {
+    if(!name) try{ return await getTeams(); }
+    catch (e){
+        console.log(e);
+    }
+    else
+        try{
+            const response = await axios.get(`http://127.0.0.1:8000/api/teams/search_team/${name}/`);
+            return response.data;
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
   return {
     addTeam,
     getTeams,
     getTeamsById,
-    deleteTeam 
+    deleteTeam,
+    searchTeam 
   };
 }

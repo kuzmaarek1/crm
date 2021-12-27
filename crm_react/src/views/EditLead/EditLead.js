@@ -40,7 +40,6 @@ const EditLead = () => {
       setTeam(teamsClient);
     })();
   }, [getTeamsById, auth.teamid]);
-  //lead.assigned_to && console.log(lead.assigned_to.username);
   return (
     <EditLeadWrapper>
       <EditLeadHeader>Edit Lead</EditLeadHeader>
