@@ -70,7 +70,7 @@ const Leads = () => {
             <div>Last name</div>
             <div>Email</div>
             <div>Phone</div>
-            <div>Assigned_to</div>
+            <div>Assigned to</div>
       </LeadWrapper>
       { leads &&(leads.map((lead)=>(
           <LeadWrapper onClick={()=>openModal(lead.id, auth.teamid)}>

@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/', include('djoser.urls.authtoken')),
     path('api/', include('lead.urls')),
     path('api/', include('team.urls')),
+    path('api/', include('client.urls')),
 ]

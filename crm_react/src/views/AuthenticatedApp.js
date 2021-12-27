@@ -5,10 +5,13 @@ import Menu from "../components/atoms/Menu/Menu.js";
 import Dashboard from "./Dasboard.js";
 import MyAccount from "./MyAccount/MyAccount.js";
 import Leads from "./Leads/Leads.js";
+import Clients from "./Clients/Clients.js";
 import Teams from "./Teams/Teams.js";
 import AddLead from "./AddLead/AddLead.js";
+import AddClient from "./AddClient/AddClient.js";
 import AddMember from "./AddMember/AddMember.js";
 import EditLead from "./EditLead/EditLead.js";
+import EditClient from "./EditClient/EditClient.js";
 import AddTeam from "./AddTeam/AddTeam.js";
 import GlobalStyle from '../theme/GlobalStyle.js';
 
@@ -26,6 +29,10 @@ const AuthenticatedApp = () => {
                         <Route path="/edit-lead/:id" element={<EditLead />}/>
                         <Route path="/add-team" element={<AddTeam />}/>
                         <Route path="/add-member/:id" element={<AddMember />}/>
+                        <Route path="/clients" element={<Clients />} />
+                        <Route path="/add-client" element={<AddClient />}/>
+                        <Route path="/edit-client/:id" element={<EditClient />}/>
+                        <Route path="/add-team" element={<AddTeam />}/>
                         <Route path="/my-account" element={<MyAccount />} />
                         <Route  path="*" element={<Navigate to="/my-account"/>}/>
                     </Routes>
