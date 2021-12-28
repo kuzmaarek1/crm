@@ -1,4 +1,5 @@
 import React,{ useEffect, useState }  from "react";
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -11,8 +12,9 @@ const Leads = () => {
  const auth = useAuth();
  const [leads, setLeads] = useState([]);
  const [lead, setLead] = useState([]);
- const { getLeads,getLeadById, deleteLead, searchLead} = useLeads();
+ const { getLeads,getLeadById, deleteLead, searchLead, convert} = useLeads();
  const [modalIsOpen, setIsOpen] = React.useState(false);
+ const navigate = useNavigate();
  const {
   register,
   setValue,
@@ -43,6 +45,16 @@ const Leads = () => {
     (async () => {
       const leadsDelete = await deleteLead(name, auth.teamid);
       const leadsClient = await getLeads(auth.teamid);
+      setLeads(leadsClient);
+      setIsOpen(false);
+    })();
+  }
+
+  const handleConvert=(name)=>{
+    (async () => {
+      const leadsDelete = await convert(name, auth.teamid);
+      const leadsClient = await getLeads(auth.teamid);
+      navigate('/clients');
       setLeads(leadsClient);
       setIsOpen(false);
     })();
@@ -86,6 +98,7 @@ const Leads = () => {
         onRequestClose={closeModal}
       > 
         <ModalButton>
+          <Button onClick={()=>handleConvert(lead.id)}>Client</Button>
           <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead>Edit</Button>
           <Button red onClick={()=>handleDelete(lead.id)}>Delete</Button>
         </ModalButton>

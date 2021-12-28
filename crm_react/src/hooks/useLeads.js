@@ -64,12 +64,19 @@ const getLeads = useCallback(async (id) => {
       catch(e){
         console.log(e);
       }
-    console.log('ddd');
   }
   const deleteLead = async (id_lead, id_team) => {
     try {
       const response = await axios.post(`http://127.0.0.1:8000/api/leads/delete_lead/${id_lead}/${id_team}/`);
       navigate('/leads');
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+  const convert = async (id_lead, id_team) => {
+    try {
+      const response = await axios.post(`http://127.0.0.1:8000/api/convert_lead_to_client/${id_lead}/${id_team}/`);
     }
     catch (e) {
       console.log(e);
@@ -82,5 +89,6 @@ const getLeads = useCallback(async (id) => {
     deleteLead,
     getLeadById,
     searchLead,
+    convert
   };
 }
