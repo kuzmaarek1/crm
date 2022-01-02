@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ClientsWrapper,ClientTitle, ClientHeader, ClientLink, ClientWrapper, ClientModal, ClientButton, ModalWrapper, ModalClientWrapper, ClientForm, ClientInput, ClientLinkDiv} from './Clients.styles.js';
 import { useClients } from "../../hooks/useClients.js";
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../components/Button/Button.js";
 
 
 const Clients = () => {

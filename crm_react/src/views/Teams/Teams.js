@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import { TeamsWrapper,TeamTitle, TeamHeader, TeamLink, TeamWrapper, TeamModal, ModalButton, ModalWrapper, ModalTeamWrapper, TeamForm, TeamInput, TeamLinkDiv } from './Teams.styles.js';
 import { useTeams } from "../../hooks/useTeams.js";
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../components/Button/Button.js";
 
 
 const Teams = () => {

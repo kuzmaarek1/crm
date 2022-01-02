@@ -1,11 +1,11 @@
 import React, {useEffect, useState,useCallback} from "react";
-import { useAuth } from "../../hooks/useAuth.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 import { useMatch } from "react-router-dom";
-import { useClients } from "../../hooks/useClients.js";
-import { useTeams } from "../../hooks/useTeams.js";
+import { useClients } from "../../../hooks/useClients.js";
+import { useTeams } from "../../../hooks/useTeams.js";
 import { useForm } from "react-hook-form";
 import { EditClientWrapper, EditClientHeader,  EditClientForm, EditClientLabel, EditClientInput, EditClientSpan, EditClientTextarea, EditClientSelect } from './EditClient.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 
 const EditClient = () => {
  const auth=useAuth();

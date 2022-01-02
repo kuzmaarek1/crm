@@ -1,8 +1,8 @@
 import React,{ useRef } from "react";
 import { RegisterPageWrapper, RegisterHeader, RegisterForm, RegisterLabel, RegisterInput, RegisterSpan } from './RegisterPage.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../hooks/useAuth.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 
 const RegisterPage = () => {
   const auth = useAuth();

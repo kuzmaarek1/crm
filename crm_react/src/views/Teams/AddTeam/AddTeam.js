@@ -1,8 +1,8 @@
 import React from "react";
-import { useTeams } from "../../hooks/useTeams.js";
+import { useTeams } from "../../../hooks/useTeams.js";
 import { useForm } from "react-hook-form";
 import { AddTeamWrapper, AddTeamHeader,  AddTeamForm, AddTeamLabel, AddTeamInput, AddTeamSpan, AddTeamTextarea  } from './AddTeam.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 
 const AddTeam = () => {
 const lead = useTeams();

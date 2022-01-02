@@ -1,9 +1,9 @@
 import React from "react";
-import { useClients } from "../../hooks/useClients.js";
-import { useAuth } from "../../hooks/useAuth.js";
+import { useClients } from "../../../hooks/useClients.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 import { useForm } from "react-hook-form";
 import { AddClientWrapper, AddClientHeader,  AddClientForm, AddClientLabel, AddClientInput, AddClientSpan, AddClientTextarea  } from './AddClient.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 
 const AddClient = () => {
 const client = useClients();

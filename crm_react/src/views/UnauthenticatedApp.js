@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Menu from "../components/atoms/Menu/Menu.js";
-import LoginPage from "./LoginPage/LoginPage.js";
-import RegisterPage from "./RegisterPage/RegisterPage.js";
+import Menu from "../components/Menu/Menu.js";
+import LoginPage from "./Authenticated/LoginPage/LoginPage.js";
+import RegisterPage from "./Authenticated/RegisterPage/RegisterPage.js";
 import GlobalStyle from '../theme/GlobalStyle.js';
 
 const AuthenticatedApp = () => {
