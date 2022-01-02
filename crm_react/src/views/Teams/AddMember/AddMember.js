@@ -1,10 +1,10 @@
 import React,{useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import { useLeads } from "../../hooks/useLeads.js";
-import { useAuth } from "../../hooks/useAuth.js";
+import { useLeads } from "../../../hooks/useLeads.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 import { useForm } from "react-hook-form";
 import { AddMemberWrapper, AddMemberHeader,  AddMemberForm, AddMemberLabel, AddMemberInput, AddMemberSpan, AddMemberTextarea  } from './AddMember.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 
 const AddLead = () => {
   const lead = useLeads();

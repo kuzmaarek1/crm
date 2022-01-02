@@ -1,6 +1,6 @@
 import React from "react";
 import { MyAccountWrapper, MyAccountButton,  DetailsWrapper, DetailsLeadWrapper} from './MyAccount.styles.js';
-import { useAuth } from "../../hooks/useAuth.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 
 const MyAccount = () => {
   const auth = useAuth();

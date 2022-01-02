@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LeadsWrapper,LeadTitle, LeadHeader, LeadLink, LeadWrapper, LeadModal, ModalButton, ModalWrapper, ModalLeadWrapper, LeadForm, LeadInput, LeadLinkDiv} from './Leads.styles.js';
 import { useLeads } from "../../hooks/useLeads.js";
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../components/Button/Button.js";
 
 
 const Leads = () => {

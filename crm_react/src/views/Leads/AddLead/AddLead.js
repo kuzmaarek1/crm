@@ -1,9 +1,9 @@
 import React from "react";
-import { useLeads } from "../../hooks/useLeads.js";
-import { useAuth } from "../../hooks/useAuth.js";
+import { useLeads } from "../../../hooks/useLeads.js";
+import { useAuth } from "../../../hooks/useAuth.js";
 import { useForm } from "react-hook-form";
 import { AddLeadWrapper, AddLeadHeader,  AddLeadForm, AddLeadLabel, AddLeadInput, AddLeadSpan, AddLeadTextarea  } from './AddLead.styles.js';
-import { Button } from "../../components/atoms/Button/Button.js";
+import { Button } from "../../../components/Button/Button.js";
 
 const AddLead = () => {
 const lead = useLeads();

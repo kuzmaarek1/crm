@@ -1,18 +1,17 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Menu from "../components/atoms/Menu/Menu.js";
-import Dashboard from "./Dasboard.js";
-import MyAccount from "./MyAccount/MyAccount.js";
+import Menu from "../components/Menu/Menu.js";
+import MyAccount from "./Authenticated/MyAccount/MyAccount.js";
 import Leads from "./Leads/Leads.js";
 import Clients from "./Clients/Clients.js";
 import Teams from "./Teams/Teams.js";
-import AddLead from "./AddLead/AddLead.js";
-import AddClient from "./AddClient/AddClient.js";
-import AddMember from "./AddMember/AddMember.js";
-import EditLead from "./EditLead/EditLead.js";
-import EditClient from "./EditClient/EditClient.js";
-import AddTeam from "./AddTeam/AddTeam.js";
+import AddLead from "./Leads/AddLead/AddLead.js";
+import AddClient from "./Clients/AddClient/AddClient.js";
+import AddMember from "./Teams/AddMember/AddMember.js";
+import EditLead from "./Leads/EditLead/EditLead.js";
+import EditClient from "./Clients/EditClient/EditClient.js";
+import AddTeam from "./Teams/AddTeam/AddTeam.js";
 import GlobalStyle from '../theme/GlobalStyle.js';
 
 const AuthenticatedApp = () => {
@@ -22,7 +21,6 @@ const AuthenticatedApp = () => {
             <GlobalStyle/>
                 <Menu/>
                     <Routes>
-                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/leads" element={<Leads />} />
                         <Route path="/teams" element={<Teams />} />
                         <Route path="/add-lead" element={<AddLead />}/>
