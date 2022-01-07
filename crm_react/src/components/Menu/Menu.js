@@ -11,9 +11,12 @@ const Menu = () => {
       </MenuTitle>
       {auth.isAuthenticated ? ( 
           <MenuLinks>
+            {auth.teamname && <>
             <MenuLink to="leads">Leads </MenuLink>
             <MenuLink to="teams">Teams </MenuLink>
             <MenuLink to="clients">Clients </MenuLink>
+            </>}
+            {auth.teamname===undefined && <MenuLink to="add-team">Add team</MenuLink>}
             <MenuLink to="my-account">My account </MenuLink>
           </MenuLinks>
          ):(
