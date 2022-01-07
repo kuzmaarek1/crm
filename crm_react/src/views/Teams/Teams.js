@@ -84,11 +84,11 @@ const Teams = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
       > 
-      {team.members &&(String(team.members[0].id)===String(auth.userid) &&(
+      {team.members &&(String(team.members[0].id)===String(auth.userid) &&(<>
         <ModalButton>
           <Button to={`/add-member/${team.id}`} as={NavLink} lead>Add member</Button>
           <Button red onClick={()=>handleDelete(team.id)}>Delete</Button>
-        </ModalButton>))}
+        </ModalButton></>))}
         <ModalWrapper>
           <ModalTeamWrapper title>Name</ModalTeamWrapper><ModalTeamWrapper>{team.name}</ModalTeamWrapper>
           <ModalTeamWrapper title description>Description</ModalTeamWrapper><ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
