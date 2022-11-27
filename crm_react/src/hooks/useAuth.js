@@ -99,6 +99,7 @@ export const AuthProvider = ({ children }) => {
   },[]);
 
   const signUp = async ({ username, password }) => {
+    console.log({username, password})
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/users/", {username,password});
       alert("Account create");

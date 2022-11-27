@@ -4,6 +4,7 @@ import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from './Menu.styles.js';
 
 const Menu = () => {
   const auth = useAuth();
+  console.log(auth.teamname)
   return (
     <MenuWrapper>
         <MenuTitle to="/teams">
@@ -16,7 +17,7 @@ const Menu = () => {
             <MenuLink to="teams">Teams </MenuLink>
             <MenuLink to="clients">Clients </MenuLink>
             </>}
-            {auth.teamname===undefined && <MenuLink to="add-team">Add team</MenuLink>}
+            {auth.teamname==='' && <MenuLink to="add-team">Add team</MenuLink>}
             <MenuLink to="my-account">My account </MenuLink>
           </MenuLinks>
          ):(

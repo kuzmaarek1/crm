@@ -41,7 +41,7 @@ const AuthenticatedApp = () => {
                             <Routes>
                                 <Route path="/my-account" element={<MyAccount />} />
                                 <Route path="/add-team" element={<AddTeam />}/>
-                                <Route  path="*" element={<Navigate to="//my-account"/>}/>
+                                <Route  path="*" element={<Navigate to="/my-account"/>}/>
                             </Routes>
                         )}
          </BrowserRouter>
