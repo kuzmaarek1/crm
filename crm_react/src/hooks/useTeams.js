@@ -1,17 +1,14 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import * as api from "api";
 
 export const useTeams = () => {
   const navigate = useNavigate();
 
   const addTeam = async ({ name, description }) => {
     try {
-      await axios.post("http://127.0.0.1:8000/api/teams/", {
-        name,
-        description,
-      });
-      console.log("Utworzono zespół");
+      await api.addTeam({ name, description });
+      console.log("Create teams");
       navigate("/teams");
     } catch (e) {
       console.log(e);
@@ -19,7 +16,7 @@ export const useTeams = () => {
   };
   const getTeams = useCallback(async () => {
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/teams/`);
+      const result = await api.getTeams();
       return result.data;
     } catch (e) {
       console.log(e);
@@ -27,7 +24,7 @@ export const useTeams = () => {
   }, []);
   const getTeamsById = useCallback(async (id) => {
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/teams/${id}/`);
+      const result = await api.getTeamsById(id);
       return result.data;
     } catch (e) {
       console.log(e);
@@ -35,7 +32,7 @@ export const useTeams = () => {
   }, []);
   const deleteTeam = async (id) => {
     try {
-      await axios.post(`http://127.0.0.1:8000/api/teams/delete_team/${id}/`);
+      await api.deleteTeam(id);
       navigate("/teams");
     } catch (e) {
       console.log(e);
@@ -50,9 +47,7 @@ export const useTeams = () => {
       }
     else
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/teams/search_team/${name}/`
-        );
+        const response = await api.searchTeam(name);
         return response.data;
       } catch (e) {
         console.log(e);

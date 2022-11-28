@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import React, { useContext, useState, useCallback } from "react";
+import * as api from "api";
 
 const AuthContext = React.createContext({});
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [teamid, setTeamid] = useState(0);
   const [teamname, setTeamname] = useState("");
-
+  /*
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common["Authorization"] = "";
     }
   }, []);
-
+*/
   const setLoading = (status) => {
     setIsLoading(status);
   };
@@ -46,26 +46,18 @@ export const AuthProvider = ({ children }) => {
     setToken("");
     setIsAuthenticated(false);
   };
-  const loginIn = async ({ username, password }) => {
+  const loginIn = async (data) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/token/login",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await api.loginIn(data);
       const token = response.data.auth_token;
       setJwt(token);
-      axios.defaults.headers.common["Authorization"] = "Token " + token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", JSON.stringify(token));
     } catch (e) {
       console.log(e);
       alert("Don't login");
     }
-
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/users/me/");
+      const response = await api.getUser();
       setUserid(response.data.id);
       setUsername(response.data.username);
       localStorage.setItem("username", response.data.username);
@@ -75,9 +67,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/teams/get_team/"
-      );
+      const response = await api.getTeam();
       setTeamid(response.data.id);
       setTeamname(response.data.name);
       localStorage.setItem("teamname", response.data.name);
@@ -86,12 +76,9 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
     }
   };
-
   const changeTeams = useCallback(async (id) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/teams/get_team/${id}/`
-      );
+      const response = await api.changeTeams(id);
       if (response) {
         setTeamid(response.data.id);
         setTeamname(response.data.name);
@@ -104,12 +91,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signUp = async ({ username, password }) => {
-    console.log({ username, password });
     try {
-      await axios.post("http://127.0.0.1:8000/api/users/", {
-        username,
-        password,
-      });
+      await api.signUp({ username, password });
       alert("Account create");
     } catch (e) {
       alert("Don't create ");
@@ -120,9 +103,7 @@ export const AuthProvider = ({ children }) => {
     const { username } = request;
     await signUp(request);
     try {
-      await axios.post(`http://127.0.0.1:8000/api/teams/add_member/${id}/`, {
-        username,
-      });
+      await api.addMember(id, { username });
     } catch (e) {
       alert("Don't add member ");
     }
@@ -130,13 +111,7 @@ export const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     try {
-      await axios
-        .post("http://127.0.0.1:8000/api/token/logout/")
-        .then((response) => {})
-        .catch((error) => {
-          console.log(JSON.stringify(error));
-        });
-      axios.defaults.headers.common["Authorization"] = "";
+      await api.logOut();
       localStorage.removeItem("token");
       localStorage.removeItem("username");
       localStorage.removeItem("userid");

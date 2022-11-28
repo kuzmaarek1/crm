@@ -4,7 +4,6 @@ import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from "./Menu.styles.js";
 
 const Menu = () => {
   const auth = useAuth();
-  console.log(auth.teamname);
   return (
     <MenuWrapper>
       <MenuTitle to="/teams">{auth.teamname ? auth.teamname : "CRM"}</MenuTitle>

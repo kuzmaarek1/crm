@@ -1,24 +1,20 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import * as api from "api";
 
 export const useLeads = () => {
   const navigate = useNavigate();
   const getLeads = useCallback(async (id) => {
     try {
-      const result = await axios.get(
-        `http://127.0.0.1:8000/api/leads/get_lead/${id}/`
-      );
+      const result = await api.getLead(id);
       return result.data;
     } catch (e) {
       console.log(e);
     }
   }, []);
-  const getLeadById = useCallback(async (id_lead, id_team) => {
+  const getLeadById = useCallback(async (lead, team) => {
     try {
-      const result = await axios.get(
-        `http://127.0.0.1:8000/api/leads/get_lead_by_id/${id_lead}/${id_team}/`
-      );
+      const result = await api.getLeadById(lead, team);
       return result.data;
     } catch (e) {
       console.log(e);
@@ -29,7 +25,7 @@ export const useLeads = () => {
     id
   ) => {
     try {
-      await axios.post(`http://127.0.0.1:8000/api/leads/create_lead/${id}/`, {
+      await api.createLead(id, {
         first_name,
         last_name,
         email,
@@ -43,58 +39,49 @@ export const useLeads = () => {
   };
   const editLead = async (
     { first_name, last_name, email, phone, description, assigned_to },
-    id_lead,
-    id_team
+    lead,
+    team
   ) => {
     try {
-      await axios.post(
-        `http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`,
-        {
-          first_name,
-          last_name,
-          email,
-          phone,
-          description,
-          assigned_to,
-        }
-      );
+      await api.editLead(lead, team, {
+        first_name,
+        last_name,
+        email,
+        phone,
+        description,
+        assigned_to,
+      });
       navigate("/leads");
     } catch (e) {
       console.log(e);
     }
   };
-  const searchLead = async (name, id_team) => {
+  const searchLead = async (name, team) => {
     if (!name)
       try {
-        return await getLeads(id_team);
+        return await getLeads(team);
       } catch (e) {
         console.log(e);
       }
     else
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/leads/search_lead/${id_team}/${name}/`
-        );
+        const response = await api.searchLead(team, name);
         return response.data;
       } catch (e) {
         console.log(e);
       }
   };
-  const deleteLead = async (id_lead, id_team) => {
+  const deleteLead = async (lead, team) => {
     try {
-      await axios.post(
-        `http://127.0.0.1:8000/api/leads/delete_lead/${id_lead}/${id_team}/`
-      );
+      await api.deleteLead(lead, team);
       navigate("/leads");
     } catch (e) {
       console.log(e);
     }
   };
-  const convert = async (id_lead, id_team) => {
+  const convert = async (lead, team) => {
     try {
-      await axios.post(
-        `http://127.0.0.1:8000/api/convert_lead_to_client/${id_lead}/${id_team}/`
-      );
+      await api.convetLeadToClient(lead, team);
     } catch (e) {
       console.log(e);
     }
