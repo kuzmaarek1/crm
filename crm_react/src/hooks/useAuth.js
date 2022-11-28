@@ -21,8 +21,7 @@ export const AuthProvider = ({ children }) => {
       setUsername(localStorage.getItem("username"));
       setTeamid(localStorage.getItem("teamid"));
       setTeamname(localStorage.getItem("teamname"));
-      axios.defaults.headers.common["Authorization"] =
-        "Token " + token;  
+      axios.defaults.headers.common["Authorization"] = "Token " + token;
     } else {
       setToken("");
       setIsAuthenticated(false);
@@ -49,10 +48,13 @@ export const AuthProvider = ({ children }) => {
   };
   const loginIn = async ({ username, password }) => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/token/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/token/login",
+        {
+          username,
+          password,
+        }
+      );
       const token = response.data.auth_token;
       setJwt(token);
       axios.defaults.headers.common["Authorization"] = "Token " + token;
@@ -73,7 +75,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/teams/get_team/");
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/teams/get_team/"
+      );
       setTeamid(response.data.id);
       setTeamname(response.data.name);
       localStorage.setItem("teamname", response.data.name);
@@ -81,50 +85,54 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
     }
-
   };
 
-  const changeTeams=useCallback(async(id)=>{
+  const changeTeams = useCallback(async (id) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/teams/get_team/${id}/`);
-      if(response){
-      setTeamid(response.data.id);
-      setTeamname(response.data.name);
-      localStorage.setItem("teamname", response.data.name);
-      localStorage.setItem("teamid", response.data.id);
-    }
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/teams/get_team/${id}/`
+      );
+      if (response) {
+        setTeamid(response.data.id);
+        setTeamname(response.data.name);
+        localStorage.setItem("teamname", response.data.name);
+        localStorage.setItem("teamid", response.data.id);
+      }
     } catch (e) {
       console.log(e);
     }
-  },[]);
+  }, []);
 
   const signUp = async ({ username, password }) => {
-    console.log({username, password})
+    console.log({ username, password });
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/users/", {username,password});
+      await axios.post("http://127.0.0.1:8000/api/users/", {
+        username,
+        password,
+      });
       alert("Account create");
     } catch (e) {
       alert("Don't create ");
     }
   };
 
-  const signUpAndMember= async (request, id) => {
-    const {username} = request;
+  const signUpAndMember = async (request, id) => {
+    const { username } = request;
     await signUp(request);
-    try{
-    const response = await axios.post(`http://127.0.0.1:8000/api/teams/add_member/${id}/`, {username});
-   }
-   catch (e) {
-    alert("Don't add member ");
-  }
-  }
+    try {
+      await axios.post(`http://127.0.0.1:8000/api/teams/add_member/${id}/`, {
+        username,
+      });
+    } catch (e) {
+      alert("Don't add member ");
+    }
+  };
 
   const logOut = async () => {
     try {
       await axios
         .post("http://127.0.0.1:8000/api/token/logout/")
-        .then((response) => {
-        })
+        .then((response) => {})
         .catch((error) => {
           console.log(JSON.stringify(error));
         });
@@ -135,7 +143,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("teamname");
       localStorage.removeItem("teamid");
       setTeamid(0);
-      setTeamname('');
+      setTeamname("");
       removeToken();
     } catch (e) {
       console.log(e);
@@ -143,7 +151,23 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ isLoading,isAuthenticated, setLoading, setJwt, removeToken, loginIn, signUp,logOut, token, userid, username, teamid, teamname, changeTeams, signUpAndMember }}
+      value={{
+        isLoading,
+        isAuthenticated,
+        setLoading,
+        setJwt,
+        removeToken,
+        loginIn,
+        signUp,
+        logOut,
+        token,
+        userid,
+        username,
+        teamid,
+        teamname,
+        changeTeams,
+        signUpAndMember,
+      }}
     >
       {children}
     </AuthContext.Provider>

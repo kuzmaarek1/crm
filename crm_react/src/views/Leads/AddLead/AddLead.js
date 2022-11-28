@@ -1,23 +1,35 @@
 import React from "react";
-import { useLeads } from "../../../hooks/useLeads.js";
-import { useAuth } from "../../../hooks/useAuth.js";
+import { useLeads } from "hooks/useLeads.js";
+import { useAuth } from "hooks/useAuth.js";
 import { useForm } from "react-hook-form";
-import { AddLeadWrapper, AddLeadHeader,  AddLeadForm, AddLeadLabel, AddLeadInput, AddLeadSpan, AddLeadTextarea  } from './AddLead.styles.js';
+import {
+  AddLeadWrapper,
+  AddLeadHeader,
+  AddLeadForm,
+  AddLeadLabel,
+  AddLeadInput,
+  AddLeadSpan,
+  AddLeadTextarea,
+} from "./AddLead.styles.js";
 import { Button } from "../../../components/Button/Button.js";
 
 const AddLead = () => {
-const lead = useLeads();
-const auth = useAuth();
- const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm();
+  const lead = useLeads();
+  const auth = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   return (
     <AddLeadWrapper>
       <AddLeadHeader>Add Lead</AddLeadHeader>
-      <AddLeadForm onSubmit={handleSubmit((register)=>lead.addLead(register,auth.teamid))}>
-      <AddLeadLabel htmlFor="first_name">First name</AddLeadLabel>
+      <AddLeadForm
+        onSubmit={handleSubmit((register) =>
+          lead.addLead(register, auth.teamid)
+        )}
+      >
+        <AddLeadLabel htmlFor="first_name">First name</AddLeadLabel>
         <AddLeadInput
           type="text"
           name="first_name"
@@ -40,23 +52,25 @@ const auth = useAuth();
           id="email"
           {...register("email", { required: true })}
         />
-         {errors.email && <AddLeadSpan>Email is required</AddLeadSpan>}
-         <AddLeadLabel htmlFor="phone">Phone</AddLeadLabel>
+        {errors.email && <AddLeadSpan>Email is required</AddLeadSpan>}
+        <AddLeadLabel htmlFor="phone">Phone</AddLeadLabel>
         <AddLeadInput
           type="number"
           name="phone"
           id="phone"
           {...register("phone", { required: true })}
         />
-         {errors.phone && <AddLeadSpan>Phone is required</AddLeadSpan>}
-         <AddLeadLabel htmlFor="description">Description</AddLeadLabel>
-         <AddLeadTextarea 
+        {errors.phone && <AddLeadSpan>Phone is required</AddLeadSpan>}
+        <AddLeadLabel htmlFor="description">Description</AddLeadLabel>
+        <AddLeadTextarea
           type="description"
           name="description"
           id="description"
           {...register("description", { required: true })}
         />
-        {errors.description && <AddLeadSpan>Description is required</AddLeadSpan>}
+        {errors.description && (
+          <AddLeadSpan>Description is required</AddLeadSpan>
+        )}
         <Button>Submit</Button>
       </AddLeadForm>
     </AddLeadWrapper>

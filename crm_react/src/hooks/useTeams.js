@@ -1,23 +1,22 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export const useTeams= () => {
- const navigate = useNavigate();
+export const useTeams = () => {
+  const navigate = useNavigate();
 
- const addTeam = async ({name,description}) => {
+  const addTeam = async ({ name, description }) => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/teams/", {
+      await axios.post("http://127.0.0.1:8000/api/teams/", {
         name,
         description,
       });
-    console.log('Utworzono zespół');
-    navigate('/teams');
-    }
-    catch (e) {
+      console.log("Utworzono zespół");
+      navigate("/teams");
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
   const getTeams = useCallback(async () => {
     try {
       const result = await axios.get(`http://127.0.0.1:8000/api/teams/`);
@@ -36,32 +35,34 @@ export const useTeams= () => {
   }, []);
   const deleteTeam = async (id) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/teams/delete_team/${id}/`);
-      navigate('/teams');
-    }
-    catch (e) {
+      await axios.post(`http://127.0.0.1:8000/api/teams/delete_team/${id}/`);
+      navigate("/teams");
+    } catch (e) {
       console.log(e);
-    }  
-  }
+    }
+  };
   const searchTeam = async (name) => {
-    if(!name) try{ return await getTeams(); }
-    catch (e){
+    if (!name)
+      try {
+        return await getTeams();
+      } catch (e) {
         console.log(e);
-    }
+      }
     else
-        try{
-            const response = await axios.get(`http://127.0.0.1:8000/api/teams/search_team/${name}/`);
-            return response.data;
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/teams/search_team/${name}/`
+        );
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      }
+  };
   return {
     addTeam,
     getTeams,
     getTeamsById,
     deleteTeam,
-    searchTeam 
+    searchTeam,
   };
-}
+};

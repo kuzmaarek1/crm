@@ -1,8 +1,15 @@
-import React,{ useRef } from "react";
-import { RegisterPageWrapper, RegisterHeader, RegisterForm, RegisterLabel, RegisterInput, RegisterSpan } from './RegisterPage.styles.js';
-import { Button } from "../../../components/Button/Button.js";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../hooks/useAuth.js";
+import {
+  RegisterPageWrapper,
+  RegisterHeader,
+  RegisterForm,
+  RegisterLabel,
+  RegisterInput,
+  RegisterSpan,
+} from "./RegisterPage.styles.js";
+import { Button } from "components/Button/Button.js";
+import { useAuth } from "hooks/useAuth.js";
 
 const RegisterPage = () => {
   const auth = useAuth();
@@ -34,17 +41,21 @@ const RegisterPage = () => {
           {...register("password", { required: true })}
         />
         {errors.password && <RegisterSpan>Password is required</RegisterSpan>}
-        <RegisterLabel htmlFor="password_repeat">Repeate password</RegisterLabel>
+        <RegisterLabel htmlFor="password_repeat">
+          Repeate password
+        </RegisterLabel>
         <RegisterInput
           type="password"
           name="password_repeat"
           id="password_repeat"
-          {...register("password_repeat",{
-             validate: value => 
-             value === password.current || "The passwords do not match"
-         })}
+          {...register("password_repeat", {
+            validate: (value) =>
+              value === password.current || "The passwords do not match",
+          })}
         />
-        {errors.password_repeat && <RegisterSpan>The passwords must be identical</RegisterSpan>}
+        {errors.password_repeat && (
+          <RegisterSpan>The passwords must be identical</RegisterSpan>
+        )}
         <Button>Submit</Button>
       </RegisterForm>
     </RegisterPageWrapper>

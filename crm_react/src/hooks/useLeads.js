@@ -1,12 +1,14 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const useLeads = () => {
-const navigate = useNavigate();
-const getLeads = useCallback(async (id) => {
+  const navigate = useNavigate();
+  const getLeads = useCallback(async (id) => {
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/leads/get_lead/${id}/`);
+      const result = await axios.get(
+        `http://127.0.0.1:8000/api/leads/get_lead/${id}/`
+      );
       return result.data;
     } catch (e) {
       console.log(e);
@@ -14,74 +16,89 @@ const getLeads = useCallback(async (id) => {
   }, []);
   const getLeadById = useCallback(async (id_lead, id_team) => {
     try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/leads/get_lead_by_id/${id_lead}/${id_team}/`);
+      const result = await axios.get(
+        `http://127.0.0.1:8000/api/leads/get_lead_by_id/${id_lead}/${id_team}/`
+      );
       return result.data;
     } catch (e) {
       console.log(e);
     }
   }, []);
-  const addLead = async ({first_name, last_name, email, phone, description},id) => {
+  const addLead = async (
+    { first_name, last_name, email, phone, description },
+    id
+  ) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/leads/create_lead/${id}/`, {
+      await axios.post(`http://127.0.0.1:8000/api/leads/create_lead/${id}/`, {
         first_name,
         last_name,
         email,
         phone,
         description,
       });
-    navigate('/leads');
-    }
-    catch (e) {
+      navigate("/leads");
+    } catch (e) {
       console.log(e);
     }
-  }
-  const editLead = async ({first_name, last_name, email, phone, description, assigned_to},id_lead, id_team) => {
+  };
+  const editLead = async (
+    { first_name, last_name, email, phone, description, assigned_to },
+    id_lead,
+    id_team
+  ) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`, {
-        first_name,
-        last_name,
-        email,
-        phone,
-        description,
-        assigned_to
-      });
-    navigate('/leads');
-    }
-    catch (e) {
+      await axios.post(
+        `http://127.0.0.1:8000/api/leads/update_lead/${id_lead}/${id_team}/`,
+        {
+          first_name,
+          last_name,
+          email,
+          phone,
+          description,
+          assigned_to,
+        }
+      );
+      navigate("/leads");
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
   const searchLead = async (name, id_team) => {
-    if(!name) try{ return await getLeads(id_team); }
-    catch (e){
-      console.log(e);
-    }
-    else 
-      try{
-        const response = await axios.get(`http://127.0.0.1:8000/api/leads/search_lead/${id_team}/${name}/`);
-        return response.data;
-      }
-      catch(e){
+    if (!name)
+      try {
+        return await getLeads(id_team);
+      } catch (e) {
         console.log(e);
       }
-  }
+    else
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/leads/search_lead/${id_team}/${name}/`
+        );
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      }
+  };
   const deleteLead = async (id_lead, id_team) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/leads/delete_lead/${id_lead}/${id_team}/`);
-      navigate('/leads');
-    }
-    catch (e) {
+      await axios.post(
+        `http://127.0.0.1:8000/api/leads/delete_lead/${id_lead}/${id_team}/`
+      );
+      navigate("/leads");
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
   const convert = async (id_lead, id_team) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/convert_lead_to_client/${id_lead}/${id_team}/`);
-    }
-    catch (e) {
+      await axios.post(
+        `http://127.0.0.1:8000/api/convert_lead_to_client/${id_lead}/${id_team}/`
+      );
+    } catch (e) {
       console.log(e);
     }
-  }
+  };
   return {
     getLeads,
     addLead,
@@ -89,6 +106,6 @@ const getLeads = useCallback(async (id) => {
     deleteLead,
     getLeadById,
     searchLead,
-    convert
+    convert,
   };
-}
+};
