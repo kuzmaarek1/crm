@@ -24,7 +24,7 @@ const RegisterPage = () => {
   return (
     <RegisterPageWrapper>
       <RegisterHeader>Register Page</RegisterHeader>
-      <RegisterForm onSubmit={handleSubmit(auth.signUp)}>
+      <RegisterForm onSubmit={handleSubmit(auth.handleSignUp)}>
         <RegisterLabel htmlFor="email">Email</RegisterLabel>
         <RegisterInput
           type="email"

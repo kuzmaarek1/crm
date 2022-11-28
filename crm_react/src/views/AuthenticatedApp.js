@@ -1,7 +1,6 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "hooks/useAuth.js";
-import Menu from "components/Menu/Menu.js";
 import MyAccount from "views/Authenticated/MyAccount/MyAccount.js";
 import Leads from "views/Leads/Leads.js";
 import Clients from "views/Clients/Clients.js";
@@ -12,15 +11,12 @@ import AddMember from "views/Teams/AddMember/AddMember.js";
 import EditLead from "views/Leads/EditLead/EditLead.js";
 import EditClient from "views/Clients/EditClient/EditClient.js";
 import AddTeam from "views/Teams/AddTeam/AddTeam.js";
-import GlobalStyle from "theme/GlobalStyle.js";
 
 const AuthenticatedApp = () => {
   const auth = useAuth();
   console.log(auth.teamname);
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Menu />
+    <>
       {auth.teamname ? (
         <Routes>
           <Route path="/leads" element={<Leads />} />
@@ -43,7 +39,7 @@ const AuthenticatedApp = () => {
           <Route path="*" element={<Navigate to="/my-account" />} />
         </Routes>
       )}
-    </BrowserRouter>
+    </>
   );
 };
 export default AuthenticatedApp;

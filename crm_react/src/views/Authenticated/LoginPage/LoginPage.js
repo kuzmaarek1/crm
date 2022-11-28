@@ -21,7 +21,7 @@ const LoginPage = () => {
   return (
     <LoginPageWrapper>
       <LoginHeader>Login In</LoginHeader>
-      <LoginForm onSubmit={handleSubmit(auth.loginIn)}>
+      <LoginForm onSubmit={handleSubmit(auth.handleSiginIn)}>
         <LoginLabel htmlFor="email">Email</LoginLabel>
         <LoginInput
           type="email"

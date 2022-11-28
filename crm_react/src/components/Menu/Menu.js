@@ -6,6 +6,7 @@ const Menu = () => {
   const auth = useAuth();
   return (
     <MenuWrapper>
+      {/*
       <MenuTitle to="/teams">{auth.teamname ? auth.teamname : "CRM"}</MenuTitle>
       {auth.isAuthenticated ? (
         <MenuLinks>
@@ -24,7 +25,7 @@ const Menu = () => {
           <MenuLink to="sign-up">Sing up</MenuLink>
           <MenuLink to="login-in">Log in </MenuLink>
         </MenuLinks>
-      )}
+      )}*/}
     </MenuWrapper>
   );
 };

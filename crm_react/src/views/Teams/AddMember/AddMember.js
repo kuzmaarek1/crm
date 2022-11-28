@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useAuth } from "hooks/useAuth.js";
 import { useForm } from "react-hook-form";
 import {
@@ -10,11 +11,11 @@ import {
   AddMemberInput,
   AddMemberSpan,
 } from "./AddMember.styles.js";
-import { Button } from "../../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
 
 const AddLead = () => {
   const navigate = useNavigate();
-  const auth = useAuth();
+  const auth = useSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -28,7 +29,7 @@ const AddLead = () => {
       <AddMemberHeader>Add Members</AddMemberHeader>
       <AddMemberForm
         onSubmit={handleSubmit((register) => {
-          auth.signUpAndMember(register, auth.teamid);
+          // auth.signUpAndMember(register, auth.teamid);
           navigate("/teams");
         })}
       >
