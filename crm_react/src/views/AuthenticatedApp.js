@@ -13,10 +13,10 @@ import EditClient from "views/Clients/EditClient/EditClient.js";
 import AddTeam from "views/Teams/AddTeam/AddTeam.js";
 
 const AuthenticatedApp = () => {
-  const teams = useSelector((state) => state.teams.teamsData);
+  const teams = useSelector((state) => state.teams);
   return (
     <>
-      {teams?.length ? (
+      {teams?.currentTeam ? (
         <Routes>
           <Route path="/leads" element={<Leads />} />
           <Route path="/teams" element={<Teams />} />

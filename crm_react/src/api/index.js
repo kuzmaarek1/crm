@@ -20,6 +20,11 @@ export const getTeam = () => API.get("/api/teams/get_team/");
 export const changeTeams = (id) => API.get(`/api/teams/get_team/${id}/`);
 export const addMember = (id, data) =>
   API.post(`/api/teams/add_member/${id}/`, data);
+export const addTeam = (data) => API.post(`/api/teams/`, data);
+export const getTeams = () => API.get(`/api/teams/`);
+export const getTeamsById = (id) => API.get(`/api/teams/${id}/`);
+export const deleteTeam = (id) => API.post(`/api/teams/delete_team/${id}/`);
+export const searchTeam = (name) => API.get(`api/teams/search_team/${name}/`);
 
 export const getClient = (id) => API.get(`/api/clients/get_client/${id}`);
 export const getClientById = (client, team) =>
@@ -46,9 +51,3 @@ export const deleteLead = (lead, team) =>
   API.post(`api/leads/delete_lead/${lead}/${team}/`);
 export const convetLeadToClient = (lead, team) =>
   API.post(`/api/convert_lead_to_client/${lead}/${team}/`);
-
-export const addTeam = (data) => API.post(`/api/teams/`, data);
-export const getTeams = () => API.get(`/api/teams/`);
-export const getTeamsById = (id) => API.get(`/api/teams/${id}/`);
-export const deleteTeam = (id) => API.post(`/api/teams/delete_team/${id}/`);
-export const searchTeam = (name) => API.get(`api/teams/search_team/${name}/`);

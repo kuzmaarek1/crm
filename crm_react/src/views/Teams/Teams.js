@@ -28,7 +28,7 @@ const Teams = () => {
   const teamsHook = useTeams();
 
   useEffect(() => {
-    dispatch(getTeams(null));
+    dispatch(getTeams());
   }, []);
 
   const openModal = (id) => {

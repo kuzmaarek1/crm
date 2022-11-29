@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from "./Menu.styles.js";
-import { getTeams } from "actions/team.js";
+import { getTeam } from "actions/team.js";
 
 const Menu = () => {
   const auth = useSelector((state) => state.auth.authData);
@@ -10,7 +10,7 @@ const Menu = () => {
 
   useEffect(() => {
     if (auth?.auth_token && !teams.currentTeam) {
-      dispatch(getTeams("start"));
+      dispatch(getTeam());
     }
   }, [auth?.auth_token]);
 

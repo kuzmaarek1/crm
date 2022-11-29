@@ -5,17 +5,16 @@ const teamReducer = (
   action
 ) => {
   switch (action.type) {
-    case actionType.LOADING_TEAM_START:
+    case actionType.LOADING_TEAMS_START:
       return { ...state, loading: true, error: false };
-    case actionType.LOADING_TEAM_SUCCESS_START:
+    case actionType.LOADING_TEAM_SUCCESS:
       return {
         ...state,
-        teamsData: action.data,
         loading: false,
         error: false,
-        currentTeam: Array.isArray(action.data) ? action.data[0] : null,
+        currentTeam: action?.data?.id ? action.data : null,
       };
-    case actionType.LOADING_TEAM_SUCCESS:
+    case actionType.LOADING_TEAMS_SUCCESS:
       return {
         ...state,
         teamsData: action.data,
@@ -30,11 +29,12 @@ const teamReducer = (
         : [action.data];
       return {
         ...state,
+        currentTeam: action.data,
         teamsData: teams,
         loading: false,
         error: false,
       };
-    case actionType.LOADING_TEAM_FAIL:
+    case actionType.LOADING_TEAMS_FAIL:
       return { ...state, loading: false, error: true };
     case actionType.LOGOUT_TEAM:
       return {
