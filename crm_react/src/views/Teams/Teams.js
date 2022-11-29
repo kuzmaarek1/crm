@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import {
   TeamsWrapper,
   TeamTitle,
@@ -10,13 +12,13 @@ import {
   ModalButton,
   ModalWrapper,
   ModalTeamWrapper,
+  ModalTeamMember,
   TeamForm,
   TeamInput,
   TeamLinkDiv,
 } from "./Teams.styles.js";
 import { useTeams } from "hooks/useTeams.js";
 import { Button } from "components/Button/Button.js";
-import { useSelector, useDispatch } from "react-redux";
 import { getTeams } from "actions/team.js";
 
 const Teams = () => {
@@ -26,6 +28,7 @@ const Teams = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [team, setTeam] = useState([]);
   const teamsHook = useTeams();
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     dispatch(getTeams());
@@ -45,18 +48,31 @@ const Teams = () => {
     <TeamsWrapper>
       <TeamTitle>
         <TeamHeader>Team</TeamHeader>
-        <TeamForm>
-          <TeamInput type="serach" placeholder="Search by name" />
+        <TeamForm
+          onSubmit={handleSubmit(({ name }) => {
+            teamsHook.handleSearchTeams(name);
+          })}
+        >
+          <TeamInput
+            type="serach"
+            placeholder="Search by name"
+            {...register("name", {
+              required: true,
+              onChange: (e) => {
+                teamsHook.handleSearchTeams(e.target.value);
+              },
+            })}
+          />
         </TeamForm>
         <TeamLinkDiv>
           <TeamLink to="/add-team">Add Teams</TeamLink>
         </TeamLinkDiv>
       </TeamTitle>
-      <TeamWrapper title>
+      <TeamWrapper title="true">
         <div>Name</div>
       </TeamWrapper>
       {teams?.teamsData?.map((team) => (
-        <TeamWrapper onClick={() => openModal(team.id)}>
+        <TeamWrapper onClick={() => openModal(team.id)} key={team.id}>
           <div>{team.name}</div>
           {String(team.id) === String(teams.currentTeam?.id) ? (
             <Button team red>
@@ -76,30 +92,44 @@ const Teams = () => {
         </TeamWrapper>
       ))}
 
-      <TeamModal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <TeamModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+      >
         {team?.members &&
           String(team?.members[0]?.id) === String(auth?.user.id) && (
             <>
               <ModalButton>
-                <Button to={`/add-member/${team.id}`} as={NavLink} lead>
+                <Button to={`/add-member/${team.id}`} as={NavLink} lead="true">
                   Add member
                 </Button>
-                <Button red>Delete</Button>
+                <Button
+                  red
+                  onClick={() => {
+                    teamsHook.handleDeleteTeam(team.id);
+                    setIsOpen(false);
+                  }}
+                >
+                  Delete
+                </Button>
               </ModalButton>
             </>
           )}
         <ModalWrapper>
-          <ModalTeamWrapper title>Name</ModalTeamWrapper>
+          <ModalTeamWrapper title="true">Name</ModalTeamWrapper>
           <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
-          <ModalTeamWrapper title description>
+          <ModalTeamWrapper title="true" description>
             Description
           </ModalTeamWrapper>
           <ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
           {team.members?.map((member) => (
-            <>
-              <ModalTeamWrapper title>Member</ModalTeamWrapper>
-              <ModalTeamWrapper>{member.username}</ModalTeamWrapper>
-            </>
+            <ModalTeamMember key={member.id}>
+              <ModalTeamWrapper title="true" member>
+                Member
+              </ModalTeamWrapper>
+              <ModalTeamWrapper member>{member.username}</ModalTeamWrapper>
+            </ModalTeamMember>
           ))}
         </ModalWrapper>
       </TeamModal>

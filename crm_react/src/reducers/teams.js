@@ -34,6 +34,23 @@ const teamReducer = (
         loading: false,
         error: false,
       };
+    case actionType.DELETE_TEAM:
+      const teamsData = state.teamsData.filter(
+        (team) => String(team.id) !== String(action.data)
+      );
+
+      const currentTeam =
+        String(state.currentTeam.id) !== String(action.data)
+          ? state.currentTeam
+          : teamsData?.length
+          ? teamsData[0]
+          : null;
+
+      return {
+        ...state,
+        currentTeam: currentTeam,
+        teamsData: teamsData,
+      };
     case actionType.LOADING_TEAMS_FAIL:
       return { ...state, loading: false, error: true };
     case actionType.LOGOUT_TEAM:

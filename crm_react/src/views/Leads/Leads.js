@@ -96,7 +96,7 @@ const Leads = () => {
           <LeadLink to="/add-lead">Add Lead</LeadLink>
         </LeadLinkDiv>
       </LeadTitle>
-      <LeadWrapper title>
+      <LeadWrapper title="true">
         <div>First name</div>
         <div>Last name</div>
         <div>Email</div>
@@ -117,7 +117,11 @@ const Leads = () => {
             )}
           </LeadWrapper>
         ))}
-      <LeadModal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <LeadModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+      >
         <ModalButton>
           <Button onClick={() => handleConvert(lead.id)}>Client</Button>
           <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead>
@@ -128,21 +132,21 @@ const Leads = () => {
           </Button>
         </ModalButton>
         <ModalWrapper>
-          <ModalLeadWrapper title>First name</ModalLeadWrapper>
+          <ModalLeadWrapper title="true">First name</ModalLeadWrapper>
           <ModalLeadWrapper>{lead.first_name}</ModalLeadWrapper>
-          <ModalLeadWrapper title>Last name</ModalLeadWrapper>
+          <ModalLeadWrapper title="true">Last name</ModalLeadWrapper>
           <ModalLeadWrapper>{lead.last_name}</ModalLeadWrapper>
-          <ModalLeadWrapper title>Email</ModalLeadWrapper>
+          <ModalLeadWrapper title="true">Email</ModalLeadWrapper>
           <ModalLeadWrapper>{lead.email}</ModalLeadWrapper>
-          <ModalLeadWrapper title>Phone</ModalLeadWrapper>
+          <ModalLeadWrapper title="true">Phone</ModalLeadWrapper>
           <ModalLeadWrapper>{lead.phone}</ModalLeadWrapper>
           {lead.assigned_to && (
             <>
-              <ModalLeadWrapper title>Assigned</ModalLeadWrapper>
+              <ModalLeadWrapper title="true">Assigned</ModalLeadWrapper>
               <ModalLeadWrapper>{lead.assigned_to.username}</ModalLeadWrapper>
             </>
           )}
-          <ModalLeadWrapper title description>
+          <ModalLeadWrapper title="true" description>
             Description
           </ModalLeadWrapper>
           <ModalLeadWrapper description>{lead.description}</ModalLeadWrapper>

@@ -85,7 +85,7 @@ const Clients = () => {
           <ClientLink to="/add-client">Add Client</ClientLink>
         </ClientLinkDiv>
       </ClientTitle>
-      <ClientWrapper title>
+      <ClientWrapper title="true">
         <div>First name</div>
         <div>Last name</div>
         <div>Email</div>
@@ -106,7 +106,11 @@ const Clients = () => {
             )}
           </ClientWrapper>
         ))}
-      <ClientModal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <ClientModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        ariaHideApp={false}
+      >
         <ClientButton>
           <Button to={`/edit-client/${client.id}`} as={NavLink} lead>
             Edit
@@ -116,23 +120,23 @@ const Clients = () => {
           </Button>
         </ClientButton>
         <ModalWrapper>
-          <ModalClientWrapper title>First name</ModalClientWrapper>
+          <ModalClientWrapper title="true">First name</ModalClientWrapper>
           <ModalClientWrapper>{client.first_name}</ModalClientWrapper>
-          <ModalClientWrapper title>Last name</ModalClientWrapper>
+          <ModalClientWrapper title="true">Last name</ModalClientWrapper>
           <ModalClientWrapper>{client.last_name}</ModalClientWrapper>
-          <ModalClientWrapper title>Email</ModalClientWrapper>
+          <ModalClientWrapper title="true">Email</ModalClientWrapper>
           <ModalClientWrapper>{client.email}</ModalClientWrapper>
-          <ModalClientWrapper title>Phone</ModalClientWrapper>
+          <ModalClientWrapper title="true">Phone</ModalClientWrapper>
           <ModalClientWrapper>{client.phone}</ModalClientWrapper>
           {client.assigned_to && (
             <>
-              <ModalClientWrapper title>Assigned</ModalClientWrapper>
+              <ModalClientWrapper title="true">Assigned</ModalClientWrapper>
               <ModalClientWrapper>
                 {client.assigned_to.username}
               </ModalClientWrapper>
             </>
           )}
-          <ModalClientWrapper title description>
+          <ModalClientWrapper title="true" description>
             Description
           </ModalClientWrapper>
           <ModalClientWrapper description>

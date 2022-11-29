@@ -107,6 +107,11 @@ export const ModalWrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1px;
 `;
+export const ModalTeamMember = styled.div`
+  grid-column: span 2 / span 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;
 
 export const ModalTeamWrapper = styled.div`
   margin-top: 1vh;

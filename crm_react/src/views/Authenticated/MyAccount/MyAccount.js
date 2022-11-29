@@ -16,9 +16,9 @@ const MyAccount = () => {
     <MyAccountWrapper>
       <h1>MyAccount</h1>
       <DetailsWrapper>
-        <DetailsLeadWrapper title>UserId: </DetailsLeadWrapper>
+        <DetailsLeadWrapper title="true">UserId: </DetailsLeadWrapper>
         <DetailsLeadWrapper>{auth?.id}</DetailsLeadWrapper>
-        <DetailsLeadWrapper title>Login: </DetailsLeadWrapper>{" "}
+        <DetailsLeadWrapper title="true">Login: </DetailsLeadWrapper>{" "}
         <DetailsLeadWrapper>{auth?.username}</DetailsLeadWrapper>
       </DetailsWrapper>
       <MyAccountButton onClick={() => authHook.handleLogOut()}>
