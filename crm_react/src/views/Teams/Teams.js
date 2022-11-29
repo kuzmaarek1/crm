@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAuth } from "hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import {
   TeamsWrapper,
@@ -17,75 +14,39 @@ import {
   TeamInput,
   TeamLinkDiv,
 } from "./Teams.styles.js";
-import { useTeams } from "../../hooks/useTeams.js";
-import { Button } from "../../components/Button/Button.js";
+import { useTeams } from "hooks/useTeams.js";
+import { Button } from "components/Button/Button.js";
+import { useSelector, useDispatch } from "react-redux";
+import { getTeams } from "actions/team.js";
 
 const Teams = () => {
-  const auth = useAuth();
-  const navigate = useNavigate();
-  const [teams, setTeams] = useState([]);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.authData);
+  const teams = useSelector((state) => state.teams);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [team, setTeam] = useState([]);
-  const { members } = team;
-  const { getTeams, getTeamsById, deleteTeam, searchTeam } = useTeams();
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const { register, handleSubmit } = useForm();
+  const teamsHook = useTeams();
+
+  useEffect(() => {
+    dispatch(getTeams(null));
+  }, []);
+
   const openModal = (id) => {
     setIsOpen(true);
-    (async () => {
-      const teamsClient = await getTeamsById(id);
-      setTeam(teamsClient);
-    })();
+    const teamFindById = teams.teamsData.find((team) => team.id === id);
+    setTeam(teamFindById);
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      const teamsClient = await getTeams();
-      setTeams(teamsClient);
-    })();
-  }, [getTeams, auth.teamid]);
-
-  const handleDelete = (id) => {
-    (async () => {
-      await deleteTeam(id);
-      const teamsClient = await getTeams();
-      setTeams(teamsClient);
-      setIsOpen(false);
-    })();
-  };
-
-  const handleChangeTeams = async (id) => {
-    await auth.changeTeams(id);
-    navigate("/teams");
-  };
-  const handleSearch = (name) => {
-    (async () => {
-      const teamsClient = await searchTeam(name);
-      setTeams(teamsClient);
-    })();
-  };
   return (
     <TeamsWrapper>
       <TeamTitle>
         <TeamHeader>Team</TeamHeader>
-        <TeamForm
-          onSubmit={handleSubmit((register) => {
-            handleSearch(register.name);
-          })}
-        >
-          <TeamInput
-            type="serach"
-            placeholder="Search by name"
-            {...register("name", {
-              required: true,
-              onChange: (e) => {
-                handleSearch(e.target.value);
-              },
-            })}
-          />
+        <TeamForm>
+          <TeamInput type="serach" placeholder="Search by name" />
         </TeamForm>
         <TeamLinkDiv>
           <TeamLink to="/add-team">Add Teams</TeamLink>
@@ -94,40 +55,39 @@ const Teams = () => {
       <TeamWrapper title>
         <div>Name</div>
       </TeamWrapper>
-      {teams &&
-        teams.map((team) => (
-          <TeamWrapper onClick={() => openModal(team.id)}>
-            <div>{team.name}</div>
-            {String(auth.teamid) === String(team.id) ? (
-              <Button team red>
-                Current
-              </Button>
-            ) : (
-              <Button
-                team
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleChangeTeams(team.id);
-                }}
-              >
-                Active
-              </Button>
-            )}
-          </TeamWrapper>
-        ))}
+      {teams?.teamsData?.map((team) => (
+        <TeamWrapper onClick={() => openModal(team.id)}>
+          <div>{team.name}</div>
+          {String(team.id) === String(teams.currentTeam?.id) ? (
+            <Button team red>
+              Current
+            </Button>
+          ) : (
+            <Button
+              team
+              onClick={(e) => {
+                e.stopPropagation();
+                teamsHook.handleChangeTeams(team);
+              }}
+            >
+              Activate
+            </Button>
+          )}
+        </TeamWrapper>
+      ))}
+
       <TeamModal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        {team.members && String(team.members[0].id) === String(auth.userid) && (
-          <>
-            <ModalButton>
-              <Button to={`/add-member/${team.id}`} as={NavLink} lead>
-                Add member
-              </Button>
-              <Button red onClick={() => handleDelete(team.id)}>
-                Delete
-              </Button>
-            </ModalButton>
-          </>
-        )}
+        {team?.members &&
+          String(team?.members[0]?.id) === String(auth?.user.id) && (
+            <>
+              <ModalButton>
+                <Button to={`/add-member/${team.id}`} as={NavLink} lead>
+                  Add member
+                </Button>
+                <Button red>Delete</Button>
+              </ModalButton>
+            </>
+          )}
         <ModalWrapper>
           <ModalTeamWrapper title>Name</ModalTeamWrapper>
           <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
@@ -135,13 +95,12 @@ const Teams = () => {
             Description
           </ModalTeamWrapper>
           <ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
-          {team.members &&
-            members.map((member) => (
-              <>
-                <ModalTeamWrapper title>Member</ModalTeamWrapper>
-                <ModalTeamWrapper>{member.username}</ModalTeamWrapper>
-              </>
-            ))}
+          {team.members?.map((member) => (
+            <>
+              <ModalTeamWrapper title>Member</ModalTeamWrapper>
+              <ModalTeamWrapper>{member.username}</ModalTeamWrapper>
+            </>
+          ))}
         </ModalWrapper>
       </TeamModal>
     </TeamsWrapper>

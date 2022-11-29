@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "hooks/useAuth.js";
+import { useSelector } from "react-redux";
 import MyAccount from "views/Authenticated/MyAccount/MyAccount.js";
 import Leads from "views/Leads/Leads.js";
 import Clients from "views/Clients/Clients.js";
@@ -13,11 +13,10 @@ import EditClient from "views/Clients/EditClient/EditClient.js";
 import AddTeam from "views/Teams/AddTeam/AddTeam.js";
 
 const AuthenticatedApp = () => {
-  const auth = useAuth();
-  console.log(auth.teamname);
+  const teams = useSelector((state) => state.teams.teamsData);
   return (
     <>
-      {auth.teamname ? (
+      {teams?.length ? (
         <Routes>
           <Route path="/leads" element={<Leads />} />
           <Route path="/teams" element={<Teams />} />

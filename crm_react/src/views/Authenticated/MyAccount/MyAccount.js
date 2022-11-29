@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import {
   MyAccountWrapper,
   MyAccountButton,
@@ -12,7 +11,6 @@ import {
 const MyAccount = () => {
   const auth = useSelector((state) => state.auth.authData.user);
   const authHook = useAuth();
-  const navigate = useNavigate;
 
   return (
     <MyAccountWrapper>
@@ -23,7 +21,7 @@ const MyAccount = () => {
         <DetailsLeadWrapper title>Login: </DetailsLeadWrapper>{" "}
         <DetailsLeadWrapper>{auth?.username}</DetailsLeadWrapper>
       </DetailsWrapper>
-      <MyAccountButton onClick={() => authHook.handleLogOut(navigate)}>
+      <MyAccountButton onClick={() => authHook.handleLogOut()}>
         Log out
       </MyAccountButton>
     </MyAccountWrapper>

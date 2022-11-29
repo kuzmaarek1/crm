@@ -1,27 +1,23 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "api";
+import { getTeams } from "actions/team.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addTeam } from "actions/team.js";
+import * as actionType from "constants/actionTypes";
 
 export const useTeams = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const addTeam = async ({ name, description }) => {
-    try {
-      await api.addTeam({ name, description });
-      console.log("Create teams");
-      navigate("/teams");
-    } catch (e) {
-      console.log(e);
-    }
+  const handleAddTeam = (data) => {
+    dispatch(addTeam(data, navigate));
   };
-  const getTeams = useCallback(async () => {
-    try {
-      const result = await api.getTeams();
-      return result.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+
+  const handleChangeTeams = (team) => {
+    dispatch({ type: actionType.SET_CURRENT_TEAM, data: team });
+  };
+
   const getTeamsById = useCallback(async (id) => {
     try {
       const result = await api.getTeamsById(id);
@@ -54,7 +50,8 @@ export const useTeams = () => {
       }
   };
   return {
-    addTeam,
+    handleAddTeam,
+    handleChangeTeams,
     getTeams,
     getTeamsById,
     deleteTeam,

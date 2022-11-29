@@ -10,10 +10,10 @@ import {
   AddTeamSpan,
   AddTeamTextarea,
 } from "./AddTeam.styles.js";
-import { Button } from "../../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
 
 const AddTeam = () => {
-  const lead = useTeams();
+  const teams = useTeams();
   const {
     register,
     handleSubmit,
@@ -22,7 +22,7 @@ const AddTeam = () => {
   return (
     <AddTeamWrapper>
       <AddTeamHeader>Add Teams</AddTeamHeader>
-      <AddTeamForm onSubmit={handleSubmit(lead.addTeam)}>
+      <AddTeamForm onSubmit={handleSubmit(teams.handleAddTeam)}>
         <AddTeamLabel htmlFor="name">Name</AddTeamLabel>
         <AddTeamInput
           type="text"

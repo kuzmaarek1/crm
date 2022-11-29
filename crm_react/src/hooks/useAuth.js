@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn, signUp, logOut } from "actions/auth";
+import { getTeams } from "api";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSiginIn = async (data) => {
+  const handleSiginIn = (data) => {
     dispatch(signIn(data, navigate));
   };
 
-  const handleSignUp = async (data) => {
+  const handleSignUp = (data) => {
     dispatch(signUp(data, navigate));
+  };
+
+  const handleLogOut = () => {
+    dispatch(logOut());
   };
 
   /*
@@ -50,9 +55,7 @@ export const useAuth = () => {
     }
   };
 */
-  const handleLogOut = async (navigate) => {
-    dispatch(logOut(navigate));
-  };
+
   return {
     handleSignUp,
     handleSiginIn,
