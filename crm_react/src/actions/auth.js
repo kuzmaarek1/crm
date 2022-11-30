@@ -38,10 +38,10 @@ export const signUp = (formData) => async (dispatch) => {
 
 export const logOut = () => async (dispatch) => {
   try {
+    await api.logOut();
     dispatch({ type: actionType.LOGOUT });
     dispatch({ type: actionType.LOGOUT_TEAM });
     localStorage.clear();
-    await api.logOut();
   } catch (error) {
     console.log(error);
   }

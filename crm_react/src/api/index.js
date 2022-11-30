@@ -26,15 +26,15 @@ export const getTeamsById = (id) => API.get(`/api/teams/${id}/`);
 export const deleteTeam = (id) => API.post(`/api/teams/delete_team/${id}/`);
 export const searchTeam = (name) => API.get(`api/teams/search_team/${name}/`);
 
-export const getClient = (id) => API.get(`/api/clients/get_client/${id}`);
+export const getClients = (id) => API.get(`/api/clients/get_client/${id}/`);
 export const getClientById = (client, team) =>
   API.get(`/api/clients/get_client_by_id/${client}/${team}/`);
 export const createClient = (id, data) =>
   API.post(`/api/clients/create_client/${id}/`, data);
 export const editClient = (client, team, data) =>
   API.post(`/api/clients/update_client/${client}/${team}/`, data);
-export const searchClient = (name, id) =>
-  API.get(`/api/clients/search_client/${id}/${name}`);
+export const searchClient = (id, name) =>
+  API.get(`/api/clients/search_client/${id}/${name}/`);
 export const deleteClient = (client, team) =>
   API.post(`/api/clients/delete_client/${client}/${team}/`);
 

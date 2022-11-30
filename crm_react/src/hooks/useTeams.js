@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { getTeams, searchTeams, deleteTeam } from "actions/teams.js";
 import { useDispatch } from "react-redux";
-import { addTeam } from "actions/teams.js";
+import { getTeams, searchTeams, deleteTeam, addTeam } from "actions/teams.js";
 import * as actionType from "constants/actionTypes";
 
 export const useTeams = () => {

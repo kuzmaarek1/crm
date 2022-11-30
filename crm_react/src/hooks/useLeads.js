@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   addLead,
   deleteLead,
-  searchTeams,
+  searchLeads,
   getLeads,
   editLead,
 } from "actions/leads";
@@ -21,7 +21,7 @@ export const useLeads = () => {
   };
 
   const handleSearchLeads = (team, name) => {
-    name ? dispatch(searchTeams(team, name)) : dispatch(getLeads(team));
+    name ? dispatch(searchLeads(team, name)) : dispatch(getLeads(team));
   };
 
   const handleEditLead = (lead, team, data) => {

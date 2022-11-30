@@ -1,7 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useClients } from "hooks/useClients.js";
-import { useAuth } from "hooks/useAuth.js";
+import { Button } from "components/Button/Button.js";
 import {
   AddClientWrapper,
   AddClientHeader,
@@ -11,11 +12,10 @@ import {
   AddClientSpan,
   AddClientTextarea,
 } from "./AddClient.styles.js";
-import { Button } from "components/Button/Button.js";
 
 const AddClient = () => {
   const client = useClients();
-  const auth = useAuth();
+  const teams = useSelector((state) => state.teams);
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ const AddClient = () => {
       <AddClientHeader>Add Client</AddClientHeader>
       <AddClientForm
         onSubmit={handleSubmit((register) =>
-          client.addClient(register, auth.teamid)
+          client.handleAddClient(teams.currentTeam.id, register)
         )}
       >
         <AddClientLabel htmlFor="first_name">First name</AddClientLabel>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "hooks/useAuth.js";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { Button } from "components/Button/Button.js";
+import { getLeads } from "actions/leads.js";
+import { useLeads } from "hooks/useLeads.js";
 import {
   LeadsWrapper,
   LeadTitle,
@@ -17,10 +19,6 @@ import {
   LeadInput,
   LeadLinkDiv,
 } from "./Leads.styles.js";
-import { Button } from "components/Button/Button.js";
-import { useSelector, useDispatch } from "react-redux";
-import { getLeads } from "actions/leads.js";
-import { useLeads } from "hooks/useLeads.js";
 
 const Leads = () => {
   const dispatch = useDispatch();

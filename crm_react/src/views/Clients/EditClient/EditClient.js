@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useMatch } from "react-router-dom";
-import { useAuth } from "hooks/useAuth.js";
 import { useClients } from "hooks/useClients.js";
-import { useTeams } from "hooks/useTeams.js";
 import { useForm } from "react-hook-form";
+import { Button } from "components/Button/Button.js";
 import {
   EditClientWrapper,
   EditClientHeader,
@@ -14,16 +14,13 @@ import {
   EditClientTextarea,
   EditClientSelect,
 } from "./EditClient.styles.js";
-import { Button } from "components/Button/Button.js";
 
 const EditClient = () => {
-  const auth = useAuth();
+  const clientHook = useClients();
+  const clients = useSelector((state) => state.clients);
+  const [client, setClient] = useState(null);
+  const teams = useSelector((state) => state.teams);
   const match = useMatch("/edit-client/:id");
-  const clients = useClients();
-  const { getClientById } = useClients();
-  const [client, setClient] = useState([]);
-  const [team, setTeam] = useState([]);
-  const { getTeamsById } = useTeams();
   const {
     register,
     setValue,
@@ -31,34 +28,26 @@ const EditClient = () => {
     formState: { errors },
   } = useForm();
 
-  const fetchMyAPI = useCallback(async () => {
-    const leadClient = await getClientById(match.params.id, auth.teamid);
-    setClient(leadClient[0]);
-  }, [client.id]);
   useEffect(() => {
-    if (client.id !== match.params.id) {
-      fetchMyAPI();
-      setValue("first_name", client.first_name);
-      setValue("last_name", client.last_name);
-      setValue("email", client.email);
-      setValue("phone", client.phone);
-      setValue("description", client.description);
-      client.assigned_to &&
-        setValue("assigned_to", client.assigned_to.username);
-    }
-  }, [fetchMyAPI]);
-  useEffect(() => {
-    (async () => {
-      const teamsClient = await getTeamsById(auth.teamid);
-      setTeam(teamsClient);
-    })();
-  }, [getTeamsById, auth.teamid]);
+    const findClientById = clients?.clientsData?.find(
+      (client) => String(client.id) === String(match.params.id)
+    );
+    setClient(findClientById);
+    Object.entries(findClientById).forEach(([key, value]) => {
+      setValue(key, value);
+    });
+  }, []);
+
   return (
     <EditClientWrapper>
       <EditClientHeader>Edit Client</EditClientHeader>
       <EditClientForm
         onSubmit={handleSubmit((register) =>
-          clients.editClient(register, match.params.id, auth.teamid)
+          clientHook.handleEditClient(
+            match.params.id,
+            teams.currentTeam.id,
+            register
+          )
         )}
       >
         <EditClientLabel htmlFor="first_name">First name</EditClientLabel>
@@ -109,11 +98,10 @@ const EditClient = () => {
         )}
         <EditClientLabel htmlFor="description">Assigned to</EditClientLabel>
         <EditClientSelect {...register("assigned_to")}>
-          {!client.assigned_to && <option value="">None</option>}
-          {team.members &&
-            team.members.map((member) => (
-              <option value={member.username}>{member.username}</option>
-            ))}
+          {!client?.assigned_to && <option value="">None</option>}
+          {teams?.currentTeam?.members?.map((member) => (
+            <option value={member.username}>{member.username}</option>
+          ))}
         </EditClientSelect>
         <Button>Submit</Button>
       </EditClientForm>

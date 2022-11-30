@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "hooks/useAuth.js";
+import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useClients } from "hooks/useClients.js";
+import { getClients } from "actions/clients.js";
+import { Button } from "components/Button/Button.js";
 import {
   ClientsWrapper,
   ClientTitle,
@@ -16,58 +19,39 @@ import {
   ClientInput,
   ClientLinkDiv,
 } from "./Clients.styles.js";
-import { useClients } from "hooks/useClients.js";
-import { Button } from "components/Button/Button.js";
 
 const Clients = () => {
-  const auth = useAuth();
-  const [clients, setClients] = useState([]);
+  const dispatch = useDispatch();
+  const clientHook = useClients();
+  const clients = useSelector((state) => state.clients);
+  const teams = useSelector((state) => state.teams);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [client, setClient] = useState([]);
-  const { getClients, getClientById, deleteClient, searchClient } =
-    useClients();
-  const [modalIsOpen, setIsOpen] = React.useState(false);
   const { register, handleSubmit } = useForm();
-  const openModal = (id_lead, id_team) => {
-    setIsOpen(true);
-    (async () => {
-      const clientClient = await getClientById(id_lead, id_team);
-      setClient(clientClient[0]);
-    })();
+
+  useEffect(() => {
+    dispatch(getClients(teams.currentTeam.id));
+  }, []);
+
+  const openModal = (id) => {
+    setModalIsOpen(true);
+    const clientFindById = clients.clientsData.find(
+      (client) => client.id === id
+    );
+    setClient(clientFindById);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      const clientsClient = await getClients(auth.teamid);
-      setClients(clientsClient);
-    })();
-  }, [getClients, auth.teamid]);
-
-  const handleDelete = (name) => {
-    (async () => {
-      await deleteClient(name, auth.teamid);
-      const clientsClient = await getClients(auth.teamid);
-      setClients(clientsClient);
-      setIsOpen(false);
-    })();
-  };
-
-  const handleSearch = (name) => {
-    (async () => {
-      const leadsClient = await searchClient(name, auth.teamid);
-      setClients(leadsClient);
-    })();
-  };
   return (
     <ClientsWrapper>
       <ClientTitle>
         <ClientHeader>Client</ClientHeader>
         <ClientForm
           onSubmit={handleSubmit((register) => {
-            handleSearch(register.name);
+            clientHook.handleSearchClients(teams.currentTeam.id, register.name);
           })}
         >
           <ClientInput
@@ -76,7 +60,10 @@ const Clients = () => {
             {...register("name", {
               required: true,
               onChange: (e) => {
-                handleSearch(e.target.value);
+                clientHook.handleSearchClients(
+                  teams.currentTeam.id,
+                  e.target.value
+                );
               },
             })}
           />
@@ -92,30 +79,35 @@ const Clients = () => {
         <div>Phone</div>
         <div>Assigned to</div>
       </ClientWrapper>
-      {clients &&
-        clients.map((client) => (
-          <ClientWrapper onClick={() => openModal(client.id, auth.teamid)}>
-            <div>{client.first_name}</div>
-            <div>{client.last_name}</div>
-            <div>{client.email}</div>
-            <div>{client.phone}</div>
-            {client.assigned_to ? (
-              <div>{client.assigned_to.username}</div>
-            ) : (
-              <div></div>
-            )}
-          </ClientWrapper>
-        ))}
+      {clients?.clientsData?.map((client) => (
+        <ClientWrapper key={client?.id} onClick={() => openModal(client.id)}>
+          <div>{client.first_name}</div>
+          <div>{client.last_name}</div>
+          <div>{client.email}</div>
+          <div>{client.phone}</div>
+          {client.assigned_to ? (
+            <div>{client.assigned_to.username}</div>
+          ) : (
+            <div></div>
+          )}
+        </ClientWrapper>
+      ))}
       <ClientModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         ariaHideApp={false}
       >
         <ClientButton>
-          <Button to={`/edit-client/${client.id}`} as={NavLink} lead>
+          <Button to={`/edit-client/${client.id}`} as={NavLink} lead="true">
             Edit
           </Button>
-          <Button red onClick={() => handleDelete(client.id)}>
+          <Button
+            red
+            onClick={() => {
+              clientHook.handleDeleteClient(client.id, teams.currentTeam.id);
+              setModalIsOpen(false);
+            }}
+          >
             Delete
           </Button>
         </ClientButton>

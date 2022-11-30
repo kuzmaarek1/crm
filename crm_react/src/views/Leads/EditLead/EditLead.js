@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useAuth } from "hooks/useAuth.js";
 import { useLeads } from "hooks/useLeads.js";
-import { useTeams } from "hooks/useTeams.js";
 import {
   EditLeadWrapper,
   EditLeadHeader,

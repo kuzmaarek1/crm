@@ -16,7 +16,7 @@ export const addLead = (id, formData, navigate) => async (dispatch) => {
   dispatch({ type: actionType.LOADING_LEADS_START });
   try {
     await api.createLead(id, formData);
-    dispatch({ type: actionType.ADD_LEAD, data: formData });
+    dispatch({ type: actionType.ADD_LEAD, data: { id, ...formData } });
     navigate("/leads");
   } catch (e) {
     dispatch({ type: actionType.LOADING_LEADS_START });
@@ -24,7 +24,7 @@ export const addLead = (id, formData, navigate) => async (dispatch) => {
   }
 };
 
-export const searchTeams = (team, formData) => async (dispatch) => {
+export const searchLeads = (team, formData) => async (dispatch) => {
   dispatch({ type: actionType.LOADING_LEADS_START });
   try {
     const { data } = await api.searchLead(team, formData);
@@ -40,7 +40,7 @@ export const editLead =
   (lead, team, formData, navigate) => async (dispatch) => {
     dispatch({ type: actionType.LOADING_LEADS_START });
     try {
-      const { data } = await api.editLead(lead, team, formData, navigate);
+      await api.editLead(lead, team, formData, navigate);
       dispatch({ type: actionType.EDIT_LEAD, data: { id: lead, ...formData } });
       navigate("/leads");
     } catch (e) {

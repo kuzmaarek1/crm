@@ -36,7 +36,6 @@ const leadReducer = (
         loading: false,
         error: false,
       };
-
     case actionType.DELETE_LEAD:
       const deleteLead = state.leadsData.filter(
         (lead) => String(lead.id) !== String(action.data)

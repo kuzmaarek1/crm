@@ -1,6 +1,8 @@
 import React from "react";
-import { useLeads } from "hooks/useLeads.js";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useLeads } from "hooks/useLeads.js";
+import { Button } from "components/Button/Button.js";
 import {
   AddLeadWrapper,
   AddLeadHeader,
@@ -10,8 +12,6 @@ import {
   AddLeadSpan,
   AddLeadTextarea,
 } from "./AddLead.styles.js";
-import { Button } from "components/Button/Button.js";
-import { useSelector } from "react-redux";
 
 const AddLead = () => {
   const lead = useLeads();
