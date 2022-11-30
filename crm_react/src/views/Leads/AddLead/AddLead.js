@@ -1,6 +1,5 @@
 import React from "react";
 import { useLeads } from "hooks/useLeads.js";
-import { useAuth } from "hooks/useAuth.js";
 import { useForm } from "react-hook-form";
 import {
   AddLeadWrapper,
@@ -11,11 +10,12 @@ import {
   AddLeadSpan,
   AddLeadTextarea,
 } from "./AddLead.styles.js";
-import { Button } from "../../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
+import { useSelector } from "react-redux";
 
 const AddLead = () => {
   const lead = useLeads();
-  const auth = useAuth();
+  const teams = useSelector((state) => state.teams);
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ const AddLead = () => {
       <AddLeadHeader>Add Lead</AddLeadHeader>
       <AddLeadForm
         onSubmit={handleSubmit((register) =>
-          lead.addLead(register, auth.teamid)
+          lead.handleAddLead(teams.currentTeam.id, register)
         )}
       >
         <AddLeadLabel htmlFor="first_name">First name</AddLeadLabel>

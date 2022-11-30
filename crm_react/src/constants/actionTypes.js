@@ -12,3 +12,10 @@ export const ADD_TEAM = "ADD_TEAM";
 export const SET_CURRENT_TEAM = "SET_CURRENT_TEAM";
 export const DELETE_TEAM = "DELETE_TEAM";
 export const LOGOUT_TEAM = "LOGOUT_TEAM";
+
+export const LOADING_LEADS_START = "LOADING_LEADS_START";
+export const LOADING_LEADS_SUCCESS = "LOADING_LEADS_SUCCESS";
+export const LOADING_LEADS_FAIL = "LOADING_LEADS_FAIL";
+export const ADD_LEAD = "ADD_LEAD";
+export const DELETE_LEAD = "DELETE_LEAD";
+export const EDIT_LEAD = "EDIT_LEAD";

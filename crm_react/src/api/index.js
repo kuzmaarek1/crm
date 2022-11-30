@@ -38,7 +38,7 @@ export const searchClient = (name, id) =>
 export const deleteClient = (client, team) =>
   API.post(`/api/clients/delete_client/${client}/${team}/`);
 
-export const getLead = (id) => API.get(`/api/leads/get_lead/${id}/`);
+export const getLeads = (id) => API.get(`/api/leads/get_lead/${id}/`);
 export const getLeadById = (lead, team) =>
   API.get(`/api/leads/get_lead_by_id/${lead}/${team}/`);
 export const createLead = (id, data) =>

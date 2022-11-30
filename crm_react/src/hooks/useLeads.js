@@ -1,84 +1,33 @@
-import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import * as api from "api";
+import {
+  addLead,
+  deleteLead,
+  searchTeams,
+  getLeads,
+  editLead,
+} from "actions/leads";
 
 export const useLeads = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getLeads = useCallback(async (id) => {
-    try {
-      const result = await api.getLead(id);
-      return result.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-  const getLeadById = useCallback(async (lead, team) => {
-    try {
-      const result = await api.getLeadById(lead, team);
-      return result.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-  const addLead = async (
-    { first_name, last_name, email, phone, description },
-    id
-  ) => {
-    try {
-      await api.createLead(id, {
-        first_name,
-        last_name,
-        email,
-        phone,
-        description,
-      });
-      navigate("/leads");
-    } catch (e) {
-      console.log(e);
-    }
+
+  const handleAddLead = (id, data) => {
+    dispatch(addLead(id, data, navigate));
   };
-  const editLead = async (
-    { first_name, last_name, email, phone, description, assigned_to },
-    lead,
-    team
-  ) => {
-    try {
-      await api.editLead(lead, team, {
-        first_name,
-        last_name,
-        email,
-        phone,
-        description,
-        assigned_to,
-      });
-      navigate("/leads");
-    } catch (e) {
-      console.log(e);
-    }
+
+  const handleDeleteLead = (lead, team) => {
+    dispatch(deleteLead(lead, team));
   };
-  const searchLead = async (name, team) => {
-    if (!name)
-      try {
-        return await getLeads(team);
-      } catch (e) {
-        console.log(e);
-      }
-    else
-      try {
-        const response = await api.searchLead(team, name);
-        return response.data;
-      } catch (e) {
-        console.log(e);
-      }
+
+  const handleSearchLeads = (team, name) => {
+    name ? dispatch(searchTeams(team, name)) : dispatch(getLeads(team));
   };
-  const deleteLead = async (lead, team) => {
-    try {
-      await api.deleteLead(lead, team);
-      navigate("/leads");
-    } catch (e) {
-      console.log(e);
-    }
+
+  const handleEditLead = (lead, team, data) => {
+    dispatch(editLead(lead, team, data, navigate));
   };
+  /*
   const convert = async (lead, team) => {
     try {
       await api.convetLeadToClient(lead, team);
@@ -86,13 +35,11 @@ export const useLeads = () => {
       console.log(e);
     }
   };
+  */
   return {
-    getLeads,
-    addLead,
-    editLead,
-    deleteLead,
-    getLeadById,
-    searchLead,
-    convert,
+    handleAddLead,
+    handleDeleteLead,
+    handleSearchLeads,
+    handleEditLead,
   };
 };

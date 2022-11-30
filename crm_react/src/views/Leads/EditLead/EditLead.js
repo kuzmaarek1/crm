@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useMatch } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useAuth } from "hooks/useAuth.js";
 import { useLeads } from "hooks/useLeads.js";
@@ -14,16 +15,14 @@ import {
   EditLeadTextarea,
   EditLeadSelect,
 } from "./EditLead.styles.js";
-import { Button } from "../../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
 
 const EditLead = () => {
-  const auth = useAuth();
+  const leadHook = useLeads();
+  const leads = useSelector((state) => state.leads);
+  const [lead, setLead] = useState(null);
+  const teams = useSelector((state) => state.teams);
   const match = useMatch("/edit-lead/:id");
-  const leads = useLeads();
-  const { getLeadById } = useLeads();
-  const [lead, setLead] = useState([]);
-  const [team, setTeam] = useState([]);
-  const { getTeamsById } = useTeams();
   const {
     register,
     setValue,
@@ -31,33 +30,26 @@ const EditLead = () => {
     formState: { errors },
   } = useForm();
 
-  const fetchMyAPI = useCallback(async () => {
-    const leadClient = await getLeadById(match.params.id, auth.teamid);
-    setLead(leadClient[0]);
-  }, [lead.id]);
   useEffect(() => {
-    if (lead.id !== match.params.id) {
-      fetchMyAPI();
-      setValue("first_name", lead.first_name);
-      setValue("last_name", lead.last_name);
-      setValue("email", lead.email);
-      setValue("phone", lead.phone);
-      setValue("description", lead.description);
-      lead.assigned_to && setValue("assigned_to", lead.assigned_to.username);
-    }
-  }, [fetchMyAPI]);
-  useEffect(() => {
-    (async () => {
-      const teamsClient = await getTeamsById(auth.teamid);
-      setTeam(teamsClient);
-    })();
-  }, [getTeamsById, auth.teamid]);
+    const findLeadById = leads.leadsData.find(
+      (lead) => String(lead.id) === String(match.params.id)
+    );
+    setLead(findLeadById);
+    Object.entries(findLeadById).forEach(([key, value]) => {
+      setValue(key, value);
+    });
+  }, []);
+
   return (
     <EditLeadWrapper>
       <EditLeadHeader>Edit Lead</EditLeadHeader>
       <EditLeadForm
         onSubmit={handleSubmit((register) =>
-          leads.editLead(register, match.params.id, auth.teamid)
+          leadHook.handleEditLead(
+            match.params.id,
+            teams.currentTeam.id,
+            register
+          )
         )}
       >
         <EditLeadLabel htmlFor="first_name">First name</EditLeadLabel>
@@ -106,11 +98,12 @@ const EditLead = () => {
         )}
         <EditLeadLabel htmlFor="description">Assigned to</EditLeadLabel>
         <EditLeadSelect {...register("assigned_to")}>
-          {!lead.assigned_to && <option value="">None</option>}
-          {team.members &&
-            team.members.map((member) => (
-              <option value={member.username}>{member.username}</option>
-            ))}
+          {!lead?.assigned_to && <option value="">None</option>}
+          {teams?.currentTeam?.members?.map((member) => (
+            <option value={member.username} key={member.id}>
+              {member.username}
+            </option>
+          ))}
         </EditLeadSelect>
         <Button>Submit</Button>
       </EditLeadForm>

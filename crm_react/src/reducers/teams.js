@@ -24,32 +24,32 @@ const teamReducer = (
     case actionType.SET_CURRENT_TEAM:
       return { ...state, currentTeam: action.data };
     case actionType.ADD_TEAM:
-      const teams = Array.isArray(state.teamsData)
+      const addTeam = Array.isArray(state.teamsData)
         ? [...state.teamsData, action.data]
         : [action.data];
       return {
         ...state,
         currentTeam: action.data,
-        teamsData: teams,
+        teamsData: addTeam,
         loading: false,
         error: false,
       };
     case actionType.DELETE_TEAM:
-      const teamsData = state.teamsData.filter(
+      const deleteTeam = state.teamsData.filter(
         (team) => String(team.id) !== String(action.data)
       );
 
       const currentTeam =
         String(state.currentTeam.id) !== String(action.data)
           ? state.currentTeam
-          : teamsData?.length
-          ? teamsData[0]
+          : deleteTeam?.length
+          ? deleteTeam[0]
           : null;
 
       return {
         ...state,
         currentTeam: currentTeam,
-        teamsData: teamsData,
+        teamsData: deleteTeam,
       };
     case actionType.LOADING_TEAMS_FAIL:
       return { ...state, loading: false, error: true };

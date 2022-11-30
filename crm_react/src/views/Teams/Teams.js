@@ -19,13 +19,13 @@ import {
 } from "./Teams.styles.js";
 import { useTeams } from "hooks/useTeams.js";
 import { Button } from "components/Button/Button.js";
-import { getTeams } from "actions/team.js";
+import { getTeams } from "actions/teams.js";
 
 const Teams = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authData);
   const teams = useSelector((state) => state.teams);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [team, setTeam] = useState([]);
   const teamsHook = useTeams();
   const { register, handleSubmit } = useForm();
@@ -35,13 +35,13 @@ const Teams = () => {
   }, []);
 
   const openModal = (id) => {
-    setIsOpen(true);
+    setModalIsOpen(true);
     const teamFindById = teams.teamsData.find((team) => team.id === id);
     setTeam(teamFindById);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
   };
 
   return (
@@ -108,7 +108,7 @@ const Teams = () => {
                   red
                   onClick={() => {
                     teamsHook.handleDeleteTeam(team.id);
-                    setIsOpen(false);
+                    setModalIsOpen(false);
                   }}
                 >
                   Delete

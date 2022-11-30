@@ -17,68 +17,41 @@ import {
   LeadInput,
   LeadLinkDiv,
 } from "./Leads.styles.js";
-import { useLeads } from "../../hooks/useLeads.js";
-import { Button } from "../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
+import { useSelector, useDispatch } from "react-redux";
+import { getLeads } from "actions/leads.js";
+import { useLeads } from "hooks/useLeads.js";
 
 const Leads = () => {
-  const auth = useAuth();
-  const [leads, setLeads] = useState([]);
+  const dispatch = useDispatch();
+  const leadHook = useLeads();
+  const leads = useSelector((state) => state.leads);
+  const teams = useSelector((state) => state.teams);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [lead, setLead] = useState([]);
-  const { getLeads, getLeadById, deleteLead, searchLead, convert } = useLeads();
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const openModal = (id_lead, id_team) => {
-    setIsOpen(true);
-    (async () => {
-      const leadClient = await getLeadById(id_lead, id_team);
-      setLead(leadClient[0]);
-    })();
+
+  useEffect(() => {
+    dispatch(getLeads(teams.currentTeam.id));
+  }, []);
+
+  const openModal = (id) => {
+    setModalIsOpen(true);
+    const leadFindById = leads.leadsData.find((lead) => lead.id === id);
+    setLead(leadFindById);
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      const leadsClient = await getLeads(auth.teamid);
-      setLeads(leadsClient);
-    })();
-  }, [getLeads, auth.teamid]);
-
-  const handleDelete = (name) => {
-    (async () => {
-      await deleteLead(name, auth.teamid);
-      const leadsClient = await getLeads(auth.teamid);
-      setLeads(leadsClient);
-      setIsOpen(false);
-    })();
-  };
-
-  const handleConvert = (name) => {
-    (async () => {
-      await convert(name, auth.teamid);
-      const leadsClient = await getLeads(auth.teamid);
-      navigate("/clients");
-      setLeads(leadsClient);
-      setIsOpen(false);
-    })();
-  };
-
-  const handleSearch = (name) => {
-    (async () => {
-      const leadsClient = await searchLead(name, auth.teamid);
-      setLeads(leadsClient);
-    })();
-  };
   return (
     <LeadsWrapper>
       <LeadTitle>
         <LeadHeader>Lead</LeadHeader>
         <LeadForm
           onSubmit={handleSubmit((register) => {
-            handleSearch(register.name);
+            leadHook.handleSearchLeads(teams.currentTeam.id, register.name);
           })}
         >
           <LeadInput
@@ -87,7 +60,10 @@ const Leads = () => {
             {...register("name", {
               required: true,
               onChange: (e) => {
-                handleSearch(e.target.value);
+                leadHook.handleSearchLeads(
+                  teams.currentTeam.id,
+                  e.target.value
+                );
               },
             })}
           />
@@ -103,31 +79,38 @@ const Leads = () => {
         <div>Phone</div>
         <div>Assigned to</div>
       </LeadWrapper>
-      {leads &&
-        leads.map((lead) => (
-          <LeadWrapper onClick={() => openModal(lead.id, auth.teamid)}>
-            <div>{lead.first_name}</div>
-            <div>{lead.last_name}</div>
-            <div>{lead.email}</div>
-            <div>{lead.phone}</div>
-            {lead.assigned_to ? (
-              <div>{lead.assigned_to.username}</div>
-            ) : (
-              <div></div>
-            )}
-          </LeadWrapper>
-        ))}
+      {leads?.leadsData?.map((lead) => (
+        <LeadWrapper key={lead.id} onClick={() => openModal(lead.id)}>
+          <div>{lead.first_name}</div>
+          <div>{lead.last_name}</div>
+          <div>{lead.email}</div>
+          <div>{lead.phone}</div>
+          {lead?.assigned_to ? (
+            <div>{lead.assigned_to.username}</div>
+          ) : (
+            <div>Not</div>
+          )}
+        </LeadWrapper>
+      ))}
       <LeadModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         ariaHideApp={false}
       >
         <ModalButton>
+          {/*
           <Button onClick={() => handleConvert(lead.id)}>Client</Button>
-          <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead>
+                    */}
+          <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead="true">
             Edit
           </Button>
-          <Button red onClick={() => handleDelete(lead.id)}>
+          <Button
+            red
+            onClick={() => {
+              leadHook.handleDeleteLead(lead.id, teams.currentTeam.id);
+              setModalIsOpen(false);
+            }}
+          >
             Delete
           </Button>
         </ModalButton>
