@@ -1,4 +1,6 @@
 from .models import Team
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
 from .serializers import TeamSerializer
 from django.contrib.auth.models import User
 from rest_framework import viewsets
@@ -17,7 +19,7 @@ class TeamViewSet(viewsets.ModelViewSet):
        object.members.add(self.request.user)
        object.save()
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def delete_team(request, team_id):
     Team.objects.filter(id=team_id, created_by=request.user).delete()
     return Response({'message': 'Deleted'})
@@ -34,19 +36,18 @@ def search_team(request, search):
     serializer = TeamSerializer(team, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def get_team_by_id(request, team_id):
-    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    serializer = TeamSerializer(team)
-    return Response(serializer.data)
-
-@api_view(['POST'])
+@api_view(['PATCH'])
 def add_member(request, team_id):
-    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
+    team = Team.objects.filter(id=team_id, members__in=[request.user]).first()
 
     username = request.data['username']
+    if not User.objects.filter(username=username).exists():
+        return HttpResponse(status=500)
     user = User.objects.get(username=username)
-    team.members.add(user)
-
     team.save()
-    return Response()
+    user_dict = model_to_dict(user, fields=["id", "username", "first_name", "last_name"])
+    if not team.members.filter(id=user_dict["id"]).exists():
+        team.members.add(user)
+        return Response(user_dict)
+    else:
+        return HttpResponse(status=500)

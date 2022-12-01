@@ -96,9 +96,14 @@ const Leads = () => {
         ariaHideApp={false}
       >
         <ModalButton>
-          {/*
-          <Button onClick={() => handleConvert(lead.id)}>Client</Button>
-                    */}
+          <Button
+            onClick={() => {
+              leadHook.handleConvertToClient(lead, teams.currentTeam.id);
+              setModalIsOpen(false);
+            }}
+          >
+            Client
+          </Button>
           <Button to={`/edit-lead/${lead.id}`} as={NavLink} lead="true">
             Edit
           </Button>

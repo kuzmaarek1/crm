@@ -53,6 +53,21 @@ const teamReducer = (
       };
     case actionType.LOADING_TEAMS_FAIL:
       return { ...state, loading: false, error: true };
+    case actionType.ADD_MEMBER:
+      const teams = state.teamsData.map((team) =>
+        String(team.id) !== String(action.data.id)
+          ? { ...team }
+          : {
+              ...team,
+              members: [...team.members, { ...action.data.user }],
+            }
+      );
+      return {
+        ...state,
+        teamsData: teams,
+        loading: false,
+        error: false,
+      };
     case actionType.LOGOUT_TEAM:
       return {
         teamsData: null,

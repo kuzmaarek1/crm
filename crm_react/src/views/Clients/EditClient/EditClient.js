@@ -100,7 +100,9 @@ const EditClient = () => {
         <EditClientSelect {...register("assigned_to")}>
           {!client?.assigned_to && <option value="">None</option>}
           {teams?.currentTeam?.members?.map((member) => (
-            <option value={member.username}>{member.username}</option>
+            <option value={member.username} key={member.id}>
+              {member.username}
+            </option>
           ))}
         </EditClientSelect>
         <Button>Submit</Button>

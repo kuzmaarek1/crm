@@ -55,3 +55,23 @@ export const deleteTeam = (id) => async (dispatch) => {
     console.log(e);
   }
 };
+
+export const addMember = (request, id) => async (dispatch) => {
+  const { username } = request;
+  /*
+  try {
+    await api.signUp(request);
+  } catch (e) {
+    alert("Don't create user");
+  }
+  */
+  try {
+    const user = await api.addMember(id, { username });
+    dispatch({
+      type: actionType.ADD_MEMBER,
+      data: { user: user.data, id: id },
+    });
+  } catch (e) {
+    alert("Don't add member ");
+  }
+};

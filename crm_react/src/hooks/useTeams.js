@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getTeams, searchTeams, deleteTeam, addTeam } from "actions/teams.js";
+import {
+  getTeams,
+  searchTeams,
+  deleteTeam,
+  addTeam,
+  addMember,
+} from "actions/teams.js";
 import * as actionType from "constants/actionTypes";
 
 export const useTeams = () => {
@@ -23,10 +29,15 @@ export const useTeams = () => {
     dispatch(deleteTeam(id));
   };
 
+  const handleAddMember = (request, id) => {
+    dispatch(addMember(request, id));
+  };
+
   return {
     handleAddTeam,
     handleChangeTeams,
     handleSearchTeams,
     handleDeleteTeam,
+    handleAddMember,
   };
 };

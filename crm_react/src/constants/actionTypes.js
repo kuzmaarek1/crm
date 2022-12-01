@@ -11,6 +11,7 @@ export const LOADING_TEAMS_FAIL = "LOADING_TEAMS_FAIL";
 export const ADD_TEAM = "ADD_TEAM";
 export const SET_CURRENT_TEAM = "SET_CURRENT_TEAM";
 export const DELETE_TEAM = "DELETE_TEAM";
+export const ADD_MEMBER = "ADD_MEMBER";
 export const LOGOUT_TEAM = "LOGOUT_TEAM";
 
 export const LOADING_LEADS_START = "LOADING_LEADS_START";

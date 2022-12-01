@@ -37,14 +37,6 @@ def search_client(request,team_id,search):
     data = serializer.data
     return Response(data)
 
-@api_view(['GET'])
-def get_client_by_id(request,client_id,team_id):
-    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    client=Client.objects.filter(team=team,id=client_id)
-    serializer = ClientSerializer(client, many=True)
-    data = serializer.data
-    return Response(data)
-
 @api_view(['POST'])
 def create_client(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
@@ -53,7 +45,7 @@ def create_client(request,team_id):
         serializer.save(created_by=request.user, team=team)
     return Response({'message':'Create'})
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_client(request, client_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     client = Client.objects.get(id=client_id)
@@ -70,7 +62,7 @@ def update_client(request, client_id, team_id):
             serializer.save(team=team)
     return Response({'message':'Update'})
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def delete_client(request,client_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     Client.objects.filter(id=client_id, team=team).delete()
@@ -81,6 +73,6 @@ def convert_lead_to_client(request, lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.filter(team=team).get(id=lead_id)
     client = Client.objects.create(team=team, first_name=lead.first_name, last_name=lead.last_name, phone=lead.phone,
-                                   email=lead.email,  created_by=request.user)
+                                   email=lead.email, created_by=request.user)
     Lead.objects.filter(team=team, id=lead_id).delete()
-    return Response({'message': 'Convert'})
+    return Response(client.pk)

@@ -18,18 +18,6 @@ export const useAuth = () => {
     dispatch(logOut());
   };
 
-  /*
-  const signUpAndMember = async (request, id) => {
-    const { username } = request;
-    await signUp(request);
-    try {
-      await api.addMember(id, { username });
-    } catch (e) {
-      alert("Don't add member ");
-    }
-  };
-*/
-
   return {
     handleSignUp,
     handleSiginIn,

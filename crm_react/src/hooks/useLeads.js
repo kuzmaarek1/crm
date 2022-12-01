@@ -6,6 +6,7 @@ import {
   searchLeads,
   getLeads,
   editLead,
+  convertToClient,
 } from "actions/leads";
 
 export const useLeads = () => {
@@ -27,19 +28,16 @@ export const useLeads = () => {
   const handleEditLead = (lead, team, data) => {
     dispatch(editLead(lead, team, data, navigate));
   };
-  /*
-  const convert = async (lead, team) => {
-    try {
-      await api.convetLeadToClient(lead, team);
-    } catch (e) {
-      console.log(e);
-    }
+
+  const handleConvertToClient = (lead, team) => {
+    dispatch(convertToClient(lead, team));
   };
-  */
+
   return {
     handleAddLead,
     handleDeleteLead,
     handleSearchLeads,
     handleEditLead,
+    handleConvertToClient,
   };
 };

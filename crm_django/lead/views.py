@@ -36,14 +36,6 @@ def search_lead(request,team_id,search):
     data = serializer.data
     return Response(data)
 
-@api_view(['GET'])
-def get_lead_by_id(request,lead_id,team_id):
-    team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    lead=Lead.objects.filter(team=team,id=lead_id)
-    serializer = LeadSerializer(lead, many=True)
-    data = serializer.data
-    return Response(data)
-
 @api_view(['POST'])
 def create_lead(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
@@ -52,7 +44,7 @@ def create_lead(request,team_id):
         serializer.save(created_by=request.user, team=team)
     return Response({'message':'Create'})
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_lead(request, lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.get(id=lead_id)
@@ -69,7 +61,7 @@ def update_lead(request, lead_id, team_id):
             serializer.save(team=team)
     return Response({'message':'Update'})
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def delete_lead(request,lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     Lead.objects.filter(id=lead_id, team=team).delete()

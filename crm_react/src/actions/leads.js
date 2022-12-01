@@ -57,3 +57,20 @@ export const deleteLead = (lead, team) => async (dispatch) => {
     console.log(e);
   }
 };
+
+export const convertToClient = (lead, team) => async (dispatch) => {
+  try {
+    const { id, ...otherLead } = lead;
+    dispatch({ type: actionType.LOADING_CLIENTS_START });
+    const { data } = await api.convetLeadToClient(lead.id, team);
+    console.log(data);
+    dispatch({ type: actionType.DELETE_LEAD, data: lead.id });
+    dispatch({
+      type: actionType.ADD_CLIENT,
+      data: { id: data, ...otherLead },
+    });
+  } catch (e) {
+    dispatch({ type: actionType.LOADING_CLIENTS_START });
+    console.log(e);
+  }
+};
