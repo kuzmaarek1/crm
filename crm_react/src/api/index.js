@@ -2,13 +2,20 @@ import axios from "axios";
 
 const API = axios.create({ baseURL: "http://localhost:8000" });
 
-API.interceptors.request.use((req) => {
-  const token = JSON.parse(localStorage.getItem("store")).auth.authData
-    ?.auth_token;
+let store;
+
+export const injectStore = (_store) => {
+  store = _store;
+};
+
+API.interceptors.request.use((config) => {
+  // const token = JSON.parse(localStorage.getItem("store")).auth.authData
+  //  ?.auth_token;
+  const token = store.getState().auth.authData?.auth_token;
   if (token) {
-    req.headers.Authorization = `Token ${token}`;
+    config.headers.Authorization = `Token ${token}`;
   }
-  return req;
+  return config;
 });
 
 export const signIn = (data) => API.post("/api/token/login", data);
