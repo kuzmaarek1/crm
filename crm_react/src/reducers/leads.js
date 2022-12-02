@@ -1,52 +1,56 @@
-import * as actionType from "constants/actionTypes";
+import { createSlice } from "@reduxjs/toolkit";
 
-const leadReducer = (
-  state = { leadsData: null, loading: false, error: false },
-  action
-) => {
-  switch (action.type) {
-    case actionType.LOADING_LEADS_START:
-      return { ...state, loading: true, error: false };
-    case actionType.LOADING_LEADS_SUCCESS:
-      return {
-        ...state,
-        leadsData: action.data,
-        loading: false,
-        error: false,
-      };
-    case actionType.LOADING_LEADS_FAIL:
-      return { ...state, loading: false, error: true };
-    case actionType.ADD_LEAD:
-      const addLead = Array.isArray(state.leadsData)
-        ? [...state.leadsData, action.data]
-        : [action.data];
-      return {
-        ...state,
-        leadsData: addLead,
-        loading: false,
-        error: false,
-      };
-    case actionType.EDIT_LEAD:
-      const editLead = state.leadsData.map((lead) =>
-        String(lead.id) !== String(action.data.id) ? lead : action.data
-      );
-      return {
-        ...state,
-        leadsData: editLead,
-        loading: false,
-        error: false,
-      };
-    case actionType.DELETE_LEAD:
+const leadReducer = createSlice({
+  name: "leads",
+  initialState: { leadsData: [], loading: false, error: false },
+  reducers: {
+    loadingLeadsStart(state, action) {
+      state.loading = true;
+      state.error = false;
+    },
+    loadingLeadsSuccess(state, action) {
+      state.leadsData = action.payload.data;
+      state.loading = false;
+      state.error = false;
+    },
+    loadingLeadsFail(state, action) {
+      state.loading = false;
+      state.error = true;
+    },
+    addLeadSuccess(state, action) {
+      state.leadsData.push(action.payload.data);
+      state.loading = false;
+      state.error = false;
+    },
+    deleteLeadSuccess(state, action) {
       const deleteLead = state.leadsData.filter(
-        (lead) => String(lead.id) !== String(action.data)
+        (lead) => String(lead.id) !== String(action.payload.data)
       );
-      return {
-        ...state,
-        leadsData: deleteLead,
-      };
-    default:
-      return state;
-  }
-};
+      state.leadsData = deleteLead;
+      state.loading = false;
+      state.error = false;
+    },
+    editLeadSuccess(state, action) {
+      const editLead = state.leadsData.map((lead) =>
+        String(lead.id) !== String(action.payload.data.id)
+          ? lead
+          : action.payload.data
+      );
+      state.leadsData = editLead;
+      state.loading = false;
+      state.error = false;
+    },
+  },
+});
 
-export default leadReducer;
+const { actions, reducer } = leadReducer;
+export const {
+  loadingLeadsStart,
+  loadingLeadsSuccess,
+  loadingLeadsFail,
+  addLeadSuccess,
+  editLeadSuccess,
+  deleteLeadSuccess,
+} = actions;
+
+export default reducer;

@@ -1,37 +1,37 @@
-import * as actionType from "constants/actionTypes";
 import * as api from "api/index.js";
+import {
+  authStart,
+  authToken,
+  authSuccess,
+  authFail,
+  logout,
+} from "reducers/auth";
 
 export const signIn = (formData, navigate) => async (dispatch) => {
-  dispatch({ type: actionType.AUTH_START });
+  dispatch(authStart());
   try {
     const { data } = await api.signIn(formData);
-    dispatch({ type: actionType.AUTH_TOKEN, data });
+    dispatch(authToken({ data }));
 
     const user = await api.getUser();
-    dispatch({ type: actionType.AUTH_SUCCESS, data: user.data });
+    dispatch(authSuccess({ data: user.data }));
     navigate("/");
   } catch (error) {
-    dispatch({ type: actionType.AUTH_FAIL });
+    dispatch(authFail());
     console.log(error);
   }
 };
 
 export const signUp = (formData) => async (dispatch) => {
-  dispatch({ type: actionType.AUTH_START });
+  dispatch(authStart());
   try {
     const user = await api.signUp(formData);
     const { data } = await api.signIn(formData);
 
-    dispatch({
-      type: actionType.AUTH_TOKEN,
-      data,
-    });
-    dispatch({
-      type: actionType.AUTH_SUCCESS,
-      data: user.data,
-    });
+    dispatch(authToken({ data }));
+    dispatch(authSuccess({ data: user.data }));
   } catch (error) {
-    dispatch({ type: actionType.AUTH_FAIL });
+    dispatch(authFail());
     console.log(error);
   }
 };
@@ -39,8 +39,8 @@ export const signUp = (formData) => async (dispatch) => {
 export const logOut = () => async (dispatch) => {
   try {
     await api.logOut();
-    dispatch({ type: actionType.LOGOUT });
-    dispatch({ type: actionType.LOGOUT_TEAM });
+    dispatch(logout());
+    //dispatch({ type: actionType.LOGOUT_TEAM });
     localStorage.clear();
   } catch (error) {
     console.log(error);

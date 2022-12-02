@@ -16,7 +16,6 @@ import {
 const AddLead = () => {
   const navigate = useNavigate();
   const match = useMatch("/add-member/:id");
-  const teams = useSelector((state) => state.teams);
   const teamHook = useTeams();
   const {
     register,

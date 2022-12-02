@@ -1,83 +1,87 @@
-import * as actionType from "constants/actionTypes";
+import { createSlice } from "@reduxjs/toolkit";
 
-const teamReducer = (
-  state = { teamsData: null, currentTeam: null, loading: false, error: false },
-  action
-) => {
-  switch (action.type) {
-    case actionType.LOADING_TEAMS_START:
-      return { ...state, loading: true, error: false };
-    case actionType.LOADING_TEAM_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: false,
-        currentTeam: action?.data?.id ? action.data : null,
-      };
-    case actionType.LOADING_TEAMS_SUCCESS:
-      return {
-        ...state,
-        teamsData: action.data,
-        loading: false,
-        error: false,
-      };
-    case actionType.SET_CURRENT_TEAM:
-      return { ...state, currentTeam: action.data };
-    case actionType.ADD_TEAM:
-      const addTeam = Array.isArray(state.teamsData)
-        ? [...state.teamsData, action.data]
-        : [action.data];
-      return {
-        ...state,
-        currentTeam: action.data,
-        teamsData: addTeam,
-        loading: false,
-        error: false,
-      };
-    case actionType.DELETE_TEAM:
+const teamReducer = createSlice({
+  name: "teams",
+  initialState: {
+    teamsData: [],
+    currentTeam: null,
+    loading: false,
+    error: false,
+  },
+  reducers: {
+    loadingTeamsStart(state, action) {
+      state.loading = true;
+      state.error = false;
+    },
+    loadingTeamSuccess(state, action) {
+      state.currentTeam = action?.payload.data?.id ? action.payload.data : null;
+      state.loading = false;
+      state.error = false;
+    },
+    loadingTeamsSuccess(state, action) {
+      state.teamsData = action.payload.data;
+      state.loading = false;
+      state.error = false;
+    },
+    loadingTeamsFail(state, action) {
+      state.loading = false;
+      state.error = true;
+    },
+    addTeamSuccess(state, action) {
+      state.teamsData.push(action.payload.data);
+      state.currentTeam = action.payload.data;
+      state.loading = false;
+      state.error = false;
+    },
+    setCurrentTeam(state, action) {
+      state.currentTeam = action.payload.data;
+    },
+    deleteTeamSuccess(state, action) {
       const deleteTeam = state.teamsData.filter(
-        (team) => String(team.id) !== String(action.data)
+        (team) => String(team.id) !== String(action.payload.data)
       );
 
       const currentTeam =
-        String(state.currentTeam.id) !== String(action.data)
+        String(state.currentTeam.id) !== String(action.payload.data)
           ? state.currentTeam
           : deleteTeam?.length
           ? deleteTeam[0]
           : null;
 
-      return {
-        ...state,
-        currentTeam: currentTeam,
-        teamsData: deleteTeam,
-      };
-    case actionType.LOADING_TEAMS_FAIL:
-      return { ...state, loading: false, error: true };
-    case actionType.ADD_MEMBER:
-      const teams = state.teamsData.map((team) =>
-        String(team.id) !== String(action.data.id)
-          ? { ...team }
-          : {
-              ...team,
-              members: [...team.members, { ...action.data.user }],
-            }
+      state.teamsData = deleteTeam;
+      state.currentTeam = currentTeam;
+      state.loading = false;
+      state.error = false;
+    },
+    addMemberSuccess(state, action) {
+      const index = state.teamsData.findIndex(
+        (team) => String(team.id) === String(action.payload.data.id)
       );
-      return {
-        ...state,
-        teamsData: teams,
-        loading: false,
-        error: false,
-      };
-    case actionType.LOGOUT_TEAM:
-      return {
-        teamsData: null,
-        loading: false,
-        error: false,
-        currentTeam: null,
-      };
-    default:
-      return state;
-  }
-};
+      state.teamsData[index].members.push(action.payload.data.user);
+      state.loading = false;
+      state.error = false;
+    },
+    logoutTeam(state, action) {
+      state.teamsData = [];
+      state.currentTeam = null;
+      state.loading = false;
+      state.error = false;
+    },
+  },
+});
 
-export default teamReducer;
+const { actions, reducer } = teamReducer;
+
+export const {
+  loadingTeamsStart,
+  loadingTeamSuccess,
+  loadingTeamsSuccess,
+  loadingTeamsFail,
+  addTeamSuccess,
+  addMemberSuccess,
+  setCurrentTeam,
+  deleteTeamSuccess,
+  logoutTeam,
+} = actions;
+
+export default reducer;

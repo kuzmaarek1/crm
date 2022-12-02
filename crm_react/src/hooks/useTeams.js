@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setCurrentTeam } from "reducers/teams.js";
 import {
   getTeams,
   searchTeams,
@@ -7,7 +8,6 @@ import {
   addTeam,
   addMember,
 } from "actions/teams.js";
-import * as actionType from "constants/actionTypes";
 
 export const useTeams = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export const useTeams = () => {
   };
 
   const handleChangeTeams = (team) => {
-    dispatch({ type: actionType.SET_CURRENT_TEAM, data: team });
+    dispatch(setCurrentTeam({ data: team }));
   };
 
   const handleSearchTeams = (name) => {

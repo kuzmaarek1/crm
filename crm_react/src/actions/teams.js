@@ -1,48 +1,56 @@
-import * as actionType from "constants/actionTypes";
 import * as api from "api/index.js";
+import {
+  loadingTeamsStart,
+  loadingTeamSuccess,
+  loadingTeamsSuccess,
+  loadingTeamsFail,
+  addTeamSuccess,
+  addMemberSuccess,
+  deleteTeamSuccess,
+} from "reducers/teams.js";
 
 export const getTeam = () => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_TEAMS_START });
+  dispatch(loadingTeamsStart());
   try {
     const { data } = await api.getTeam();
-    dispatch({ type: actionType.LOADING_TEAM_SUCCESS, data });
+    dispatch(loadingTeamSuccess({ data }));
   } catch (error) {
-    dispatch({ type: actionType.LOADING_TEAMS_FAIL });
+    dispatch(loadingTeamsFail());
     console.log(error);
   }
 };
 
 export const getTeams = () => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_TEAMS_START });
+  dispatch(loadingTeamsStart());
   try {
     const { data } = await api.getTeams();
-    dispatch({ type: actionType.LOADING_TEAMS_SUCCESS, data });
+    dispatch(loadingTeamsSuccess({ data }));
   } catch (error) {
-    dispatch({ type: actionType.LOADING_TEAMS_FAIL });
+    dispatch(loadingTeamsFail());
     console.log(error);
   }
 };
 
 export const addTeam = (formData, navigate) => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_TEAMS_START });
+  dispatch(loadingTeamsStart());
   try {
     const { data } = await api.addTeam(formData);
-    dispatch({ type: actionType.ADD_TEAM, data });
+    dispatch(addTeamSuccess({ data }));
     navigate("/teams");
   } catch (e) {
-    dispatch({ type: actionType.LOADING_TEAMS_FAIL });
+    dispatch(loadingTeamsFail());
     console.log(e);
   }
 };
 
 export const searchTeams = (formData) => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_TEAMS_START });
+  dispatch(loadingTeamsStart());
   try {
     const { data } = await api.searchTeam(formData);
-    dispatch({ type: actionType.LOADING_TEAMS_SUCCESS, data });
+    dispatch(loadingTeamsSuccess({ data }));
     return data;
   } catch (e) {
-    dispatch({ type: actionType.LOADING_TEAMS_FAIL });
+    dispatch(loadingTeamsFail());
     console.log(e);
   }
 };
@@ -50,7 +58,7 @@ export const searchTeams = (formData) => async (dispatch) => {
 export const deleteTeam = (id) => async (dispatch) => {
   try {
     await api.deleteTeam(id);
-    dispatch({ type: actionType.DELETE_TEAM, data: id });
+    dispatch(deleteTeamSuccess({ data: id }));
   } catch (e) {
     console.log(e);
   }
@@ -67,11 +75,9 @@ export const addMember = (request, id) => async (dispatch) => {
   */
   try {
     const user = await api.addMember(id, { username });
-    dispatch({
-      type: actionType.ADD_MEMBER,
-      data: { user: user.data, id: id },
-    });
+    dispatch(addMemberSuccess({ data: { user: user.data, id: id } }));
   } catch (e) {
+    console.log(e);
     alert("Don't add member ");
   }
 };

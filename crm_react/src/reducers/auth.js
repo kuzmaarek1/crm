@@ -1,33 +1,38 @@
-import * as actionType from "constants/actionTypes";
+import { createSlice } from "@reduxjs/toolkit";
 
-const authReducer = (
-  state = { authData: null, loading: false, errors: false },
-  action
-) => {
-  switch (action.type) {
-    case actionType.AUTH_START:
-      return { ...state, loading: true, errors: false };
+const authReducer = createSlice({
+  name: "auth",
+  initialState: { authData: null, loading: false, errors: false },
+  reducers: {
+    authStart(state, action) {
+      state.loading = true;
+      state.errors = false;
+    },
+    authToken(state, action) {
+      state.authData = action.payload.data;
+      state.loading = true;
+      state.errors = false;
+    },
+    authSuccess(state, action) {
+      state.authData.user = action.payload.data;
+      state.loading = false;
+      state.errors = false;
+    },
+    authFail(state, action) {
+      state.authData = null;
+      state.loading = false;
+      state.errors = true;
+    },
+    logout(state, action) {
+      state.authData = null;
+      state.loading = false;
+      state.errors = false;
+    },
+  },
+});
 
-    case actionType.AUTH_TOKEN:
-      return { ...state, authData: action.data, loading: true, errors: false };
+const { actions, reducer } = authReducer;
 
-    case actionType.AUTH_SUCCESS:
-      return {
-        ...state,
-        authData: { ...state.authData, user: { ...action.data } },
-        loading: false,
-        errors: false,
-      };
+export const { authStart, authToken, authSuccess, authFail, logout } = actions;
 
-    case actionType.AUTH_FAIL:
-      return { ...state, loading: false, errors: true };
-
-    case actionType.LOGOUT:
-      return { ...state, authData: null, loading: false, errors: false };
-
-    default:
-      return state;
-  }
-};
-
-export default authReducer;
+export default reducer;

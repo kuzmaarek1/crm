@@ -1,52 +1,57 @@
-import * as actionType from "constants/actionTypes";
+import { createSlice } from "@reduxjs/toolkit";
 
-const clientReducer = (
-  state = { clientsData: null, loading: false, error: false },
-  action
-) => {
-  switch (action.type) {
-    case actionType.LOADING_CLIENTS_START:
-      return { ...state, loading: true, error: false };
-    case actionType.LOADING_CLIENTS_SUCCESS:
-      return {
-        ...state,
-        clientsData: action.data,
-        loading: false,
-        error: false,
-      };
-    case actionType.LOADING_CLIENTS_FAIL:
-      return { ...state, loading: false, error: true };
-    case actionType.ADD_CLIENT:
-      const addClient = Array.isArray(state.clientsData)
-        ? [...state.clientsData, action.data]
-        : [action.data];
-      return {
-        ...state,
-        clientsData: addClient,
-        loading: false,
-        error: false,
-      };
-    case actionType.EDIT_CLIENT:
+const clientReducer = createSlice({
+  name: "clients",
+  initialState: { clientsData: [], loading: false, error: false },
+  reducers: {
+    loadingClientsStart(state, action) {
+      state.loading = true;
+      state.error = false;
+    },
+    loadingClientsSuccess(state, action) {
+      state.clientsData = action.payload.data;
+      state.loading = true;
+      state.error = false;
+    },
+    loadingClientsFail(state, action) {
+      state.loading = false;
+      state.error = true;
+    },
+    addClientSuccess(state, action) {
+      state.clientsData.push(action.payload.data);
+      state.loading = false;
+      state.error = false;
+    },
+    editClientSuccess(state, action) {
       const editClient = state.clientsData.map((client) =>
-        String(client.id) !== String(action.data.id) ? client : action.data
+        String(client.id) !== String(action.payload.data.id)
+          ? client
+          : action.payload.data
       );
-      return {
-        ...state,
-        clientsData: editClient,
-        loading: false,
-        error: false,
-      };
-    case actionType.DELETE_CLIENT:
+      state.clientsData = editClient;
+      state.loading = false;
+      state.error = false;
+    },
+    deleteClientSuccess(state, action) {
       const deleteClient = state.clientsData.filter(
-        (client) => String(client.id) !== String(action.data)
+        (client) => String(client.id) !== String(action.payload.data)
       );
-      return {
-        ...state,
-        clientsData: deleteClient,
-      };
-    default:
-      return state;
-  }
-};
+      state.clientsData = deleteClient;
+      state.loading = false;
+      state.error = false;
+    },
+  },
+});
 
-export default clientReducer;
+const { actions, reducer } = clientReducer;
+
+export const {
+  loadingClientsStart,
+  loadingClientsSuccess,
+  loadingClientsFail,
+  addClientSuccess,
+  editClientSuccess,
+  deleteClientSuccess,
+} = actions;
+
+export default reducer;

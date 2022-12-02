@@ -1,56 +1,57 @@
-import * as actionType from "constants/actionTypes";
 import * as api from "api/index.js";
+import {
+  loadingClientsStart,
+  loadingClientsSuccess,
+  loadingClientsFail,
+  addClientSuccess,
+  editClientSuccess,
+  deleteClientSuccess,
+} from "reducers/clients";
 
 export const getClients = (id) => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_CLIENTS_START });
+  dispatch(loadingClientsStart());
   try {
     const { data } = await api.getClients(id);
-    dispatch({ type: actionType.LOADING_CLIENTS_SUCCESS, data });
+    dispatch(loadingClientsSuccess({ data }));
   } catch (error) {
-    dispatch({ type: actionType.LOADING_CLIENTS_FAIL });
+    dispatch(loadingClientsFail());
     console.log(error);
   }
 };
 
 export const addClient = (id, formData, navigate) => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_CLIENTS_START });
+  dispatch(loadingClientsStart());
   try {
     await api.createClient(id, formData);
-    dispatch({
-      type: actionType.ADD_CLIENT,
-      data: { id, ...formData },
-    });
+    dispatch(addClientSuccess({ data: { id, ...formData } }));
     navigate("/clients");
   } catch (e) {
-    dispatch({ type: actionType.LOADING_CLIENTS_START });
+    dispatch(loadingClientsFail());
     console.log(e);
   }
 };
 
 export const searchClients = (team, formData) => async (dispatch) => {
-  dispatch({ type: actionType.LOADING_CLIENTS_START });
+  dispatch(loadingClientsStart());
   try {
     const { data } = await api.searchClient(team, formData);
-    dispatch({ type: actionType.LOADING_CLIENTS_SUCCESS, data });
+    dispatch(loadingClientsSuccess({ data }));
     return data;
   } catch (e) {
-    dispatch({ type: actionType.LOADING_CLIENTS_FAIL });
+    dispatch(loadingClientsFail());
     console.log(e);
   }
 };
 
 export const editClient =
   (client, team, formData, navigate) => async (dispatch) => {
-    dispatch({ type: actionType.LOADING_CLIENTS_START });
+    dispatch(loadingClientsStart());
     try {
       await api.editClient(client, team, formData, navigate);
-      dispatch({
-        type: actionType.EDIT_CLIENT,
-        data: { id: client, ...formData },
-      });
+      dispatch(editClientSuccess({ data: { id: client, ...formData } }));
       navigate("/clients");
     } catch (e) {
-      dispatch({ type: actionType.LOADING_CLIENTS_FAIL });
+      dispatch(loadingClientsFail());
       console.log(e);
     }
   };
@@ -58,7 +59,7 @@ export const editClient =
 export const deleteClient = (client, team) => async (dispatch) => {
   try {
     await api.deleteClient(client, team);
-    dispatch({ type: actionType.DELETE_CLIENT, data: client });
+    dispatch(deleteClientSuccess({ data: client }));
   } catch (e) {
     console.log(e);
   }
