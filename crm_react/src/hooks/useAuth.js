@@ -1,21 +1,42 @@
-import { useNavigate } from "react-router-dom";
+import {
+  useSignInMutation,
+  useSignUpMutation,
+  useLogOutMutation,
+} from "reducers/authApiSlice";
+import { apiSlice } from "api/apiSlice";
 import { useDispatch } from "react-redux";
-import { signIn, signUp, logOut } from "actions/auth";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [signIn] = useSignInMutation();
+  const [signUp] = useSignUpMutation();
+  const [logOut] = useLogOutMutation();
 
-  const handleSiginIn = (data) => {
-    dispatch(signIn(data, navigate));
+  const handleSiginIn = async (formData) => {
+    try {
+      await signIn(formData);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleSignUp = (data) => {
-    dispatch(signUp(data, navigate));
+  const handleSignUp = async (formData) => {
+    try {
+      console.log(formData);
+      await signUp(formData);
+      handleSiginIn(formData);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleLogOut = () => {
-    dispatch(logOut());
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+      dispatch(apiSlice.util.resetApiState());
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return {

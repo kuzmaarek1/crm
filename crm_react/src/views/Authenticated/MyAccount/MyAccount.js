@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useAuth } from "hooks/useAuth";
+import { useGetUserQuery } from "reducers/authApiSlice";
 import {
   MyAccountWrapper,
   MyAccountButton,
@@ -9,8 +9,8 @@ import {
 } from "./MyAccount.styles.js";
 
 const MyAccount = () => {
-  const auth = useSelector((state) => state.auth.authData.user);
   const authHook = useAuth();
+  const { data: auth, isLoading } = useGetUserQuery();
 
   return (
     <MyAccountWrapper>

@@ -1,33 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { isAnyOf } from "@reduxjs/toolkit";
+import { authApiSlice } from "reducers/authApiSlice";
 
 const authReducer = createSlice({
   name: "auth",
-  initialState: { authData: null, loading: false, errors: false },
-  reducers: {
-    authStart(state, action) {
-      state.loading = true;
-      state.errors = false;
-    },
-    authToken(state, action) {
-      state.authData = action.payload.data;
-      state.loading = true;
-      state.errors = false;
-    },
-    authSuccess(state, action) {
-      state.authData.user = action.payload.data;
-      state.loading = false;
-      state.errors = false;
-    },
-    authFail(state, action) {
-      state.authData = null;
-      state.loading = false;
-      state.errors = true;
-    },
-    logout(state, action) {
-      state.authData = null;
-      state.loading = false;
-      state.errors = false;
-    },
+  initialState: { authData: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      authApiSlice.endpoints.signIn.matchFulfilled,
+      (state, { payload }) => {
+        state.authData = payload;
+      }
+    );
+    builder.addMatcher(
+      authApiSlice.endpoints.getUser.matchFulfilled,
+      (state, { payload }) => {
+        state.authData.user = payload;
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(
+        authApiSlice.endpoints.logOut.matchFulfilled,
+        authApiSlice.endpoints.logOut.matchRejected
+      ),
+      (state, { payload }) => {
+        state.authData = null;
+      }
+    );
   },
 });
 
