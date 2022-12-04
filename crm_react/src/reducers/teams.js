@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { teamsApiSlice } from "reducers/teamsApiSlice";
 
 const teamReducer = createSlice({
   name: "teams",
@@ -54,6 +55,7 @@ const teamReducer = createSlice({
       state.error = false;
     },
     addMemberSuccess(state, action) {
+      console.log(action);
       const index = state.teamsData.findIndex(
         (team) => String(team.id) === String(action.payload.data.id)
       );
@@ -67,6 +69,16 @@ const teamReducer = createSlice({
       state.loading = false;
       state.error = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      teamsApiSlice.endpoints.addTeam.matchFulfilled,
+      (state, { payload }) => {
+        console.log(payload);
+        state.teamsData.push(payload);
+        state.currentTeam = payload;
+      }
+    );
   },
 });
 

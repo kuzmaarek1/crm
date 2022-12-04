@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
-  tagTypes: ["Auth"],
+  tagTypes: ["Auth", "Team"],
 });
 
 export const apiSlice = createApi({
