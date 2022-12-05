@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "components/Button/Button.js";
-import { getLeads } from "actions/leads.js";
 import { useLeads } from "hooks/useLeads.js";
+import { useGetLeadsQuery, leadsApiSlice } from "reducers/leadsApiSlice";
 import {
   LeadsWrapper,
   LeadTitle,
@@ -15,7 +15,7 @@ import {
   ModalButton,
   ModalWrapper,
   ModalLeadWrapper,
-  LeadForm,
+  LeadInputWrapper,
   LeadInput,
   LeadLinkDiv,
 } from "./Leads.styles.js";
@@ -23,19 +23,20 @@ import {
 const Leads = () => {
   const dispatch = useDispatch();
   const leadHook = useLeads();
-  const leads = useSelector((state) => state.leads);
   const teams = useSelector((state) => state.teams);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [lead, setLead] = useState([]);
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
 
-  useEffect(() => {
-    dispatch(getLeads(teams.currentTeam.id));
-  }, []);
+  const {
+    data: leads,
+    isLoading: loadingLeads,
+    refetch: refetchLeads,
+  } = useGetLeadsQuery(teams.currentTeam.id);
 
   const openModal = (id) => {
     setModalIsOpen(true);
-    const leadFindById = leads.leadsData.find((lead) => lead.id === id);
+    const leadFindById = leads.find((lead) => lead.id === id);
     setLead(leadFindById);
   };
 
@@ -47,25 +48,28 @@ const Leads = () => {
     <LeadsWrapper>
       <LeadTitle>
         <LeadHeader>Lead</LeadHeader>
-        <LeadForm
-          onSubmit={handleSubmit((register) => {
-            leadHook.handleSearchLeads(teams.currentTeam.id, register.name);
-          })}
-        >
+        <LeadInputWrapper>
           <LeadInput
             type="serach"
             placeholder="Search by first name and last name"
             {...register("name", {
               required: true,
               onChange: (e) => {
-                leadHook.handleSearchLeads(
-                  teams.currentTeam.id,
-                  e.target.value
-                );
+                if (e.target.value === "") {
+                  refetchLeads();
+                } else {
+                  dispatch(
+                    leadsApiSlice.util.prefetch(
+                      "searchLead",
+                      { team: teams.currentTeam.id, name: e.target.value },
+                      { force: true }
+                    )
+                  );
+                }
               },
             })}
           />
-        </LeadForm>
+        </LeadInputWrapper>
         <LeadLinkDiv>
           <LeadLink to="/add-lead">Add Lead</LeadLink>
         </LeadLinkDiv>
@@ -77,7 +81,7 @@ const Leads = () => {
         <div>Phone</div>
         <div>Assigned to</div>
       </LeadWrapper>
-      {leads?.leadsData?.map((lead) => (
+      {leads?.map((lead) => (
         <LeadWrapper key={lead.id} onClick={() => openModal(lead.id)}>
           <div>{lead.first_name}</div>
           <div>{lead.last_name}</div>
@@ -98,7 +102,7 @@ const Leads = () => {
         <ModalButton>
           <Button
             onClick={() => {
-              leadHook.handleConvertToClient(lead, teams.currentTeam.id);
+              leadHook.handleConvertToClient(lead.id, teams.currentTeam.id);
               setModalIsOpen(false);
             }}
           >

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { Button } from "components/Button/Button.js";
+import { useTeams } from "hooks/useTeams.js";
+import { useGetTeamsQuery, teamsApiSlice } from "reducers/teamsApiSlice";
 import {
   TeamsWrapper,
   TeamTitle,
@@ -17,10 +20,6 @@ import {
   TeamInput,
   TeamLinkDiv,
 } from "./Teams.styles.js";
-import { Button } from "components/Button/Button.js";
-import { useTeams } from "hooks/useTeams.js";
-import { useGetTeamsQuery } from "reducers/teamsApiSlice";
-import { teamsApiSlice } from "reducers/teamsApiSlice";
 
 const Teams = () => {
   const dispatch = useDispatch();

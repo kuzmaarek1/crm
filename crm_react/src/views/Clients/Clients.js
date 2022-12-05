@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useClients } from "hooks/useClients.js";
-import { getClients } from "actions/clients.js";
 import { Button } from "components/Button/Button.js";
+import { useGetClientsQuery, clientsApiSlice } from "reducers/clientsApiSlice";
 import {
   ClientsWrapper,
   ClientTitle,
@@ -15,7 +15,7 @@ import {
   ClientButton,
   ModalWrapper,
   ModalClientWrapper,
-  ClientForm,
+  ClientInputWrapper,
   ClientInput,
   ClientLinkDiv,
 } from "./Clients.styles.js";
@@ -23,21 +23,20 @@ import {
 const Clients = () => {
   const dispatch = useDispatch();
   const clientHook = useClients();
-  const clients = useSelector((state) => state.clients);
   const teams = useSelector((state) => state.teams);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [client, setClient] = useState([]);
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
 
-  useEffect(() => {
-    dispatch(getClients(teams.currentTeam.id));
-  }, []);
+  const {
+    data: clients,
+    isLoading: loadingClients,
+    refetch: refetchClients,
+  } = useGetClientsQuery(teams.currentTeam.id);
 
   const openModal = (id) => {
     setModalIsOpen(true);
-    const clientFindById = clients.clientsData.find(
-      (client) => client.id === id
-    );
+    const clientFindById = clients.find((client) => client.id === id);
     setClient(clientFindById);
   };
 
@@ -49,25 +48,28 @@ const Clients = () => {
     <ClientsWrapper>
       <ClientTitle>
         <ClientHeader>Client</ClientHeader>
-        <ClientForm
-          onSubmit={handleSubmit((register) => {
-            clientHook.handleSearchClients(teams.currentTeam.id, register.name);
-          })}
-        >
+        <ClientInputWrapper>
           <ClientInput
             type="serach"
             placeholder="Search by first name and last name"
             {...register("name", {
               required: true,
               onChange: (e) => {
-                clientHook.handleSearchClients(
-                  teams.currentTeam.id,
-                  e.target.value
-                );
+                if (e.target.value === "") {
+                  refetchClients();
+                } else {
+                  dispatch(
+                    clientsApiSlice.util.prefetch(
+                      "searchClient",
+                      { team: teams.currentTeam.id, name: e.target.value },
+                      { force: true }
+                    )
+                  );
+                }
               },
             })}
           />
-        </ClientForm>
+        </ClientInputWrapper>
         <ClientLinkDiv>
           <ClientLink to="/add-client">Add Client</ClientLink>
         </ClientLinkDiv>
@@ -79,7 +81,7 @@ const Clients = () => {
         <div>Phone</div>
         <div>Assigned to</div>
       </ClientWrapper>
-      {clients?.clientsData?.map((client) => (
+      {clients?.map((client) => (
         <ClientWrapper key={client?.id} onClick={() => openModal(client.id)}>
           <div>{client.first_name}</div>
           <div>{client.last_name}</div>

@@ -3,6 +3,8 @@ import { useMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useLeads } from "hooks/useLeads.js";
+import { Button } from "components/Button/Button.js";
+import { useGetLeadsQuery } from "reducers/leadsApiSlice";
 import {
   EditLeadWrapper,
   EditLeadHeader,
@@ -13,11 +15,9 @@ import {
   EditLeadTextarea,
   EditLeadSelect,
 } from "./EditLead.styles.js";
-import { Button } from "components/Button/Button.js";
 
 const EditLead = () => {
   const leadHook = useLeads();
-  const leads = useSelector((state) => state.leads);
   const [lead, setLead] = useState(null);
   const teams = useSelector((state) => state.teams);
   const match = useMatch("/edit-lead/:id");
@@ -28,8 +28,9 @@ const EditLead = () => {
     formState: { errors },
   } = useForm();
 
+  const { data: leads } = useGetLeadsQuery(teams.currentTeam.id);
   useEffect(() => {
-    const findLeadById = leads.leadsData.find(
+    const findLeadById = leads.find(
       (lead) => String(lead.id) === String(match.params.id)
     );
     setLead(findLeadById);

@@ -57,7 +57,7 @@ export const LeadWrapper = styled.div`
   }
 `;
 
-export const LeadForm = styled.form`
+export const LeadInputWrapper = styled.div`
   width: 20%;
   display: flex;
   align-items: center;

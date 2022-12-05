@@ -53,16 +53,6 @@ const teamReducer = createSlice({
 
 const { actions, reducer } = teamReducer;
 
-export const {
-  loadingTeamsStart,
-  loadingTeamSuccess,
-  loadingTeamsSuccess,
-  loadingTeamsFail,
-  addTeamSuccess,
-  addMemberSuccess,
-  setCurrentTeam,
-  deleteTeamSuccess,
-  logoutTeam,
-} = actions;
+export const { setCurrentTeam, deleteTeamSuccess } = actions;
 
 export default reducer;

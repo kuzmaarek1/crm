@@ -4,6 +4,7 @@ import { useMatch } from "react-router-dom";
 import { useClients } from "hooks/useClients.js";
 import { useForm } from "react-hook-form";
 import { Button } from "components/Button/Button.js";
+import { useGetClientsQuery } from "reducers/clientsApiSlice";
 import {
   EditClientWrapper,
   EditClientHeader,
@@ -17,7 +18,6 @@ import {
 
 const EditClient = () => {
   const clientHook = useClients();
-  const clients = useSelector((state) => state.clients);
   const [client, setClient] = useState(null);
   const teams = useSelector((state) => state.teams);
   const match = useMatch("/edit-client/:id");
@@ -28,8 +28,10 @@ const EditClient = () => {
     formState: { errors },
   } = useForm();
 
+  const { data: clients } = useGetClientsQuery(teams.currentTeam.id);
+
   useEffect(() => {
-    const findClientById = clients?.clientsData?.find(
+    const findClientById = clients?.find(
       (client) => String(client.id) === String(match.params.id)
     );
     setClient(findClientById);

@@ -1,42 +1,56 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  addLead,
-  deleteLead,
-  searchLeads,
-  getLeads,
-  editLead,
-  convertToClient,
-} from "actions/leads";
+  useCreateLeadMutation,
+  useEditLeadMutation,
+  useConvertLeadToClientMutation,
+  useDeleteLeadMutation,
+} from "reducers/leadsApiSlice";
 
 export const useLeads = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [createLead] = useCreateLeadMutation();
+  const [editLead] = useEditLeadMutation();
+  const [convertLeadToClient] = useConvertLeadToClientMutation();
+  const [deleteLead] = useDeleteLeadMutation();
 
-  const handleAddLead = (id, data) => {
-    dispatch(addLead(id, data, navigate));
+  const handleAddLead = async (id, data) => {
+    try {
+      await createLead({ id, data });
+      navigate("/leads");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleDeleteLead = (lead, team) => {
-    dispatch(deleteLead(lead, team));
+  const handleDeleteLead = async (lead, team) => {
+    try {
+      await deleteLead({ lead, team });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleSearchLeads = (team, name) => {
-    name ? dispatch(searchLeads(team, name)) : dispatch(getLeads(team));
+  const handleEditLead = async (lead, team, data) => {
+    try {
+      await editLead({ lead, team, data });
+      navigate("/leads");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleEditLead = (lead, team, data) => {
-    dispatch(editLead(lead, team, data, navigate));
-  };
-
-  const handleConvertToClient = (lead, team) => {
-    dispatch(convertToClient(lead, team));
+  const handleConvertToClient = async (lead, team) => {
+    try {
+      await convertLeadToClient({ lead, team });
+      navigate("/clients");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return {
     handleAddLead,
     handleDeleteLead,
-    handleSearchLeads,
     handleEditLead,
     handleConvertToClient,
   };

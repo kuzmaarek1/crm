@@ -57,7 +57,7 @@ export const ClientWrapper = styled.div`
   }
 `;
 
-export const ClientForm = styled.form`
+export const ClientInputWrapper = styled.div`
   width: 20%;
   display: flex;
   align-items: center;

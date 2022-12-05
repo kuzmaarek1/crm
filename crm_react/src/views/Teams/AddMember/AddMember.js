@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Button } from "components/Button/Button.js";
 import { useTeams } from "hooks/useTeams.js";

@@ -1,37 +1,45 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  addClient,
-  deleteClient,
-  searchClients,
-  getClients,
-  editClient,
-} from "actions/clients";
+  useCreateClientMutation,
+  useEditClientMutation,
+  useDeleteClientMutation,
+} from "reducers/clientsApiSlice";
 
 export const useClients = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [createClient] = useCreateClientMutation();
+  const [editClient] = useEditClientMutation();
+  const [deleteClient] = useDeleteClientMutation();
 
-  const handleAddClient = (id, data) => {
-    dispatch(addClient(id, data, navigate));
+  const handleAddClient = async (id, data) => {
+    try {
+      await createClient({ id, data });
+      navigate("/clients");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleDeleteClient = (client, team) => {
-    dispatch(deleteClient(client, team));
+  const handleDeleteClient = async (client, team) => {
+    try {
+      await deleteClient({ client, team });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleSearchClients = (team, name) => {
-    name ? dispatch(searchClients(team, name)) : dispatch(getClients(team));
-  };
-
-  const handleEditClient = (client, team, data) => {
-    dispatch(editClient(client, team, data, navigate));
+  const handleEditClient = async (client, team, data) => {
+    try {
+      await editClient({ client, team, data });
+      navigate("/clients");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return {
     handleAddClient,
     handleDeleteClient,
-    handleSearchClients,
     handleEditClient,
   };
 };
