@@ -1,4 +1,5 @@
 import { apiSlice } from "api/apiSlice";
+import { deleteTeamSuccess, addMemberSuccess } from "reducers/teams.js";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,21 +8,34 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         url: "/api/teams/get_team/",
         method: "GET",
       }),
-      providesTags: ["Team"],
+      providesTags: ["Auth"],
     }),
     getTeams: builder.query({
       query: () => ({
         url: "/api/teams/",
         method: "GET",
       }),
-      providesTags: ["Team"],
+      providesTags: ["Team", "Auth"],
     }),
     searchTeam: builder.query({
       query: (name) => ({
         url: `api/teams/search_team/${name}/`,
         method: "GET",
       }),
-      providesTags: ["Team"],
+      async onQueryStarted(name, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (name !== "") {
+            dispatch(
+              teamsApiSlice.util.updateQueryData(
+                "getTeams",
+                undefined,
+                (draft) => data
+              )
+            );
+          }
+        } catch {}
+      },
     }),
     addMember: builder.mutation({
       query: ({ id, username }) => ({
@@ -40,10 +54,16 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Team"],
     }),
     deleteTeam: builder.mutation({
-      query: (id) => ({
+      query: ({ id, teams }) => ({
         url: `/api/teams/delete_team/${id}/`,
         method: "PUT",
       }),
+      async onQueryStarted({ id, teams }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(deleteTeamSuccess({ data: { id, teams } }));
+        } catch {}
+      },
       invalidatesTags: ["Team"],
     }),
   }),

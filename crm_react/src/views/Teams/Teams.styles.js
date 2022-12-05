@@ -52,7 +52,7 @@ export const TeamWrapper = styled.div`
   }
 `;
 
-export const TeamForm = styled.form`
+export const TeamInputWrapper = styled.div`
   width: 20%;
   display: flex;
   align-items: center;

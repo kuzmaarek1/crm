@@ -42,6 +42,7 @@ const AddLead = () => {
           {...register("username", { required: true })}
         />
         {errors.username && <AddMemberSpan>Email is required</AddMemberSpan>}
+        {/*
         <AddMemberLabel htmlFor="password">Password</AddMemberLabel>
         <AddMemberInput
           type="password"
@@ -65,6 +66,7 @@ const AddLead = () => {
         {errors.password_repeat && (
           <AddMemberSpan>The passwords must be identical</AddMemberSpan>
         )}
+        */}
         <Button>Submit</Button>
       </AddMemberForm>
     </AddMemberWrapper>

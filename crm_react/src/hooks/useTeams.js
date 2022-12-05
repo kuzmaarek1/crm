@@ -1,14 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentTeam } from "reducers/teams.js";
-import { getTeams, searchTeams } from "actions/teams.js";
-
 import {
   useAddMemberMutation,
   useAddTeamMutation,
   useDeleteTeamMutation,
 } from "reducers/teamsApiSlice";
-import { deleteTeamSuccess, addMemberSuccess } from "reducers/teams.js";
 
 export const useTeams = () => {
   const navigate = useNavigate();
@@ -26,10 +23,9 @@ export const useTeams = () => {
     }
   };
 
-  const handleDeleteTeam = async (id) => {
+  const handleDeleteTeam = async (id, teams) => {
     try {
-      await deleteTeam(id);
-      dispatch(deleteTeamSuccess({ data: id }));
+      await deleteTeam({ id, teams });
     } catch (e) {
       console.log(e);
     }
@@ -38,10 +34,7 @@ export const useTeams = () => {
   const handleAddMember = async (request, id) => {
     const { username } = request;
     try {
-      console.log({ id, username });
-      const user = await addMember({ id, username });
-      console.log(user);
-      dispatch(addMemberSuccess({ data: { user: user.data, id: id } }));
+      await addMember({ id, username });
     } catch (e) {
       console.log(e);
       alert("Don't add member ");
@@ -52,14 +45,9 @@ export const useTeams = () => {
     dispatch(setCurrentTeam({ data: team }));
   };
 
-  const handleSearchTeams = (name) => {
-    name ? dispatch(searchTeams(name)) : dispatch(getTeams());
-  };
-
   return {
     handleAddTeam,
     handleChangeTeams,
-    handleSearchTeams,
     handleDeleteTeam,
     handleAddMember,
   };

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MenuWrapper, MenuTitle, MenuLinks, MenuLink } from "./Menu.styles.js";
-import { getTeam } from "actions/teams.js";
+import { teamsApiSlice } from "reducers/teamsApiSlice";
 
 const Menu = () => {
   const auth = useSelector((state) => state.auth.authData);
@@ -10,7 +10,11 @@ const Menu = () => {
 
   useEffect(() => {
     if (auth?.auth_token && !teams.currentTeam) {
-      dispatch(getTeam());
+      dispatch(
+        teamsApiSlice.util.prefetch("getTeam", undefined, {
+          force: true,
+        })
+      );
     }
   }, [auth?.auth_token]);
 

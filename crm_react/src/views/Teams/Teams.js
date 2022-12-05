@@ -13,57 +13,62 @@ import {
   ModalWrapper,
   ModalTeamWrapper,
   ModalTeamMember,
-  TeamForm,
+  TeamInputWrapper,
   TeamInput,
   TeamLinkDiv,
 } from "./Teams.styles.js";
-import { useTeams } from "hooks/useTeams.js";
 import { Button } from "components/Button/Button.js";
-import { getTeams } from "actions/teams.js";
+import { useTeams } from "hooks/useTeams.js";
+import { useGetTeamsQuery } from "reducers/teamsApiSlice";
+import { teamsApiSlice } from "reducers/teamsApiSlice";
 
 const Teams = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authData);
-  const teams = useSelector((state) => state.teams);
+  const teamsState = useSelector((state) => state.teams);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [team, setTeam] = useState([]);
   const teamsHook = useTeams();
-  const { register, handleSubmit } = useForm();
-
-  useEffect(() => {
-    dispatch(getTeams());
-  }, []);
+  const { register } = useForm();
+  const {
+    data: teams,
+    isLoading: loadingTeams,
+    refetch: refetchTeams,
+  } = useGetTeamsQuery();
 
   const openModal = (id) => {
     setModalIsOpen(true);
-    const teamFindById = teams.teamsData.find((team) => team.id === id);
+    const teamFindById = teams?.find((team) => team.id === id);
     setTeam(teamFindById);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
   };
-
   return (
     <TeamsWrapper>
       <TeamTitle>
         <TeamHeader>Team</TeamHeader>
-        <TeamForm
-          onSubmit={handleSubmit(({ name }) => {
-            teamsHook.handleSearchTeams(name);
-          })}
-        >
+        <TeamInputWrapper>
           <TeamInput
             type="serach"
             placeholder="Search by name"
             {...register("name", {
               required: true,
               onChange: (e) => {
-                teamsHook.handleSearchTeams(e.target.value);
+                if (e.target.value === "") {
+                  refetchTeams();
+                } else {
+                  dispatch(
+                    teamsApiSlice.util.prefetch("searchTeam", e.target.value, {
+                      force: true,
+                    })
+                  );
+                }
               },
             })}
           />
-        </TeamForm>
+        </TeamInputWrapper>
         <TeamLinkDiv>
           <TeamLink to="/add-team">Add Teams</TeamLink>
         </TeamLinkDiv>
@@ -71,68 +76,80 @@ const Teams = () => {
       <TeamWrapper title="true">
         <div>Name</div>
       </TeamWrapper>
-      {teams?.teamsData?.map((team) => (
-        <TeamWrapper onClick={() => openModal(team.id)} key={team.id}>
-          <div>{team.name}</div>
-          {String(team.id) === String(teams.currentTeam?.id) ? (
-            <Button team red>
-              Current
-            </Button>
-          ) : (
-            <Button
-              team
-              onClick={(e) => {
-                e.stopPropagation();
-                teamsHook.handleChangeTeams(team);
-              }}
-            >
-              Activate
-            </Button>
-          )}
-        </TeamWrapper>
-      ))}
-
-      <TeamModal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        ariaHideApp={false}
-      >
-        {team?.members &&
-          String(team?.members[0]?.id) === String(auth?.user.id) && (
-            <>
-              <ModalButton>
-                <Button to={`/add-member/${team.id}`} as={NavLink} lead="true">
-                  Add member
+      {loadingTeams ? (
+        <div>isLoading</div>
+      ) : (
+        <>
+          {teams?.map((team) => (
+            <TeamWrapper onClick={() => openModal(team.id)} key={team.id}>
+              <div>{team.name}</div>
+              {String(team.id) === String(teamsState.currentTeam?.id) ? (
+                <Button team red>
+                  Current
                 </Button>
+              ) : (
                 <Button
-                  red
-                  onClick={() => {
-                    teamsHook.handleDeleteTeam(team.id);
-                    setModalIsOpen(false);
+                  team
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    teamsHook.handleChangeTeams(team);
                   }}
                 >
-                  Delete
+                  Activate
                 </Button>
-              </ModalButton>
-            </>
-          )}
-        <ModalWrapper>
-          <ModalTeamWrapper title="true">Name</ModalTeamWrapper>
-          <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
-          <ModalTeamWrapper title="true" description>
-            Description
-          </ModalTeamWrapper>
-          <ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
-          {team.members?.map((member) => (
-            <ModalTeamMember key={member.id}>
-              <ModalTeamWrapper title="true" member>
-                Member
-              </ModalTeamWrapper>
-              <ModalTeamWrapper member>{member.username}</ModalTeamWrapper>
-            </ModalTeamMember>
+              )}
+            </TeamWrapper>
           ))}
-        </ModalWrapper>
-      </TeamModal>
+
+          <TeamModal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            ariaHideApp={false}
+          >
+            {team?.members &&
+              String(team?.members[0]?.id) === String(auth?.user.id) && (
+                <>
+                  <ModalButton>
+                    <Button
+                      to={`/add-member/${team.id}`}
+                      as={NavLink}
+                      lead="true"
+                    >
+                      Add member
+                    </Button>
+                    <Button
+                      red
+                      onClick={() => {
+                        teamsHook.handleDeleteTeam(team.id, teams);
+                        setModalIsOpen(false);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </ModalButton>
+                </>
+              )}
+            <ModalWrapper>
+              <ModalTeamWrapper title="true">Name</ModalTeamWrapper>
+              <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
+              <ModalTeamWrapper title="true" description>
+                Description
+              </ModalTeamWrapper>
+              <ModalTeamWrapper description>
+                {team.description}
+              </ModalTeamWrapper>
+              {team.members?.map((member) => (
+                <ModalTeamMember key={member.id}>
+                  <ModalTeamWrapper title="true" member>
+                    Member
+                  </ModalTeamWrapper>
+                  <ModalTeamWrapper member>{member.username}</ModalTeamWrapper>
+                </ModalTeamMember>
+              ))}
+            </ModalWrapper>
+          </TeamModal>
+        </>
+      )}
     </TeamsWrapper>
   );
 };
