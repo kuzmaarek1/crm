@@ -102,7 +102,7 @@ const Leads = () => {
         <ModalButton>
           <Button
             onClick={() => {
-              leadHook.handleConvertToClient(lead.id, teams.currentTeam.id);
+              leadHook.handleConvertToClient(lead, teams.currentTeam.id);
               setModalIsOpen(false);
             }}
           >
@@ -114,7 +114,7 @@ const Leads = () => {
           <Button
             red
             onClick={() => {
-              leadHook.handleDeleteLead(lead.id, teams.currentTeam.id);
+              leadHook.handleDeleteLead(lead, teams.currentTeam.id);
               setModalIsOpen(false);
             }}
           >

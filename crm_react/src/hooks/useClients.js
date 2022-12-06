@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useToast } from "hooks/useToast";
 import {
   useCreateClientMutation,
   useEditClientMutation,
@@ -7,34 +8,35 @@ import {
 
 export const useClients = () => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [createClient] = useCreateClientMutation();
   const [editClient] = useEditClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  const handleAddClient = async (id, data) => {
-    try {
-      await createClient({ id, data });
-      navigate("/clients");
-    } catch (e) {
-      console.log(e);
-    }
+  const handleAddClient = (id, data) => {
+    toast.handleDisplayBanner(
+      createClient({ id, data }),
+      `Adding client ${data.first_name} ${data.last_name}`,
+      `Added client  ${data.first_name} ${data.last_name}`
+    );
+    navigate("/clients");
   };
 
-  const handleDeleteClient = async (client, team) => {
-    try {
-      await deleteClient({ client, team });
-    } catch (e) {
-      console.log(e);
-    }
+  const handleDeleteClient = (client, team) => {
+    toast.handleDisplayBanner(
+      deleteClient({ client: client.id, team }),
+      `Deleting client ${client.first_name} ${client.last_name}`,
+      `Deleted client  ${client.first_name} ${client.last_name}`
+    );
   };
 
-  const handleEditClient = async (client, team, data) => {
-    try {
-      await editClient({ client, team, data });
-      navigate("/clients");
-    } catch (e) {
-      console.log(e);
-    }
+  const handleEditClient = (client, team, data) => {
+    toast.handleDisplayBanner(
+      editClient({ client, team, data }),
+      `Updating client ${data.first_name} ${data.last_name}`,
+      `Updated client  ${data.first_name} ${data.last_name}`
+    );
+    navigate("/clients");
   };
 
   return {

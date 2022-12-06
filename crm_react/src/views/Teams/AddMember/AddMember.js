@@ -29,7 +29,7 @@ const AddLead = () => {
       <AddMemberHeader>Add Members</AddMemberHeader>
       <AddMemberForm
         onSubmit={handleSubmit((register) => {
-          teamHook.handleAddMember(register, match.params.id);
+          teamHook.handleAddMember(match.params.id, register);
           navigate("/teams");
         })}
       >

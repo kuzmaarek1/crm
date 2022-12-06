@@ -106,7 +106,7 @@ const Clients = () => {
           <Button
             red
             onClick={() => {
-              clientHook.handleDeleteClient(client.id, teams.currentTeam.id);
+              clientHook.handleDeleteClient(client, teams.currentTeam.id);
               setModalIsOpen(false);
             }}
           >

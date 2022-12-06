@@ -119,7 +119,7 @@ const Teams = () => {
                     <Button
                       red
                       onClick={() => {
-                        teamsHook.handleDeleteTeam(team.id, teams);
+                        teamsHook.handleDeleteTeam(team, teams);
                         setModalIsOpen(false);
                       }}
                     >

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useToast } from "hooks/useToast";
 import { setCurrentTeam } from "reducers/teams.js";
 import {
   useAddMemberMutation,
@@ -10,39 +12,40 @@ import {
 export const useTeams = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const toastHook = useToast();
   const [addMember] = useAddMemberMutation();
   const [addTeam] = useAddTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
 
-  const handleAddTeam = async (formData) => {
-    try {
-      await addTeam(formData);
-      navigate("/teams");
-    } catch (e) {
-      console.log(e);
-    }
+  const handleAddTeam = (data) => {
+    toastHook.handleDisplayBanner(
+      addTeam(data),
+      `Adding team ${data.name}`,
+      `Added team ${data.name}`
+    );
+    navigate("/teams");
   };
 
-  const handleDeleteTeam = async (id, teams) => {
-    try {
-      await deleteTeam({ id, teams });
-    } catch (e) {
-      console.log(e);
-    }
+  const handleDeleteTeam = (team, teams) => {
+    toastHook.handleDisplayBanner(
+      deleteTeam({ id: team.id, teams }),
+      `Deleting Team ${team.name}`,
+      `Deleted Team ${team.name}`
+    );
   };
 
-  const handleAddMember = async (request, id) => {
+  const handleAddMember = (id, request) => {
     const { username } = request;
-    try {
-      await addMember({ id, username });
-    } catch (e) {
-      console.log(e);
-      alert("Don't add member ");
-    }
+    toastHook.handleDisplayBanner(
+      addMember({ id, username }),
+      `Adding member ${username}`,
+      `Add member ${username}`
+    );
   };
 
   const handleChangeTeams = (team) => {
     dispatch(setCurrentTeam({ data: team }));
+    toast.success(`Change team ${team.name}`);
   };
 
   return {
