@@ -44,6 +44,7 @@ const Teams = () => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
   return (
     <TeamsWrapper>
       <TeamTitle>
@@ -105,29 +106,28 @@ const Teams = () => {
             onRequestClose={closeModal}
             ariaHideApp={false}
           >
-            {team?.members &&
-              String(team?.members[0]?.id) === String(auth?.user.id) && (
-                <>
-                  <ModalButton>
-                    <Button
-                      to={`/add-member/${team.id}`}
-                      as={NavLink}
-                      lead="true"
-                    >
-                      Add member
-                    </Button>
-                    <Button
-                      red
-                      onClick={() => {
-                        teamsHook.handleDeleteTeam(team, teams);
-                        setModalIsOpen(false);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </ModalButton>
-                </>
-              )}
+            {String(team?.created_by?.id) === String(auth?.user.id) && (
+              <>
+                <ModalButton>
+                  <Button
+                    to={`/add-member/${team.id}`}
+                    as={NavLink}
+                    lead="true"
+                  >
+                    Add member
+                  </Button>
+                  <Button
+                    red
+                    onClick={() => {
+                      teamsHook.handleDeleteTeam(team, teams);
+                      setModalIsOpen(false);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </ModalButton>
+              </>
+            )}
             <ModalWrapper>
               <ModalTeamWrapper title="true">Name</ModalTeamWrapper>
               <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
