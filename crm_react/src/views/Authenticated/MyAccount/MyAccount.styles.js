@@ -23,7 +23,7 @@ export const MyAccountButton = styled.button`
 
 export const DetailsWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 20vw);
+  grid-template-columns: 1fr 2fr;
   grid-gap: 1px;
   margin-bottom: 3vh;
 `;

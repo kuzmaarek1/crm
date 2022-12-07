@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import TableLoader from "components/TableLoader/TableLoader";
 import { Button } from "components/Button/Button.js";
 import { useTeams } from "hooks/useTeams.js";
 import { useGetTeamsQuery, teamsApiSlice } from "reducers/teamsApiSlice";
@@ -28,12 +29,15 @@ const Teams = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [team, setTeam] = useState([]);
   const teamsHook = useTeams();
-  const { register } = useForm();
+  const { register, watch } = useForm();
   const {
     data: teams,
-    isLoading: loadingTeams,
+    isFetching: fetchingTeams,
     refetch: refetchTeams,
   } = useGetTeamsQuery();
+
+  const { isFetching: fetchingSearchTeams } =
+    teamsApiSlice.endpoints.searchTeam.useQueryState(watch("name"));
 
   const openModal = (id) => {
     setModalIsOpen(true);
@@ -76,8 +80,8 @@ const Teams = () => {
       <TeamWrapper title="true">
         <div>Name</div>
       </TeamWrapper>
-      {loadingTeams ? (
-        <div>isLoading</div>
+      {fetchingTeams || fetchingSearchTeams ? (
+        <TableLoader />
       ) : (
         <>
           {teams?.map((team) => (
@@ -100,7 +104,6 @@ const Teams = () => {
               )}
             </TeamWrapper>
           ))}
-
           <TeamModal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}

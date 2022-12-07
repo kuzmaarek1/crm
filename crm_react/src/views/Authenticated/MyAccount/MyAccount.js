@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "hooks/useAuth";
 import { useGetUserQuery } from "reducers/authApiSlice";
+import MyAccountLoader from "components/MyAccountLoader/MyAccountLoader";
 import {
   MyAccountWrapper,
   MyAccountButton,
@@ -15,12 +16,16 @@ const MyAccount = () => {
   return (
     <MyAccountWrapper>
       <h1>MyAccount</h1>
-      <DetailsWrapper>
-        <DetailsLeadWrapper title="true">UserId: </DetailsLeadWrapper>
-        <DetailsLeadWrapper>{auth?.id}</DetailsLeadWrapper>
-        <DetailsLeadWrapper title="true">Login: </DetailsLeadWrapper>{" "}
-        <DetailsLeadWrapper>{auth?.username}</DetailsLeadWrapper>
-      </DetailsWrapper>
+      {isLoading ? (
+        <MyAccountLoader />
+      ) : (
+        <DetailsWrapper>
+          <DetailsLeadWrapper title="true">UserId: </DetailsLeadWrapper>
+          <DetailsLeadWrapper>{auth?.id}</DetailsLeadWrapper>
+          <DetailsLeadWrapper title="true">Login: </DetailsLeadWrapper>{" "}
+          <DetailsLeadWrapper>{auth?.username}</DetailsLeadWrapper>
+        </DetailsWrapper>
+      )}
       <MyAccountButton onClick={() => authHook.handleLogOut()}>
         Log out
       </MyAccountButton>
