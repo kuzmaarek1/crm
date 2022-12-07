@@ -1,18 +1,34 @@
 import React from "react";
-import { MyAccountWrapper, MyAccountButton,  DetailsWrapper, DetailsLeadWrapper} from './MyAccount.styles.js';
-import { useAuth } from "../../../hooks/useAuth.js";
+import { useAuth } from "hooks/useAuth";
+import { useGetUserQuery } from "reducers/authApiSlice";
+import MyAccountLoader from "components/MyAccountLoader/MyAccountLoader";
+import {
+  MyAccountWrapper,
+  MyAccountButton,
+  DetailsWrapper,
+  DetailsLeadWrapper,
+} from "./MyAccount.styles.js";
 
 const MyAccount = () => {
-  const auth = useAuth();
+  const authHook = useAuth();
+  const { data: auth, isLoading } = useGetUserQuery();
 
   return (
     <MyAccountWrapper>
       <h1>MyAccount</h1>
-      <DetailsWrapper>
-        <DetailsLeadWrapper title>UserId: </DetailsLeadWrapper><DetailsLeadWrapper>{auth.userid}</DetailsLeadWrapper>
-        <DetailsLeadWrapper title>Login: </DetailsLeadWrapper> <DetailsLeadWrapper>{auth.username}</DetailsLeadWrapper>
-      </DetailsWrapper>
-      <MyAccountButton onClick={auth.logOut}>Log out</MyAccountButton>
+      {isLoading ? (
+        <MyAccountLoader />
+      ) : (
+        <DetailsWrapper>
+          <DetailsLeadWrapper title="true">UserId: </DetailsLeadWrapper>
+          <DetailsLeadWrapper>{auth?.id}</DetailsLeadWrapper>
+          <DetailsLeadWrapper title="true">Login: </DetailsLeadWrapper>{" "}
+          <DetailsLeadWrapper>{auth?.username}</DetailsLeadWrapper>
+        </DetailsWrapper>
+      )}
+      <MyAccountButton onClick={() => authHook.handleLogOut()}>
+        Log out
+      </MyAccountButton>
     </MyAccountWrapper>
   );
 };

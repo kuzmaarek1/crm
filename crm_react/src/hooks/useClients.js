@@ -1,85 +1,47 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { useToast } from "hooks/useToast";
+import {
+  useCreateClientMutation,
+  useEditClientMutation,
+  useDeleteClientMutation,
+} from "reducers/clientsApiSlice";
 
 export const useClients = () => {
-const navigate = useNavigate();
-const getClients = useCallback(async (id) => {
-    try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/clients/get_client/${id}/`);
-      return result.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-  const getClientById = useCallback(async (id_client, id_team) => {
-    try {
-      const result = await axios.get(`http://127.0.0.1:8000/api/clients/get_client_by_id/${id_client}/${id_team}/`);
-      return result.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-  const addClient = async ({first_name, last_name, email, phone, description},id) => {
-    try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/clients/create_client/${id}/`, {
-        first_name,
-        last_name,
-        email,
-        phone,
-        description,
-      });
-    navigate('/clients');
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-  const editClient = async ({first_name, last_name, email, phone, description, assigned_to},id_client, id_team) => {
-    try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/clients/update_client/${id_client}/${id_team}/`, {
-        first_name,
-        last_name,
-        email,
-        phone,
-        description,
-        assigned_to
-      });
-    navigate('/clients');
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-  const searchClient = async (name, id_team) => {
-    if(!name) try{ return await getClients(id_team); }
-    catch (e){
-      console.log(e);
-    }
-    else 
-      try{
-        const response = await axios.get(`http://127.0.0.1:8000/api/clients/search_client/${id_team}/${name}/`);
-        return response.data;
-      }
-      catch(e){
-        console.log(e);
-      }
-  }
-  const deleteClient = async (id_client, id_team) => {
-    try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/clients/delete_client/${id_client}/${id_team}/`);
-      navigate('/clients');
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-  return {
-    getClients,
-    addClient,
-    editClient,
-    deleteClient,
-    getClientById,
-    searchClient,
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [createClient] = useCreateClientMutation();
+  const [editClient] = useEditClientMutation();
+  const [deleteClient] = useDeleteClientMutation();
+
+  const handleAddClient = (id, data) => {
+    toast.handleDisplayBanner(
+      createClient({ id, data }),
+      `Adding client ${data.first_name} ${data.last_name}`,
+      `Added client  ${data.first_name} ${data.last_name}`
+    );
+    navigate("/clients");
   };
-}
+
+  const handleDeleteClient = (client, team) => {
+    toast.handleDisplayBanner(
+      deleteClient({ client: client.id, team }),
+      `Deleting client ${client.first_name} ${client.last_name}`,
+      `Deleted client  ${client.first_name} ${client.last_name}`
+    );
+  };
+
+  const handleEditClient = (client, team, data) => {
+    toast.handleDisplayBanner(
+      editClient({ client, team, data }),
+      `Updating client ${data.first_name} ${data.last_name}`,
+      `Updated client  ${data.first_name} ${data.last_name}`
+    );
+    navigate("/clients");
+  };
+
+  return {
+    handleAddClient,
+    handleDeleteClient,
+    handleEditClient,
+  };
+};

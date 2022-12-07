@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class TeamSerializer(serializers.ModelSerializer):
     members = UserSerializer(many=True, read_only=True)
-    create_by = UserSerializer(read_only=True)
+    created_by = UserSerializer(read_only=True)
     class Meta:
         model=Team
         fields=(
@@ -22,5 +22,5 @@ class TeamSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'members',
-            'create_by'
+            'created_by'
         )

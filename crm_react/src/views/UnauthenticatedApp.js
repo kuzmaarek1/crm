@@ -1,22 +1,16 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Menu from "../components/Menu/Menu.js";
-import LoginPage from "./Authenticated/LoginPage/LoginPage.js";
-import RegisterPage from "./Authenticated/RegisterPage/RegisterPage.js";
-import GlobalStyle from '../theme/GlobalStyle.js';
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "views/Authenticated/LoginPage/LoginPage.js";
+import RegisterPage from "views/Authenticated/RegisterPage/RegisterPage.js";
 
-const AuthenticatedApp = () => {
-    return ( 
-         <BrowserRouter>
-         <GlobalStyle/>
-            <Menu />
-            <Routes>
-                <Route path="/login-in" element={<LoginPage />} />
-                <Route path="/sign-up" element={<RegisterPage />} />
-                <Route path="/" element={<Navigate to="/login-in"/>} />
-                <Route path="/my-account" element={<Navigate to="/login-in"/>} />
-            </Routes>
-      </BrowserRouter>
-      )
-    };
-export default AuthenticatedApp;
+const UnAuthenticatedApp = () => {
+  return (
+    <Routes>
+      <Route path="/login-in" element={<LoginPage />} />
+      <Route path="/sign-up" element={<RegisterPage />} />
+      <Route path="/my-account" element={<Navigate to="/login-in" />} />
+      <Route path="/*" element={<Navigate to="/login-in" />} />
+    </Routes>
+  );
+};
+export default UnAuthenticatedApp;

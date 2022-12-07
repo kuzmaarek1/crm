@@ -1,13 +1,12 @@
 import React from "react";
-import { useAuth } from "../hooks/useAuth.js";
-import AuthenticatedApp from "./AuthenticatedApp.js";
-import UnauthenticatedApp from './UnauthenticatedApp.js';
+import { useSelector } from "react-redux";
+import AuthenticatedApp from "views/AuthenticatedApp.js";
+import UnAuthenticatedApp from "views/UnAuthenticatedApp.js";
 
 const Root = () => {
-  const auth = useAuth();
-  return (<>
-    {auth.isAuthenticated  && ( auth.teamid || auth.teamid===undefined) ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-    </>
+  const auth = useSelector((state) => state.auth.authData);
+  return (
+    <>{auth?.auth_token ? <AuthenticatedApp /> : <UnAuthenticatedApp />}</>
   );
 };
 

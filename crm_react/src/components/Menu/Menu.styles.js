@@ -10,39 +10,42 @@ export const MenuWrapper = styled.div`
   flex-direction: row;
 `;
 
-export const MenuTitle=styled(NavLink)`
-display: flex;
-justify-content: flex-start;
-margin-left: 2vw;
-width: 20%;
-color: white;
-font-size: 1.5em;
-text-decoration: none;
-&:hover,  &.active {
-  text-decoration: none;
+export const MenuTitle = styled(NavLink)`
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 2vw;
+  width: 20%;
   color: white;
-}`;
+  font-size: 1.5em;
+  text-decoration: none;
+  &:hover,
+  &.active {
+    text-decoration: none;
+    color: white;
+  }
+`;
 
-export const MenuLinks=styled.div`
+export const MenuLinks = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-}`;
+`;
 
-export const MenuLink=styled(NavLink)`
-    margin-right: 2vw;
-    justify-content: center;
-    align-items: center;
-    display: block;
-    color: white;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    text-decoration: none;
-    &:hover,
-    &.active {
+export const MenuLink = styled(NavLink)`
+  margin-right: 2vw;
+  justify-content: center;
+  align-items: center;
+  display: block;
+  color: white;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  text-decoration: none;
+  &:hover,
+  &.active {
     text-decoration: none;
     color: white;
     border-bottom: 2px solid white;
-}`;
+  }
+`;

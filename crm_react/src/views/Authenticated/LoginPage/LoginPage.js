@@ -1,8 +1,15 @@
 import React from "react";
-import { LoginPageWrapper, LoginHeader,  LoginForm, LoginLabel, LoginInput, LoginSpan } from './LoginPage.styles.js';
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../hooks/useAuth.js";
-import { Button } from "../../../components/Button/Button.js";
+import {
+  LoginPageWrapper,
+  LoginHeader,
+  LoginForm,
+  LoginLabel,
+  LoginInput,
+  LoginSpan,
+} from "./LoginPage.styles.js";
+import { useAuth } from "hooks/useAuth.js";
+import { Button } from "components/Button/Button.js";
 
 const LoginPage = () => {
   const auth = useAuth();
@@ -14,7 +21,7 @@ const LoginPage = () => {
   return (
     <LoginPageWrapper>
       <LoginHeader>Login In</LoginHeader>
-      <LoginForm onSubmit={handleSubmit(auth.loginIn)}>
+      <LoginForm onSubmit={handleSubmit(auth.handleSiginIn)}>
         <LoginLabel htmlFor="email">Email</LoginLabel>
         <LoginInput
           type="email"

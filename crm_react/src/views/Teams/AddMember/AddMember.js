@@ -1,15 +1,21 @@
-import React,{useRef} from "react";
-import { useNavigate } from "react-router-dom";
-import { useLeads } from "../../../hooks/useLeads.js";
-import { useAuth } from "../../../hooks/useAuth.js";
+import React, { useRef } from "react";
+import { useNavigate, useMatch } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { AddMemberWrapper, AddMemberHeader,  AddMemberForm, AddMemberLabel, AddMemberInput, AddMemberSpan, AddMemberTextarea  } from './AddMember.styles.js';
-import { Button } from "../../../components/Button/Button.js";
+import { Button } from "components/Button/Button.js";
+import { useTeams } from "hooks/useTeams.js";
+import {
+  AddMemberWrapper,
+  AddMemberHeader,
+  AddMemberForm,
+  AddMemberLabel,
+  AddMemberInput,
+  AddMemberSpan,
+} from "./AddMember.styles.js";
 
 const AddLead = () => {
-  const lead = useLeads();
   const navigate = useNavigate();
-  const auth = useAuth();
+  const match = useMatch("/add-member/:id");
+  const teamHook = useTeams();
   const {
     register,
     handleSubmit,
@@ -21,10 +27,12 @@ const AddLead = () => {
   return (
     <AddMemberWrapper>
       <AddMemberHeader>Add Members</AddMemberHeader>
-      <AddMemberForm onSubmit={handleSubmit((register)=>{
-        auth.signUpAndMember(register,auth.teamid);
-         navigate("/teams");
-        })}>
+      <AddMemberForm
+        onSubmit={handleSubmit((register) => {
+          teamHook.handleAddMember(match.params.id, register);
+          navigate("/teams");
+        })}
+      >
         <AddMemberLabel htmlFor="email">Email</AddMemberLabel>
         <AddMemberInput
           type="email"
@@ -33,6 +41,7 @@ const AddLead = () => {
           {...register("username", { required: true })}
         />
         {errors.username && <AddMemberSpan>Email is required</AddMemberSpan>}
+        {/*
         <AddMemberLabel htmlFor="password">Password</AddMemberLabel>
         <AddMemberInput
           type="password"
@@ -41,17 +50,22 @@ const AddLead = () => {
           {...register("password", { required: true })}
         />
         {errors.password && <AddMemberSpan>Password is required</AddMemberSpan>}
-        <AddMemberLabel htmlFor="password_repeat">Repeate password</AddMemberLabel>
+        <AddMemberLabel htmlFor="password_repeat">
+          Repeate password
+        </AddMemberLabel>
         <AddMemberInput
           type="password"
           name="password_repeat"
           id="password_repeat"
-          {...register("password_repeat",{
-             validate: value => 
-             value === password.current || "The passwords do not match"
-         })}
+          {...register("password_repeat", {
+            validate: (value) =>
+              value === password.current || "The passwords do not match",
+          })}
         />
-        {errors.password_repeat && <AddMemberSpan>The passwords must be identical</AddMemberSpan>}
+        {errors.password_repeat && (
+          <AddMemberSpan>The passwords must be identical</AddMemberSpan>
+        )}
+        */}
         <Button>Submit</Button>
       </AddMemberForm>
     </AddMemberWrapper>

@@ -1,100 +1,157 @@
-import React,{ useEffect, useState }  from "react";
-import { useNavigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
-import { useAuth } from "../../hooks/useAuth.js";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { TeamsWrapper,TeamTitle, TeamHeader, TeamLink, TeamWrapper, TeamModal, ModalButton, ModalWrapper, ModalTeamWrapper, TeamForm, TeamInput, TeamLinkDiv } from './Teams.styles.js';
-import { useTeams } from "../../hooks/useTeams.js";
-import { Button } from "../../components/Button/Button.js";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import TableLoader from "components/TableLoader/TableLoader";
+import { Button } from "components/Button/Button.js";
+import { useTeams } from "hooks/useTeams.js";
+import { useGetTeamsQuery, teamsApiSlice } from "reducers/teamsApiSlice";
+import {
+  TeamsWrapper,
+  TeamTitle,
+  TeamHeader,
+  TeamLink,
+  TeamWrapper,
+  TeamModal,
+  ModalButton,
+  ModalWrapper,
+  ModalTeamWrapper,
+  ModalTeamMember,
+  TeamInputWrapper,
+  TeamInput,
+  TeamLinkDiv,
+} from "./Teams.styles.js";
 
 const Teams = () => {
- const auth = useAuth();
- const navigate = useNavigate();
- const [teams, setTeams] = useState([]);
- const [team, setTeam] = useState([]);
- const {members} = team;
- const { getTeams,getTeamsById, deleteTeam, searchTeam } = useTeams();
- const [modalIsOpen, setIsOpen] = React.useState(false);
- const {
-  register,
-  setValue,
-  handleSubmit,
-  formState: { errors },
-} = useForm();
-  const openModal=(id)=> {
-    setIsOpen(true);
-   (async () => {
-      const teamsClient = await getTeamsById(id);
-      setTeam(teamsClient);
-    })();
-  }
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.authData);
+  const teamsState = useSelector((state) => state.teams);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [team, setTeam] = useState([]);
+  const teamsHook = useTeams();
+  const { register, watch } = useForm();
+  const {
+    data: teams,
+    isFetching: fetchingTeams,
+    refetch: refetchTeams,
+  } = useGetTeamsQuery();
 
-  const closeModal=()=>{
-    setIsOpen(false);
-  }
+  const { isFetching: fetchingSearchTeams } =
+    teamsApiSlice.endpoints.searchTeam.useQueryState(watch("name"));
 
- useEffect(() => {
-    (async () => {
-      const teamsClient = await getTeams();
-      setTeams(teamsClient);
-    })();
-  }, [getTeams, auth.teamid]);
+  const openModal = (id) => {
+    setModalIsOpen(true);
+    const teamFindById = teams?.find((team) => team.id === id);
+    setTeam(teamFindById);
+  };
 
-  const handleDelete=(id)=>{
-    (async () => {
-      const teamsDelete = await deleteTeam(id);
-      const teamsClient = await getTeams();
-      setTeams(teamsClient);
-      setIsOpen(false);
-    })();
-  }
-  
-  const handleChangeTeams=async(id)=>{
-    const respone = await auth.changeTeams(id);
-    navigate("/teams");
-  }
-  const handleSearch=(name)=>{
-    (async () => {
-      const teamsClient = await searchTeam(name);
-      setTeams(teamsClient);
-    })();
-  }
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <TeamsWrapper>
       <TeamTitle>
         <TeamHeader>Team</TeamHeader>
-        <TeamForm onSubmit={handleSubmit((register)=>{handleSearch(register.name)})}>
-        <TeamInput type="serach" placeholder="Search by name" {...register("name", { required: true , onChange:(e)=>{handleSearch(e.target.value)}})} />
-        </TeamForm>
+        <TeamInputWrapper>
+          <TeamInput
+            type="serach"
+            placeholder="Search by name"
+            {...register("name", {
+              required: true,
+              onChange: (e) => {
+                if (e.target.value === "") {
+                  refetchTeams();
+                } else {
+                  dispatch(
+                    teamsApiSlice.util.prefetch("searchTeam", e.target.value, {
+                      force: true,
+                    })
+                  );
+                }
+              },
+            })}
+          />
+        </TeamInputWrapper>
         <TeamLinkDiv>
           <TeamLink to="/add-team">Add Teams</TeamLink>
         </TeamLinkDiv>
       </TeamTitle>
-      <TeamWrapper title>
-            <div>Name</div>
+      <TeamWrapper title="true">
+        <div>Name</div>
       </TeamWrapper>
-      {teams &&(teams.map((team)=>(
-          <TeamWrapper onClick={()=>openModal(team.id)}>
-            <div>{team.name}</div>
-            {String(auth.teamid) === String(team.id) ? <Button team red>Current</Button>:<Button team onClick={(e)=>{e.stopPropagation();handleChangeTeams(team.id);}}>Active</Button>}
-        </TeamWrapper>
-      )))}
-      <TeamModal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-      > 
-      {team.members &&(String(team.members[0].id)===String(auth.userid) &&(<>
-        <ModalButton>
-          <Button to={`/add-member/${team.id}`} as={NavLink} lead>Add member</Button>
-          <Button red onClick={()=>handleDelete(team.id)}>Delete</Button>
-        </ModalButton></>))}
-        <ModalWrapper>
-          <ModalTeamWrapper title>Name</ModalTeamWrapper><ModalTeamWrapper>{team.name}</ModalTeamWrapper>
-          <ModalTeamWrapper title description>Description</ModalTeamWrapper><ModalTeamWrapper description>{team.description}</ModalTeamWrapper>
-          {team.members && (members.map((member)=>(<><ModalTeamWrapper title>Member</ModalTeamWrapper><ModalTeamWrapper >{member.username}</ModalTeamWrapper></>)))}
-        </ModalWrapper>
-      </TeamModal>
+      {fetchingTeams || fetchingSearchTeams ? (
+        <TableLoader />
+      ) : (
+        <>
+          {teams?.map((team) => (
+            <TeamWrapper onClick={() => openModal(team.id)} key={team.id}>
+              <div>{team.name}</div>
+              {String(team.id) === String(teamsState.currentTeam?.id) ? (
+                <Button team red>
+                  Current
+                </Button>
+              ) : (
+                <Button
+                  team
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    teamsHook.handleChangeTeams(team);
+                  }}
+                >
+                  Activate
+                </Button>
+              )}
+            </TeamWrapper>
+          ))}
+          <TeamModal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            ariaHideApp={false}
+          >
+            {String(team?.created_by?.id) === String(auth?.user.id) && (
+              <>
+                <ModalButton>
+                  <Button
+                    to={`/add-member/${team.id}`}
+                    as={NavLink}
+                    lead="true"
+                  >
+                    Add member
+                  </Button>
+                  <Button
+                    red
+                    onClick={() => {
+                      teamsHook.handleDeleteTeam(team, teams);
+                      setModalIsOpen(false);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </ModalButton>
+              </>
+            )}
+            <ModalWrapper>
+              <ModalTeamWrapper title="true">Name</ModalTeamWrapper>
+              <ModalTeamWrapper>{team.name}</ModalTeamWrapper>
+              <ModalTeamWrapper title="true" description>
+                Description
+              </ModalTeamWrapper>
+              <ModalTeamWrapper description>
+                {team.description}
+              </ModalTeamWrapper>
+              {team.members?.map((member) => (
+                <ModalTeamMember key={member.id}>
+                  <ModalTeamWrapper title="true" member>
+                    Member
+                  </ModalTeamWrapper>
+                  <ModalTeamWrapper member>{member.username}</ModalTeamWrapper>
+                </ModalTeamMember>
+              ))}
+            </ModalWrapper>
+          </TeamModal>
+        </>
+      )}
     </TeamsWrapper>
   );
 };
