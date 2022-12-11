@@ -9,15 +9,15 @@ export const Button = styled.button`
   font-family: "Mulish", sans-serif;
   border-radius: 100px !important;
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
   font-size: 1em;
   text-align: center;
-  line-height: 7vh;
   ${(props) =>
     props.team &&
     css`
-      margin-left: 40vw;
       width: 20%;
       height: 4vh;
       line-height: 4vh;

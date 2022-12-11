@@ -26,7 +26,7 @@ export const useTeams = () => {
     navigate("/teams");
   };
 
-  const handleDeleteTeam = (team, teams) => {
+  const handleDelete = (team, teams) => {
     toastHook.handleDisplayBanner(
       deleteTeam({ id: team.id, teams }),
       `Deleting Team ${team.name}`,
@@ -51,7 +51,7 @@ export const useTeams = () => {
   return {
     handleAddTeam,
     handleChangeTeams,
-    handleDeleteTeam,
+    handleDelete,
     handleAddMember,
   };
 };

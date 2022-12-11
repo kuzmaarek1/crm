@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TableLoader, ModalDetails } from "components";
+import { TableLoader, ModalDetails, Button } from "components";
 import * as Styles from "./styles";
 
 const List = ({
@@ -31,7 +31,11 @@ const List = ({
         <Styles.InputWrapper>
           <Styles.Input
             type="serach"
-            placeholder="Search by first name and last name"
+            placeholder={
+              header === "Team"
+                ? "Search by name"
+                : "Search by first name and last name"
+            }
             {...register(`${header.toLowerCase()}-name`, {
               required: true,
               onChange: (e) => {
@@ -56,19 +60,20 @@ const List = ({
           </Styles.Link>
         </Styles.LinkWrapper>
       </Styles.Title>
-      {data && (
+      {data !== undefined && data?.length !== 0 && (
         <>
-          <Styles.ListWrapper title="true">
+          <Styles.ListWrapper title="true" team={header === "Team"}>
             {Object.entries(data[0]).map(
               ([key]) =>
                 key !== "id" &&
                 key !== "created_by" &&
-                key !== "description" && (
-                  <div key={`${header}s-${key}`}>
+                key !== "description" &&
+                key !== "members" && (
+                  <Styles.GridWrapper key={`${header}s-${key}`}>
                     {" "}
                     {key[0].toUpperCase()}
                     {key.slice(1).replace("_", " ")}
-                  </div>
+                  </Styles.GridWrapper>
                 )
             )}
           </Styles.ListWrapper>
@@ -80,20 +85,45 @@ const List = ({
                 <Styles.ListWrapper
                   key={props.id}
                   onClick={() => openModal(props.id)}
+                  team={header === "Team"}
                 >
                   {Object.entries(props).map(([key, value]) => {
-                    return value !== null ? (
-                      key !== "id" &&
-                        key !== "created_by" &&
-                        key !== "description" && (
-                          <div key={`${header}-${key}`}>
-                            {key === "assigned_to" ? value.username : value}
-                          </div>
-                        )
-                    ) : (
-                      <div key={`${header}-${key}`}>Not</div>
+                    return (
+                      <React.Fragment key={`${header}-${key}`}>
+                        {value !== null ? (
+                          key !== "id" &&
+                          key !== "members" &&
+                          key !== "created_by" &&
+                          key !== "description" && (
+                            <Styles.GridWrapper>
+                              {key === "assigned_to" ? value.username : value}
+                            </Styles.GridWrapper>
+                          )
+                        ) : (
+                          <Styles.GridWrapper>Not</Styles.GridWrapper>
+                        )}
+                      </React.Fragment>
                     );
                   })}
+                  {header === "Team" && (
+                    <Styles.GridWrapper team="true">
+                      {String(props.id) === String(teams.currentTeam?.id) ? (
+                        <Button team red>
+                          Current
+                        </Button>
+                      ) : (
+                        <Button
+                          team
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            hook.handleChangeTeams(props);
+                          }}
+                        >
+                          Activate
+                        </Button>
+                      )}
+                    </Styles.GridWrapper>
+                  )}
                 </Styles.ListWrapper>
               ))}
             </>

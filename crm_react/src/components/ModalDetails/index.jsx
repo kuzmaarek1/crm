@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Button } from "components";
 import * as Styles from "./styles";
 
@@ -11,6 +12,7 @@ const ModalDetails = ({
   hook,
   teams,
 }) => {
+  const auth = useSelector((state) => state.auth.authData);
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
@@ -28,39 +30,60 @@ const ModalDetails = ({
             Client
           </Button>
         )}
-        <Button
-          to={`/edit-${header.toLowerCase()}/${list.id}`}
-          as={NavLink}
-          lead="true"
-        >
-          Edit
-        </Button>
-        <Button
-          red
-          onClick={() => {
-            hook.handleDelete(list, teams.currentTeam.id);
-            closeModal();
-          }}
-        >
-          Delete
-        </Button>
+        {header !== "Team" ? (
+          <Button
+            to={`/edit-${header.toLowerCase()}/${list.id}`}
+            as={NavLink}
+            lead="true"
+          >
+            Edit
+          </Button>
+        ) : (
+          String(list?.created_by?.id) === String(auth?.user.id) && (
+            <Button to={`/add-member/${list.id}`} as={NavLink} lead="true">
+              Add member
+            </Button>
+          )
+        )}
+        {((header === "Team" &&
+          String(list?.created_by?.id) === String(auth?.user.id)) ||
+          header !== "Team") && (
+          <Button
+            red
+            onClick={() => {
+              hook.handleDelete(list, teams.currentTeam.id);
+              closeModal();
+            }}
+          >
+            Delete
+          </Button>
+        )}
       </Styles.ButtonWrapper>
       <Styles.DetailsWrapper>
         {Object.entries(list).map(([key, value], index) => (
           <React.Fragment key={`${header}-${key}`}>
-            {key !== "id" && key !== "created_by" && (
+            {key !== "id" && key !== "created_by" && key !== "member" && (
               <>
                 <Styles.Details
                   title="true"
                   description={key === "description"}
+                  member={key === "members"}
                 >
                   {key[0].toUpperCase()}
                   {key.slice(1).replace("_", " ")}
                 </Styles.Details>
                 {value !== null ? (
-                  <Styles.Details description={key === "description"}>
-                    {key === "assigned_to" ? value.username : value}
-                  </Styles.Details>
+                  key !== "members" ? (
+                    <Styles.Details description={key === "description"}>
+                      {key === "assigned_to" ? value.username : value}
+                    </Styles.Details>
+                  ) : (
+                    value.map(({ username }) => (
+                      <Styles.Details key={`member-${username}`} member="true">
+                        {username}
+                      </Styles.Details>
+                    ))
+                  )
                 ) : (
                   <Styles.Details>Not</Styles.Details>
                 )}

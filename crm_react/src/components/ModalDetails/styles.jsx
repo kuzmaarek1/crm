@@ -7,7 +7,6 @@ export const ModalWrapper = styled(Modal)`
   left: 50%;
   right: auto;
   bottom: auto;
-  margin-right: -50%;
   transform: translate(-50%, -50%);
   width: 50%;
   padding: 20px;
@@ -26,15 +25,17 @@ export const ButtonWrapper = styled.div`
 export const DetailsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1px;
+  column-gap: 5px;
 `;
 
 export const Details = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 1vh;
   height: 5vh;
   width: 100%;
   text-align: center;
-  line-height: 5vh;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
   ${(props) =>
@@ -42,10 +43,15 @@ export const Details = styled.div`
     css`
       font-weight: 800;
     `}
-  ${(props) =>
-    props.description &&
-    css`
-      height: 20vh;
-      line-height: 2vh;
-    `}
+  ${(props) => {
+    if (props.description)
+      return css`
+        height: 20vh;
+      `;
+    else if (props.member) {
+      return css`
+        grid-column: span 2 / span 2;
+      `;
+    }
+  }}
 `;

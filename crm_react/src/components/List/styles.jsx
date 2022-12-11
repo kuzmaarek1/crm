@@ -2,8 +2,13 @@ import styled, { css } from "styled-components";
 import { NavLink } from "react-router-dom";
 
 export const Wrapper = styled.div`
+  height: 92.5vh;
+  overflow: scroll;
   color: #303030;
   background-color: #f7f8fc;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Title = styled.div`
@@ -38,12 +43,12 @@ export const Link = styled(NavLink)`
 
 export const ListWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: ${(props) =>
+    props.team ? "repeat(2, 1fr)" : "repeat(5, 1fr)"};
   margin-top: 1vh;
   height: 5vh;
   width: 100%;
   text-align: center;
-  line-height: 5vh;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
   ${(props) =>
@@ -79,4 +84,16 @@ export const Input = styled.input`
     color: #616161;
     box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
   }
+`;
+
+export const GridWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${(props) =>
+    props.team &&
+    css`
+      justify-content: flex-end;
+      margin-right: 20px;
+    `}
 `;

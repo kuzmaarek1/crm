@@ -18,11 +18,11 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Team", "Auth"],
     }),
     searchTeam: builder.query({
-      query: (name) => ({
+      query: ({ name }) => ({
         url: `api/teams/search_team/${name}/`,
         method: "GET",
       }),
-      async onQueryStarted(name, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ name }, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           if (name !== "") {
