@@ -29,7 +29,6 @@ const AuthenticatedApp = () => {
       ) : (
         <Routes>
           <Route path="/my-account" element={<MyAccount />} />
-          <Route path="/teams" element={<Teams />} />
           <Route path="*" element={<Navigate to="/my-account" />} />
         </Routes>
       )}

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useToast } from "hooks/useToast";
@@ -10,7 +9,6 @@ import {
 } from "reducers/teamsApiSlice";
 
 export const useTeams = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const toastHook = useToast();
   const [addMember] = useAddMemberMutation();
@@ -23,7 +21,6 @@ export const useTeams = () => {
       `Adding team ${data.name}`,
       `Added team ${data.name}`
     );
-    navigate("/teams");
   };
 
   const handleDelete = (team, teams) => {

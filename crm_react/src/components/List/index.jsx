@@ -68,69 +68,67 @@ const List = ({
         </Styles.ButtonWrapper>
       </Styles.Title>
       {objectKey && (
+        <Styles.ListWrapper title="true" team={header === "Team"}>
+          {Object.entries(objectKey).map(([key]) => (
+            <Styles.GridWrapper key={`${header}s-${key}`}>
+              {" "}
+              {key[0].toUpperCase()}
+              {key.slice(1).replace("_", " ")}
+            </Styles.GridWrapper>
+          ))}
+        </Styles.ListWrapper>
+      )}
+      {fetchingData || fetchingSearchData ? (
+        <TableLoader />
+      ) : (
         <>
-          <Styles.ListWrapper title="true" team={header === "Team"}>
-            {Object.entries(objectKey).map(([key]) => (
-              <Styles.GridWrapper key={`${header}s-${key}`}>
-                {" "}
-                {key[0].toUpperCase()}
-                {key.slice(1).replace("_", " ")}
-              </Styles.GridWrapper>
-            ))}
-          </Styles.ListWrapper>
-          {fetchingData || fetchingSearchData ? (
-            <TableLoader />
-          ) : (
-            <>
-              {data?.map(
-                ({ id, members, created_by, description, ...otherProps }) => (
-                  <Styles.ListWrapper
-                    key={id}
-                    onClick={() => openModal(id)}
-                    team={header === "Team"}
-                  >
-                    {Object.entries(otherProps).map(([key, value]) => {
-                      return (
-                        <React.Fragment key={`${header}-${key}`}>
-                          {value !== null ? (
-                            <Styles.GridWrapper>
-                              {key === "assigned_to" ? value.username : value}
-                            </Styles.GridWrapper>
-                          ) : (
-                            <Styles.GridWrapper>Not</Styles.GridWrapper>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                    {header === "Team" && (
-                      <Styles.GridWrapper team="true">
-                        {String(id) === String(teams.currentTeam?.id) ? (
-                          <Button team red>
-                            Current
-                          </Button>
-                        ) : (
-                          <Button
-                            team
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              hook.handleChangeTeams({
-                                id,
-                                members,
-                                created_by,
-                                description,
-                                ...otherProps,
-                              });
-                            }}
-                          >
-                            Activate
-                          </Button>
-                        )}
-                      </Styles.GridWrapper>
+          {data?.map(
+            ({ id, members, created_by, description, ...otherProps }) => (
+              <Styles.ListWrapper
+                key={id}
+                onClick={() => openModal(id)}
+                team={header === "Team"}
+              >
+                {Object.entries(otherProps).map(([key, value]) => {
+                  return (
+                    <React.Fragment key={`${header}-${key}`}>
+                      {value !== null ? (
+                        <Styles.GridWrapper>
+                          {key === "assigned_to" ? value.username : value}
+                        </Styles.GridWrapper>
+                      ) : (
+                        <Styles.GridWrapper>Not</Styles.GridWrapper>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+                {header === "Team" && (
+                  <Styles.GridWrapper team="true">
+                    {String(id) === String(teams.currentTeam?.id) ? (
+                      <Button team red>
+                        Current
+                      </Button>
+                    ) : (
+                      <Button
+                        team
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          hook.handleChangeTeams({
+                            id,
+                            members,
+                            created_by,
+                            description,
+                            ...otherProps,
+                          });
+                        }}
+                      >
+                        Activate
+                      </Button>
                     )}
-                  </Styles.ListWrapper>
-                )
-              )}
-            </>
+                  </Styles.GridWrapper>
+                )}
+              </Styles.ListWrapper>
+            )
           )}
         </>
       )}
