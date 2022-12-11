@@ -24,7 +24,7 @@ export const useLeads = () => {
     navigate("/leads");
   };
 
-  const handleDeleteLead = (lead, team) => {
+  const handleDelete = (lead, team) => {
     toast.handleDisplayBanner(
       deleteLead({ lead: lead.id, team }),
       `Deleting lead ${lead.first_name} ${lead.last_name}`,
@@ -56,7 +56,7 @@ export const useLeads = () => {
 
   return {
     handleAddLead,
-    handleDeleteLead,
+    handleDelete,
     handleEditLead,
     handleConvertToClient,
   };

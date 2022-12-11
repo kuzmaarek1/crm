@@ -22,7 +22,7 @@ export const useClients = () => {
     navigate("/clients");
   };
 
-  const handleDeleteClient = (client, team) => {
+  const handleDelete = (client, team) => {
     toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,
@@ -41,7 +41,7 @@ export const useClients = () => {
 
   return {
     handleAddClient,
-    handleDeleteClient,
+    handleDelete,
     handleEditClient,
   };
 };
