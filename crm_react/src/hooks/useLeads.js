@@ -15,7 +15,7 @@ export const useLeads = () => {
   const [convertLeadToClient] = useConvertLeadToClientMutation();
   const [deleteLead] = useDeleteLeadMutation();
 
-  const handleAddLead = (id, data) => {
+  const handleAdd = (id, data) => {
     toast.handleDisplayBanner(
       createLead({ id, data }),
       `Adding lead ${data.first_name} ${data.last_name}`,
@@ -55,7 +55,7 @@ export const useLeads = () => {
   };
 
   return {
-    handleAddLead,
+    handleAdd,
     handleDelete,
     handleEditLead,
     handleConvertToClient,

@@ -17,7 +17,7 @@ export const useTeams = () => {
   const [addTeam] = useAddTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
 
-  const handleAddTeam = (data) => {
+  const handleAdd = (team, data) => {
     toastHook.handleDisplayBanner(
       addTeam(data),
       `Adding team ${data.name}`,
@@ -49,7 +49,7 @@ export const useTeams = () => {
   };
 
   return {
-    handleAddTeam,
+    handleAdd,
     handleChangeTeams,
     handleDelete,
     handleAddMember,

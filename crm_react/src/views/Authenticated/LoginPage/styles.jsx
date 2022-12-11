@@ -43,6 +43,7 @@ export const Input = styled.input`
   box-sizing: border-box;
   color: #616161;
   box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
+  font-family: "Montserrat", sans-serif;
   font-size: 1rem;
   border-radius: 25px;
   resize: none;

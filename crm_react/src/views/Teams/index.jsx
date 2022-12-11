@@ -18,7 +18,7 @@ const Teams = () => {
 
   const { isFetching: fetchingSearchTeams } =
     teamsApiSlice.endpoints.searchTeam.useQueryState({
-      team: teamsState.currentTeam.id,
+      team: teamsState?.currentTeam?.id,
       name: watch("team-name"),
     });
 

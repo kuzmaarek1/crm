@@ -25,14 +25,12 @@ const Navbar = () => {
       </Styles.Title>
       {auth ? (
         <Styles.Links>
-          {teams.currentTeam ? (
+          {teams.currentTeam && (
             <>
               <Styles.Link to="leads">Leads </Styles.Link>
               <Styles.Link to="teams">Teams </Styles.Link>
               <Styles.Link to="clients">Clients </Styles.Link>
             </>
-          ) : (
-            <Styles.Link to="add-team">Add team</Styles.Link>
           )}
           <Styles.Link to="my-account">My account </Styles.Link>
         </Styles.Links>

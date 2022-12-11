@@ -44,6 +44,7 @@ export const Input = styled.input`
   color: #616161;
   box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
   font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
   border-radius: 25px;
   resize: none;
   &:focus {

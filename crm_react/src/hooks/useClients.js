@@ -13,7 +13,7 @@ export const useClients = () => {
   const [editClient] = useEditClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  const handleAddClient = (id, data) => {
+  const handleAdd = (id, data) => {
     toast.handleDisplayBanner(
       createClient({ id, data }),
       `Adding client ${data.first_name} ${data.last_name}`,
@@ -40,7 +40,7 @@ export const useClients = () => {
   };
 
   return {
-    handleAddClient,
+    handleAdd,
     handleDelete,
     handleEditClient,
   };

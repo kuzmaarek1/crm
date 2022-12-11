@@ -13,6 +13,7 @@ const ModalDetails = ({
   teams,
 }) => {
   const auth = useSelector((state) => state.auth.authData);
+  const { id, created_by, ...otherData } = list;
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
@@ -32,21 +33,21 @@ const ModalDetails = ({
         )}
         {header !== "Team" ? (
           <Button
-            to={`/edit-${header.toLowerCase()}/${list.id}`}
+            to={`/edit-${header.toLowerCase()}/${id}`}
             as={NavLink}
             lead="true"
           >
             Edit
           </Button>
         ) : (
-          String(list?.created_by?.id) === String(auth?.user.id) && (
+          String(created_by?.id) === String(auth?.user.id) && (
             <Button to={`/add-member/${list.id}`} as={NavLink} lead="true">
               Add member
             </Button>
           )
         )}
         {((header === "Team" &&
-          String(list?.created_by?.id) === String(auth?.user.id)) ||
+          String(created_by?.id) === String(auth?.user.id)) ||
           header !== "Team") && (
           <Button
             red
@@ -60,9 +61,9 @@ const ModalDetails = ({
         )}
       </Styles.ButtonWrapper>
       <Styles.DetailsWrapper>
-        {Object.entries(list).map(([key, value], index) => (
-          <React.Fragment key={`${header}-${key}`}>
-            {key !== "id" && key !== "created_by" && key !== "member" && (
+        {Object.entries(otherData).map(([key, value], index) => (
+          <React.Fragment key={`${header}-${key}-${id}`}>
+            {key !== "member" && (
               <>
                 <Styles.Details
                   title="true"

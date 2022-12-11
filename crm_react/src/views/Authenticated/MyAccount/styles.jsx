@@ -10,15 +10,12 @@ export const Wrapper = styled.div`
   width: 100%;
 `;
 
-export const Button = styled.button`
-  width: 20%;
-  height: 7vh;
-  border: none;
-  background: rgba(197, 220, 250, 0.5);
-  color: #0f56b3;
-  font-family: "Mulish", sans-serif;
-  border-radius: 100px !important;
-  cursor: pointer;
+export const ButtonWrapper = styled.div`
+  width: ${({ small }) => (small ? "200px" : "500px")};
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-content: center;
 `;
 
 export const DetailsWrapper = styled.div`

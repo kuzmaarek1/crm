@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { NavLink } from "react-router-dom";
 
 export const Wrapper = styled.div`
   height: 92.5vh;
@@ -20,17 +19,18 @@ export const Header = styled.h1`
   width: 40%;
   margin-left: 2vw;
 `;
-export const LinkWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   width: 40%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   height: 10vh;
 `;
-export const Link = styled(NavLink)`
+export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   width: 8vw;
   height: 8vh;
   text-decoration: none;
@@ -57,7 +57,7 @@ export const ListWrapper = styled.div`
       font-weight: 800;
     `}
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.title ? "default" : "pointer")};
   }
 `;
 

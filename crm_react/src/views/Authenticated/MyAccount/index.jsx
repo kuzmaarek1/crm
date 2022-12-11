@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "hooks/useAuth";
+import { useSelector } from "react-redux";
 import { useGetUserQuery } from "reducers/authApiSlice";
-import { MyAccountLoader } from "components";
+import { MyAccountLoader, ModalFormAdd, Button } from "components";
+import { useTeams } from "hooks/useTeams";
 import * as Styles from "./styles";
 
 const MyAccount = () => {
   const authHook = useAuth();
+  const teamsHook = useTeams();
+  const teams = useSelector((state) => state.teams);
   const { data: auth, isLoading } = useGetUserQuery();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   return (
     <Styles.Wrapper>
       <h1>MyAccount</h1>
@@ -20,9 +26,22 @@ const MyAccount = () => {
           <Styles.Details>{auth?.username}</Styles.Details>
         </Styles.DetailsWrapper>
       )}
-      <Styles.Button onClick={() => authHook.handleLogOut()}>
-        Log out
-      </Styles.Button>
+      <Styles.ButtonWrapper small={teams.currentTeam}>
+        {!teams.currentTeam && (
+          <>
+            <Button onClick={() => setModalIsOpen(true)}>Add Team</Button>
+            <ModalFormAdd
+              header="Team"
+              modalIsOpen={modalIsOpen}
+              closeModal={() => setModalIsOpen(false)}
+              hook={teamsHook}
+            />
+          </>
+        )}
+        <Button onClick={() => authHook.handleLogOut()} red="true">
+          Log out
+        </Button>
+      </Styles.ButtonWrapper>
     </Styles.Wrapper>
   );
 };

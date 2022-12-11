@@ -6,12 +6,9 @@ import {
   Leads,
   Clients,
   Teams,
-  AddLead,
-  AddClient,
   AddMember,
   EditLead,
   EditClient,
-  AddTeam,
 } from "views";
 
 const AuthenticatedApp = () => {
@@ -22,21 +19,17 @@ const AuthenticatedApp = () => {
         <Routes>
           <Route path="/leads" element={<Leads />} />
           <Route path="/teams" element={<Teams />} />
-          <Route path="/add-lead" element={<AddLead />} />
           <Route path="/edit-lead/:id" element={<EditLead />} />
-          <Route path="/add-team" element={<AddTeam />} />
+          <Route path="/edit-client/:id" element={<EditClient />} />
           <Route path="/add-member/:id" element={<AddMember />} />
           <Route path="/clients" element={<Clients />} />
-          <Route path="/add-client" element={<AddClient />} />
-          <Route path="/edit-client/:id" element={<EditClient />} />
-          <Route path="/add-team" element={<AddTeam />} />
           <Route path="/my-account" element={<MyAccount />} />
           <Route path="*" element={<Navigate to="/my-account" />} />
         </Routes>
       ) : (
         <Routes>
           <Route path="/my-account" element={<MyAccount />} />
-          <Route path="/add-team" element={<AddTeam />} />
+          <Route path="/teams" element={<Teams />} />
           <Route path="*" element={<Navigate to="/my-account" />} />
         </Routes>
       )}
