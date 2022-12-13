@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from operator import itemgetter
 from rest_framework import viewsets
 from .serializers import ClientSerializer
 from rest_framework.decorators import api_view
@@ -40,9 +40,14 @@ def search_client(request,team_id,search):
 @api_view(['POST'])
 def create_client(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    serializer = ClientSerializer(data=request.data)
+    first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
+    serializer =  ClientSerializer(data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
     if serializer.is_valid():
         serializer.save(created_by=request.user, team=team)
+    assigned_to = itemgetter("assigned_to")(request.data)
+    if assigned_to != None:
+       user = User.objects.get(username=assigned_to)
+       serializer.save(assigned_to=user)
     return Response({'message':'Create'})
 
 @api_view(['PUT'])
@@ -50,16 +55,12 @@ def update_client(request, client_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     client = Client.objects.get(id=client_id)
     serializer = ClientSerializer(client, data=request.data)
-    username = request.data['assigned_to']
     try:
+        username = request.data['assigned_to']
         user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        user = 0
-    if serializer.is_valid():
-        if user:
-            serializer.save(team=team, assigned_to=user)
-        else:
-            serializer.save(team=team)
+        serializer.save(team=team, assigned_to=user)
+    except:
+        serializer.save(team=team)
     return Response({'message':'Update'})
 
 @api_view(['PUT'])

@@ -18,7 +18,6 @@ const EditLead = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const { data: leads } = useGetLeadsQuery(teams.currentTeam.id);
   useEffect(() => {
     const findLeadById = leads.find(

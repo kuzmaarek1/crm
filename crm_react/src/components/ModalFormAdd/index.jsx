@@ -8,9 +8,11 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm();
-
+  } = useForm({
+    defaultValues: { assigned_to: null },
+  });
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
@@ -23,6 +25,7 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
           console.log(register);
           hook.handleAdd(teams?.currentTeam?.id, register);
           closeModal();
+          reset();
         })}
       >
         {header !== "Team" ? (
