@@ -1,12 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "components";
+import { Button, DownshiftList } from "components";
 import * as Styles from "./styles";
 
 const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -19,6 +20,7 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
       <Styles.Header>Add {header}</Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit((register) => {
+          console.log(register);
           hook.handleAdd(teams?.currentTeam?.id, register);
           closeModal();
         })}
@@ -69,6 +71,12 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
               />
               {errors.phone && <Styles.Span>Phone is required</Styles.Span>}
             </Styles.InputWrapper>
+            <DownshiftList
+              teams={teams}
+              name="assigned_to"
+              register={register}
+              setValue={setValue}
+            />
           </>
         ) : (
           <Styles.InputWrapper>
@@ -82,7 +90,6 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
             {errors.name && <Styles.Span> Name is required</Styles.Span>}
           </Styles.InputWrapper>
         )}
-
         <Styles.InputWrapper>
           <Styles.Label htmlFor="description">Description</Styles.Label>
           <Styles.Textarea

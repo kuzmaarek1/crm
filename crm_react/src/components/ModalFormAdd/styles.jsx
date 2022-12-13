@@ -51,7 +51,7 @@ export const Input = styled.input`
   width: 60%;
   height: 5vh;
   margin-bottom: 3vh;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 1px solid #737c8e;
   box-sizing: border-box;
   color: #616161;
@@ -65,6 +65,9 @@ export const Input = styled.input`
     font-size: 1rem;
     color: #616161;
     box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
+  }
+  option {
+    border-radius: 25px;
   }
 `;
 export const Textarea = styled.textarea`
@@ -88,3 +91,7 @@ export const Textarea = styled.textarea`
     box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
   }
 `;
+/*
+export const Option = styled.option`
+  border-radius: 25px;
+`;*/
