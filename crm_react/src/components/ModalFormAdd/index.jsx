@@ -11,8 +11,9 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: { assigned_to: null },
+    defaultValues: { assigned_to: "" },
   });
+
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}

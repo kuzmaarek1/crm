@@ -27,6 +27,7 @@ const DownshiftList = ({ teams, name, register, setValue }) => {
       setItems(
         teams?.currentTeam?.members.filter(getMembersFilter(inputValue))
       );
+      setValue(name, inputValue);
     },
     onSelectedItemChange: ({ inputValue }) => {
       setValue(name, inputValue);

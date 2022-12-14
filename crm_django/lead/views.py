@@ -42,13 +42,15 @@ def create_lead(request,team_id):
     first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
     serializer = LeadSerializer(data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
     if serializer.is_valid():
-        serializer.save(created_by=request.user, team=team)
-    assigned_to = itemgetter("assigned_to")(request.data)
-    if assigned_to != None:
-       user = User.objects.get(username=assigned_to)
-       serializer.save(assigned_to=user)
-    return Response({'message':'Create'})
-   
+        assigned_to = itemgetter("assigned_to")(request.data)
+        try:
+            user = User.objects.get(username=assigned_to)
+            serializer.save(created_by=request.user, team=team, assigned_to=user)
+            return Response({'message':'Create'})
+        except User.DoesNotExist:
+            if  assigned_to =="":
+                serializer.save(created_by=request.user, team=team)
+                return Response({'message':'Create'})
 
 @api_view(['PUT'])
 def update_lead(request, lead_id, team_id):

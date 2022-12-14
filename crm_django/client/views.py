@@ -43,12 +43,15 @@ def create_client(request,team_id):
     first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
     serializer =  ClientSerializer(data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
     if serializer.is_valid():
-        serializer.save(created_by=request.user, team=team)
-    assigned_to = itemgetter("assigned_to")(request.data)
-    if assigned_to != None:
-       user = User.objects.get(username=assigned_to)
-       serializer.save(assigned_to=user)
-    return Response({'message':'Create'})
+        assigned_to = itemgetter("assigned_to")(request.data)
+        try:
+            user = User.objects.get(username=assigned_to)
+            serializer.save(created_by=request.user, team=team, assigned_to=user)
+            return Response({'message':'Create'})
+        except User.DoesNotExist:
+            if  assigned_to =="":
+                serializer.save(created_by=request.user, team=team)
+                return Response({'message':'Create'})
 
 @api_view(['PUT'])
 def update_client(request, client_id, team_id):
@@ -74,6 +77,6 @@ def convert_lead_to_client(request, lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.filter(team=team).get(id=lead_id)
     client = Client.objects.create(team=team, first_name=lead.first_name, last_name=lead.last_name, phone=lead.phone,
-                                   email=lead.email, created_by=request.user)
+                                   email=lead.email, created_by=request.user, description=lead.description, assigned_to=lead.assigned_to)
     Lead.objects.filter(team=team, id=lead_id).delete()
     return Response(client.pk)
