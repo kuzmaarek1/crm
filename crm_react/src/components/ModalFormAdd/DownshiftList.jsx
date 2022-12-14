@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCombobox } from "downshift";
 import * as Styles from "./styles";
 
-const DownshiftList = ({ teams, name, register, setValue }) => {
+const DownshiftList = ({ teams, name, register, setValue, watch }) => {
   const [items, setItems] = useState(teams?.currentTeam?.members);
 
   const getMembersFilter = (inputValue) => {
@@ -37,6 +37,7 @@ const DownshiftList = ({ teams, name, register, setValue }) => {
       return item ? item.username : "";
     },
   });
+
   return (
     <Styles.InputWrapper>
       <Styles.Label htmlFor="description" {...getLabelProps()}>
@@ -45,25 +46,30 @@ const DownshiftList = ({ teams, name, register, setValue }) => {
       <Styles.Input
         placeholder="Select members"
         name={name}
+        absolute="true"
         {...getInputProps({ ref: register(name) })}
       />
-      <button
+      <Styles.ButtonDowshift
         aria-label="toggle menu"
         type="button"
         {...getToggleButtonProps()}
-      ></button>
-      {isOpen ? <>&#8593;</> : <>&#8595;</>}
-      <ul {...getMenuProps()}>
+      >
+        {" "}
+        {isOpen ? <>&#8593;</> : <>&#8595;</>}
+      </Styles.ButtonDowshift>
+      <Styles.Ul {...getMenuProps()}>
         {isOpen &&
           items.map((item, index) => (
-            <li
+            <Styles.Li
+              highlighted={highlightedIndex === index}
+              selectedItem={watch("assigned_to") === item.username}
               key={`${item.value}${index}`}
               {...getItemProps({ item, index })}
             >
               <span>{item.username}</span>
-            </li>
+            </Styles.Li>
           ))}
-      </ul>
+      </Styles.Ul>
     </Styles.InputWrapper>
   );
 };

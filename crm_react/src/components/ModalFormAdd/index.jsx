@@ -9,6 +9,7 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: { assigned_to: "" },
@@ -23,7 +24,6 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
       <Styles.Header>Add {header}</Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit((register) => {
-          console.log(register);
           hook.handleAdd(teams?.currentTeam?.id, register);
           closeModal();
           reset();
@@ -80,6 +80,7 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
               name="assigned_to"
               register={register}
               setValue={setValue}
+              watch={watch}
             />
           </>
         ) : (

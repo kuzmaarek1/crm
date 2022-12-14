@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Modal from "react-modal";
 
 export const ModalWrapper = styled(Modal)`
@@ -28,9 +28,9 @@ export const Form = styled.form`
 `;
 export const Label = styled.label`
   display: flex;
+  margin-bottom: 5vh;
   width: 40%;
   height: 13%;
-  margin-bottom: 2vh;
   align-items: center;
 `;
 export const InputWrapper = styled.div`
@@ -50,7 +50,6 @@ export const Span = styled.span`
 export const Input = styled.input`
   width: 60%;
   height: 5vh;
-  margin-bottom: 3vh;
   padding: 8px 12px;
   border: 1px solid #737c8e;
   box-sizing: border-box;
@@ -66,12 +65,17 @@ export const Input = styled.input`
     color: #616161;
     box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
   }
-  option {
-    border-radius: 25px;
-  }
+  ${(props) =>
+    props.absolute &&
+    css`
+      position: absolute;
+      right: 0;
+      top: 0;
+    `}
 `;
 export const Textarea = styled.textarea`
   display: block;
+  z-index: 0;
   font-family: "Montserrat", sans-serif;
   margin-bottom: 3vh;
   width: 60%;
@@ -91,7 +95,50 @@ export const Textarea = styled.textarea`
     box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
   }
 `;
-/*
-export const Option = styled.option`
+export const ButtonDowshift = styled.button`
+  position: absolute;
+  top: 0;
+  right: 2%;
+  height: 5vh;
+  margin: auto;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+`;
+
+export const Ul = styled.ul`
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: calc(2.5vh + 1px);
+  right: 0;
+  width: 60%;
+  list-style: none;
+  padding: 0;
+`;
+
+export const Li = styled.li`
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
+  border: 1px solid #737c8e;
   border-radius: 25px;
-`;*/
+  font-family: "Montserrat", sans-serif;
+  height: 4vh;
+  font-size: 0.9rem;
+  margin-bottom: -1px;
+  ${({ highlighted, selectedItem }) =>
+    (highlighted || selectedItem) &&
+    css`
+      background-color: rgba(197, 220, 250, 0.5);
+      color: #0f56b3;
+      border: 1px solid #0f56b3;
+      font-weight: ${({ selectedItem }) => (selectedItem ? "600" : "400")};
+    `}
+`;
