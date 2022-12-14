@@ -1,5 +1,5 @@
 import { apiSlice } from "api/apiSlice";
-import { deleteTeamSuccess } from "reducers/teams.js";
+import { deleteTeamSuccess, editTeamSuccess } from "reducers/teams.js";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,6 +16,20 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Team", "Auth"],
+    }),
+    editTeam: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/api/teams/update_team/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+      async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(editTeamSuccess({ data: { id, data } }));
+        } catch {}
+      },
+      invalidatesTags: ["Team"],
     }),
     searchTeam: builder.query({
       query: ({ name }) => ({
@@ -74,6 +88,7 @@ export const {
   useGetTeamsQuery,
   useSearchTeamQuery,
   useAddMemberMutation,
+  useEditTeamMutation,
   useAddTeamMutation,
   useDeleteTeamMutation,
 } = teamsApiSlice;

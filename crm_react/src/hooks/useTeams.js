@@ -6,6 +6,7 @@ import {
   useAddMemberMutation,
   useAddTeamMutation,
   useDeleteTeamMutation,
+  useEditTeamMutation,
 } from "reducers/teamsApiSlice";
 
 export const useTeams = () => {
@@ -14,6 +15,7 @@ export const useTeams = () => {
   const [addMember] = useAddMemberMutation();
   const [addTeam] = useAddTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
+  const [editTeam] = useEditTeamMutation();
 
   const handleAdd = (team, data) => {
     toastHook.handleDisplayBanner(
@@ -45,10 +47,19 @@ export const useTeams = () => {
     toast.success(`Change team ${team.name}`);
   };
 
+  const handleEdit = (id, team, data) => {
+    toastHook.handleDisplayBanner(
+      editTeam({ id, data }),
+      `Updating team ${data.name}`,
+      `Updated team  ${data.name}`
+    );
+  };
+
   return {
     handleAdd,
     handleChangeTeams,
     handleDelete,
+    handleEdit,
     handleAddMember,
   };
 };

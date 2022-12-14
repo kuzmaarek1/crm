@@ -51,3 +51,11 @@ def add_member(request, team_id):
         return Response(user_dict)
     else:
         return HttpResponse(status=500)
+
+@api_view(['PUT'])
+def update_team(request, team_id):
+    team = Team.objects.filter(id=team_id).first()
+    serializer = TeamSerializer(team, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Update'})

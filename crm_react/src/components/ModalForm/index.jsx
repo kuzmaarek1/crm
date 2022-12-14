@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList } from "components";
 import * as Styles from "./styles";
 
-const ModalFromAdd = ({
+const ModalFrom = ({
   hook,
   header,
   teams,
@@ -12,6 +12,7 @@ const ModalFromAdd = ({
   closeDetails,
   list,
 }) => {
+  const defaultValue = header === "Team" ? "" : { assigned_to: "" };
   const {
     register,
     handleSubmit,
@@ -20,12 +21,12 @@ const ModalFromAdd = ({
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: { assigned_to: "" },
+    defaultValues: defaultValue,
   });
 
   useEffect(() => {
     if (list) {
-      const { id, created_by, ...otherData } = list;
+      const { id, created_by, members, ...otherData } = list;
       Object.entries(otherData).forEach(([key, value]) => {
         key === "assigned_to"
           ? setValue(key, value?.username ? value?.username : "")
@@ -137,4 +138,4 @@ const ModalFromAdd = ({
   );
 };
 
-export default ModalFromAdd;
+export default ModalFrom;

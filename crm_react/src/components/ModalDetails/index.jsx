@@ -32,29 +32,28 @@ const ModalDetails = ({
             Client
           </Button>
         )}
-        {header !== "Team" ? (
-          <Button onClick={() => setModalIsOpenFormEdit(true)} lead="true">
-            Edit
-          </Button>
-        ) : (
-          String(created_by?.id) === String(auth?.user.id) && (
-            <Button to={`/add-member/${list.id}`} as={NavLink} lead="true">
-              Add member
-            </Button>
-          )
-        )}
         {((header === "Team" &&
           String(created_by?.id) === String(auth?.user.id)) ||
           header !== "Team") && (
-          <Button
-            red
-            onClick={() => {
-              hook.handleDelete(list, teams.currentTeam.id);
-              closeModal();
-            }}
-          >
-            Delete
-          </Button>
+          <>
+            {header === "Team" && (
+              <Button to={`/add-member/${list.id}`} as={NavLink} lead="true">
+                Add member
+              </Button>
+            )}
+            <Button onClick={() => setModalIsOpenFormEdit(true)} lead="true">
+              Edit
+            </Button>
+            <Button
+              red
+              onClick={() => {
+                hook.handleDelete(list, teams.currentTeam.id);
+                closeModal();
+              }}
+            >
+              Delete
+            </Button>
+          </>
         )}
       </Styles.ButtonWrapper>
       <Styles.DetailsWrapper>
