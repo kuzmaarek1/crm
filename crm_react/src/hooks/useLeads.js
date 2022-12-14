@@ -32,7 +32,7 @@ export const useLeads = () => {
     );
   };
 
-  const handleEditLead = (lead, team, data) => {
+  const handleEdit = (lead, team, data) => {
     toast.handleDisplayBanner(
       editLead({ lead, team, data }),
       `Updating lead ${data.first_name} ${data.last_name}`,
@@ -57,7 +57,7 @@ export const useLeads = () => {
   return {
     handleAdd,
     handleDelete,
-    handleEditLead,
+    handleEdit,
     handleConvertToClient,
   };
 };

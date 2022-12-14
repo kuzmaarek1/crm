@@ -56,15 +56,19 @@ def create_client(request,team_id):
 @api_view(['PUT'])
 def update_client(request, client_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
+    first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
     client = Client.objects.get(id=client_id)
-    serializer = ClientSerializer(client, data=request.data)
-    try:
-        username = request.data['assigned_to']
-        user = User.objects.get(username=username)
-        serializer.save(team=team, assigned_to=user)
-    except:
-        serializer.save(team=team)
-    return Response({'message':'Update'})
+    serializer = ClientSerializer(client, data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
+    if serializer.is_valid():
+        assigned_to = itemgetter("assigned_to")(request.data)
+        try:
+            user = User.objects.get(username=assigned_to)
+            serializer.save(team=team, assigned_to=user)
+            return Response({'message':'Update'})
+        except User.DoesNotExist:
+            if  assigned_to =="":
+                serializer.save(team=team)
+                return Response({'message':'Update'})
 
 @api_view(['PUT'])
 def delete_client(request,client_id, team_id):

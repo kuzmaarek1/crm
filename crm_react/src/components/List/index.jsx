@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TableLoader, Button, ModalDetails, ModalFormAdd } from "components";
+import { TableLoader, Button, ModalDetails, ModalForm } from "components";
 import * as Styles from "./styles";
 
 const List = ({
@@ -136,7 +136,7 @@ const List = ({
         hook={hook}
         teams={teams}
       />
-      <ModalFormAdd
+      <ModalForm
         header={header}
         modalIsOpen={modalIsOpenFormAdd}
         closeModal={() => setModalIsOpenFormAdd(false)}

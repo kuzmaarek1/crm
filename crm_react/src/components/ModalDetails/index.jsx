@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button } from "components";
+import { Button, ModalForm } from "components";
 import * as Styles from "./styles";
 
 const ModalDetails = ({
@@ -14,6 +14,7 @@ const ModalDetails = ({
 }) => {
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
+  const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
@@ -32,11 +33,7 @@ const ModalDetails = ({
           </Button>
         )}
         {header !== "Team" ? (
-          <Button
-            to={`/edit-${header.toLowerCase()}/${id}`}
-            as={NavLink}
-            lead="true"
-          >
+          <Button onClick={() => setModalIsOpenFormEdit(true)} lead="true">
             Edit
           </Button>
         ) : (
@@ -93,6 +90,17 @@ const ModalDetails = ({
           </React.Fragment>
         ))}
       </Styles.DetailsWrapper>
+      <ModalForm
+        header={header}
+        modalIsOpen={modalIsOpenFormEdit}
+        closeModal={() => {
+          setModalIsOpenFormEdit(false);
+        }}
+        closeDetails={closeModal}
+        hook={hook}
+        teams={teams}
+        list={list}
+      />
     </Styles.ModalWrapper>
   );
 };

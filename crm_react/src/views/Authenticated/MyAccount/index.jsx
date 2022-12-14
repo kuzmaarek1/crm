@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "hooks/useAuth";
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "reducers/authApiSlice";
-import { MyAccountLoader, ModalFormAdd, Button } from "components";
+import { MyAccountLoader, ModalForm, Button } from "components";
 import { useTeams } from "hooks/useTeams";
 import * as Styles from "./styles";
 
@@ -30,7 +30,7 @@ const MyAccount = () => {
         {!teams.currentTeam && (
           <>
             <Button onClick={() => setModalIsOpen(true)}>Add Team</Button>
-            <ModalFormAdd
+            <ModalForm
               header="Team"
               modalIsOpen={modalIsOpen}
               closeModal={() => setModalIsOpen(false)}

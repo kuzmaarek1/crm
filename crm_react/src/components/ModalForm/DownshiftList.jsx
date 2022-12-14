@@ -47,14 +47,13 @@ const DownshiftList = ({ teams, name, register, setValue, watch }) => {
         placeholder="Select members"
         name={name}
         absolute="true"
-        {...getInputProps({ ref: register(name) })}
+        {...getInputProps({ ref: register(name), value: watch(name) })}
       />
       <Styles.ButtonDowshift
         aria-label="toggle menu"
         type="button"
         {...getToggleButtonProps()}
       >
-        {" "}
         {isOpen ? <>&#8593;</> : <>&#8595;</>}
       </Styles.ButtonDowshift>
       <Styles.Ul {...getMenuProps()}>

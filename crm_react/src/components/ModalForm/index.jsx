@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList } from "components";
 import * as Styles from "./styles";
 
-const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
+const ModalFromAdd = ({
+  hook,
+  header,
+  teams,
+  modalIsOpen,
+  closeModal,
+  closeDetails,
+  list,
+}) => {
   const {
     register,
     handleSubmit,
@@ -15,17 +23,33 @@ const ModalFromAdd = ({ hook, header, teams, modalIsOpen, closeModal }) => {
     defaultValues: { assigned_to: "" },
   });
 
+  useEffect(() => {
+    if (list) {
+      const { id, created_by, ...otherData } = list;
+      Object.entries(otherData).forEach(([key, value]) => {
+        key === "assigned_to"
+          ? setValue(key, value?.username ? value?.username : "")
+          : setValue(key, value);
+      });
+    }
+  }, [list?.id]);
+
   return (
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
       ariaHideApp={false}
     >
-      <Styles.Header>Add {header}</Styles.Header>
+      <Styles.Header>
+        {list ? "Edit" : "Add"} {header}
+      </Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit((register) => {
-          hook.handleAdd(teams?.currentTeam?.id, register);
+          list
+            ? hook.handleEdit(list.id, teams?.currentTeam?.id, register)
+            : hook.handleAdd(teams?.currentTeam?.id, register);
           closeModal();
+          list && closeDetails();
           reset();
         })}
       >
