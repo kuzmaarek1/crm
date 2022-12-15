@@ -66,7 +66,7 @@ def update_lead(request, lead_id, team_id):
             return Response({'message':'Update'})
         except User.DoesNotExist:
             if  assigned_to =="":
-                serializer.save(team=team)
+                serializer.save(team=team, assigned_to=None)
                 return Response({'message':'Update'})
 
 @api_view(['PUT'])
