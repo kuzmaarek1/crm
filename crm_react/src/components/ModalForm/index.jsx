@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field } from "components";
 import * as Styles from "./styles";
+import { modalLeadandClientField, modalTeamField } from "constans";
 
 const ModalFrom = ({
   hook,
@@ -56,42 +57,14 @@ const ModalFrom = ({
       >
         {header !== "Team" ? (
           <>
-            <Field
-              type="text"
-              name="first_name"
-              watchName="first_name"
-              watch={watch}
-              errors={errors}
-              register={register}
-              required
-            />
-            <Field
-              type="text"
-              name="last_name"
-              watchName="last_name"
-              watch={watch}
-              errors={errors}
-              register={register}
-              required
-            />
-            <Field
-              type="email"
-              name="email"
-              watchName="email"
-              watch={watch}
-              errors={errors}
-              register={register}
-              required
-            />
-            <Field
-              type="number"
-              name="phone"
-              watchName="phone"
-              watch={watch}
-              errors={errors}
-              register={register}
-              required
-            />
+            {modalLeadandClientField.map((props) => (
+              <Field
+                {...props}
+                watch={watch}
+                errors={errors}
+                register={register}
+              />
+            ))}
             <DownshiftList
               teams={teams}
               name="assigned_to"
@@ -101,26 +74,15 @@ const ModalFrom = ({
             />
           </>
         ) : (
-          <Field
-            type="text"
-            name="name"
-            watchName="name"
-            watch={watch}
-            errors={errors}
-            register={register}
-            required
-          />
+          modalTeamField.map((props) => (
+            <Field
+              {...props}
+              watch={watch}
+              errors={errors}
+              register={register}
+            />
+          ))
         )}
-        <Field
-          type="text"
-          name="description"
-          watchName="description"
-          watch={watch}
-          errors={errors}
-          register={register}
-          required
-          textarea
-        />
         <Button>Submit</Button>
       </Styles.Form>
     </Styles.ModalWrapper>
