@@ -110,7 +110,7 @@ export const ButtonDowshift = styled.button`
 export const Ul = styled.ul`
   display: block;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   top: calc(2.5vh + 1px);
   right: 0;
   width: 60%;
@@ -136,7 +136,7 @@ export const Li = styled.li`
   ${({ highlighted, selectedItem }) =>
     (highlighted || selectedItem) &&
     css`
-      background-color: rgba(197, 220, 250, 0.5);
+      background-color: rgba(197, 220, 250, 1);
       color: #0f56b3;
       border: 1px solid #0f56b3;
       font-weight: ${({ selectedItem }) => (selectedItem ? "600" : "400")};

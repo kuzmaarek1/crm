@@ -26,11 +26,7 @@ const teamReducer = createSlice({
       state.currentTeam = currentTeam;
     },
     editTeamSuccess(state, action) {
-      console.log(action.payload.data.data.name);
-      console.log(state.currentTeam.id);
-      console.log(state.currentTeam.id === action.payload.data.id);
       if (state.currentTeam.id === action.payload.data.id) {
-        console.log(state.currentTeam.name);
         state.currentTeam.name = action.payload.data.data.name;
       }
     },

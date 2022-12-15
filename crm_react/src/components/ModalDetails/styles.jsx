@@ -12,6 +12,8 @@ export const ModalWrapper = styled(Modal)`
   padding: 20px;
   background-color: #f7f8fc;
   color: #303030;
+  outline: none;
+  border: 1px solid #616161;
 `;
 
 export const ButtonWrapper = styled.div`

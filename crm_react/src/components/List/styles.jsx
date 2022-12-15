@@ -41,16 +41,13 @@ export const Button = styled.button`
   border-radius: 100px !important;
 `;
 
-export const ListWrapper = styled.div`
-  display: grid;
-  grid-template-columns: ${(props) =>
-    props.team ? "repeat(2, 1fr)" : "repeat(5, 1fr)"};
-  margin-top: 1vh;
+export const RowWrapper = styled.div`
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  justify-content: center;
+  align-items: center;
   height: 5vh;
-  width: 100%;
   text-align: center;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
   ${(props) =>
     props.title &&
     css`
@@ -59,6 +56,37 @@ export const ListWrapper = styled.div`
   &:hover {
     cursor: ${(props) => (props.title ? "default" : "pointer")};
   }
+`;
+
+const backgroundRow = (props) => {
+  let styles = "";
+  if (!props.team) {
+    for (let i = 6; i < 11; i++) {
+      styles += `div:nth-child(10n+${i}) {
+        background-color: #e0e0e0;
+      }`;
+    }
+  } else {
+    styles += `div:nth-child(2n) {
+        background-color: #e0e0e0;
+      }`;
+    styles += `div>div:nth-child(2n) {
+        background-color: transparent;
+      }`;
+  }
+  return css`
+    ${styles}
+  `;
+};
+
+export const ListWrapper = styled.div`
+  width: 100vw;
+  display: grid;
+  background-color: #f7f8fc;
+  grid-template-columns: ${(props) =>
+    props.team ? "repeat(1, minmax(0, 1fr))" : "repeat(5, minmax(0, 1fr))"};
+  border-top: 2px solid #e0e0e0;
+  ${(props) => backgroundRow(props)}
 `;
 
 export const InputWrapper = styled.div`
@@ -88,12 +116,12 @@ export const Input = styled.input`
 
 export const GridWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${(props) => (props.button ? "flex-end" : "center")};
+  margin-right: ${(props) => (props.button ? "15px" : "0px")};
   align-items: center;
   ${(props) =>
     props.team &&
     css`
-      justify-content: flex-end;
-      margin-right: 20px;
+      width: 100%;
     `}
 `;

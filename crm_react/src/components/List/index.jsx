@@ -30,7 +30,6 @@ const List = ({
     let { id, created_by, description, members, ...otherData } = data[0];
     objectKey = otherData;
   }
-
   return (
     <Styles.Wrapper>
       <Styles.Title>
@@ -67,67 +66,78 @@ const List = ({
           </Styles.Button>
         </Styles.ButtonWrapper>
       </Styles.Title>
-      {objectKey && (
-        <Styles.ListWrapper title="true" team={header === "Team"}>
-          {Object.entries(objectKey).map(([key]) => (
-            <Styles.GridWrapper key={`${header}s-${key}`}>
-              {" "}
-              {key[0].toUpperCase()}
-              {key.slice(1).replace("_", " ")}
-            </Styles.GridWrapper>
-          ))}
-        </Styles.ListWrapper>
-      )}
-      {fetchingData || fetchingSearchData ? (
-        <TableLoader />
-      ) : (
-        data?.map(({ id, members, created_by, description, ...otherProps }) => (
-          <Styles.ListWrapper
-            key={id}
-            onClick={() => openModal(id)}
-            team={header === "Team"}
-          >
-            {Object.entries(otherProps).map(([key, value]) => {
-              return (
-                <React.Fragment key={`${header}-${key}`}>
-                  {value !== null ? (
-                    <Styles.GridWrapper>
-                      {key === "assigned_to" ? value.username : value}
-                    </Styles.GridWrapper>
-                  ) : (
-                    <Styles.GridWrapper>None</Styles.GridWrapper>
-                  )}
-                </React.Fragment>
-              );
-            })}
-            {header === "Team" && (
-              <Styles.GridWrapper team="true">
-                {String(id) === String(teams.currentTeam?.id) ? (
-                  <Button team red>
-                    Current
-                  </Button>
-                ) : (
-                  <Button
-                    team
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      hook.handleChangeTeams({
-                        id,
-                        members,
-                        created_by,
-                        description,
-                        ...otherProps,
-                      });
-                    }}
-                  >
-                    Activate
-                  </Button>
-                )}
+      <Styles.ListWrapper team={header === "Team"}>
+        {objectKey &&
+          Object.entries(objectKey).map(([key]) => (
+            <Styles.RowWrapper title="true" key={`${header}s-${key}`}>
+              <Styles.GridWrapper team={header === "Team"}>
+                {key[0].toUpperCase()}
+                {key.slice(1).replace("_", " ")}
               </Styles.GridWrapper>
-            )}
-          </Styles.ListWrapper>
-        ))
-      )}
+              {header === "Team" && (
+                <Styles.GridWrapper
+                  team={header === "Team"}
+                ></Styles.GridWrapper>
+              )}
+            </Styles.RowWrapper>
+          ))}
+        {fetchingData || fetchingSearchData ? (
+          <TableLoader />
+        ) : (
+          data?.map(
+            ({ id, members, created_by, description, ...otherProps }) => (
+              <React.Fragment key={id}>
+                {Object.entries(otherProps).map(([key, value]) => {
+                  return (
+                    <Styles.RowWrapper
+                      onClick={() => openModal(id)}
+                      key={`${header}-${key}`}
+                    >
+                      {value !== null ? (
+                        <Styles.GridWrapper team={header === "Team"}>
+                          {key === "assigned_to" ? value.username : value}
+                        </Styles.GridWrapper>
+                      ) : (
+                        <Styles.GridWrapper team={header === "Team"}>
+                          None
+                        </Styles.GridWrapper>
+                      )}
+                      {header === "Team" && (
+                        <Styles.GridWrapper
+                          team="true"
+                          button={header === "Team"}
+                        >
+                          {String(id) === String(teams.currentTeam?.id) ? (
+                            <Button team red>
+                              Current
+                            </Button>
+                          ) : (
+                            <Button
+                              team
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                hook.handleChangeTeams({
+                                  id,
+                                  members,
+                                  created_by,
+                                  description,
+                                  ...otherProps,
+                                });
+                              }}
+                            >
+                              Activate
+                            </Button>
+                          )}
+                        </Styles.GridWrapper>
+                      )}
+                    </Styles.RowWrapper>
+                  );
+                })}
+              </React.Fragment>
+            )
+          )
+        )}
+      </Styles.ListWrapper>
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}

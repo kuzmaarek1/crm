@@ -18,7 +18,6 @@ const Navbar = () => {
     }
   }, [auth?.auth_token]);
 
-  console.log(teams.currentTeam);
   return (
     <Styles.Wrapper>
       <Styles.Title to="/teams">

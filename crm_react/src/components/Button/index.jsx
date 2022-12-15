@@ -18,6 +18,10 @@ export const Button = styled.button`
   ${(props) =>
     props.team &&
     css`
+      background: ${(props) =>
+        props.red ? "#fcd0cf" : "rgba(197, 220, 250, 0.7)"};
+      border: ${(props) =>
+        props.red ? "1px solid #a90e46" : "1px solid#0f56b3"};
       width: 20%;
       height: 4vh;
       line-height: 4vh;

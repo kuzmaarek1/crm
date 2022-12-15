@@ -23,7 +23,7 @@ class LeadViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 def get_lead(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    lead=Lead.objects.filter(team=team)
+    lead = Lead.objects.filter(team=team).order_by('-id')
     serializer = LeadSerializer(lead, many=True)
     data = serializer.data
     return Response(data)
@@ -31,7 +31,7 @@ def get_lead(request,team_id):
 @api_view(['GET'])
 def search_lead(request,team_id,search):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    lead=Lead.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team))
+    lead = Lead.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team)).order_by('-id')
     serializer = LeadSerializer(lead, many=True)
     data = serializer.data
     return Response(data)
