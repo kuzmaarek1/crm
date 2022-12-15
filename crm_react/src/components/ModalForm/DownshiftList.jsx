@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCombobox } from "downshift";
 import * as Styles from "./styles";
+import * as StylesField from "components/Field/styles";
 
 const DownshiftList = ({ teams, name, register, setValue, watch }) => {
   const [items, setItems] = useState(teams?.currentTeam?.members);
@@ -39,16 +40,20 @@ const DownshiftList = ({ teams, name, register, setValue, watch }) => {
   });
 
   return (
-    <Styles.InputWrapper>
-      <Styles.Label htmlFor="description" {...getLabelProps()}>
-        Assigned to
-      </Styles.Label>
-      <Styles.Input
-        placeholder="Select members"
+    <StylesField.FieldWrapper>
+      <StylesField.Input
         name={name}
+        empty={watch(name) === undefined || watch(name) === ""}
         absolute="true"
         {...getInputProps({ ref: register(name), value: watch(name) })}
       />
+      <StylesField.Label
+        empty={watch(name) === undefined || watch(name) === ""}
+        htmlFor="ssigned_to"
+        {...getLabelProps()}
+      >
+        Assigned to
+      </StylesField.Label>
       <Styles.ButtonDowshift
         aria-label="toggle menu"
         type="button"
@@ -69,7 +74,7 @@ const DownshiftList = ({ teams, name, register, setValue, watch }) => {
             </Styles.Li>
           ))}
       </Styles.Ul>
-    </Styles.InputWrapper>
+    </StylesField.FieldWrapper>
   );
 };
 export default DownshiftList;

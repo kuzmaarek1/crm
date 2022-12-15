@@ -9,17 +9,30 @@ const Field = ({
   errors,
   register,
   required,
+  textarea,
 }) => {
   return (
-    <Styles.FieldWrapper>
-      <Styles.Input
-        type={type}
-        name={name}
-        id={name}
-        {...register(watchName, { required })}
-        empty={watch(watchName)}
-        error={errors[watchName]}
-      />
+    <Styles.FieldWrapper textarea={textarea}>
+      {textarea ? (
+        <Styles.Textarea
+          as="textarea"
+          type={type}
+          name={name}
+          id={name}
+          {...register(watchName, { required })}
+          empty={watch(watchName)}
+          error={errors[watchName]}
+        />
+      ) : (
+        <Styles.Input
+          type={type}
+          name={name}
+          id={name}
+          {...register(watchName, { required })}
+          empty={watch(watchName)}
+          error={errors[watchName]}
+        />
+      )}
       <Styles.Label
         htmlFor={name}
         empty={watch(watchName) === undefined || watch(watchName) === ""}

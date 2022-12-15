@@ -4,7 +4,7 @@ export const FieldWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 6vh;
-  margin-bottom: 3vh;
+  margin-bottom: ${(props) => (props.textarea ? "10vh" : "3vh")};
 `;
 export const Input = styled.input`
   position: absolute;
@@ -31,6 +31,11 @@ export const Input = styled.input`
     `}
 `;
 
+export const Textarea = styled(Input)`
+  height: 12vh;
+  padding-top: 2vh;
+`;
+
 export const Label = styled.label`
   width: 100px;
   position: absolute;
@@ -43,7 +48,8 @@ export const Label = styled.label`
   transition-timing-function: ease-in;
   transition-duration: 300ms;
 
-  input:focus ~ && {
+  input:focus ~ &&,
+  textarea:focus ~ && {
     transform: translate(-30%, -4.5vh) scale(0.9);
     text-align: start;
     font-size: 12px;

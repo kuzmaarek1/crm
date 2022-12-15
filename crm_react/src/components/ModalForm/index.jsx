@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Button, DownshiftList } from "components";
+import { Button, DownshiftList, Field } from "components";
 import * as Styles from "./styles";
 
 const ModalFrom = ({
@@ -56,50 +56,42 @@ const ModalFrom = ({
       >
         {header !== "Team" ? (
           <>
-            <Styles.InputWrapper>
-              <Styles.Label htmlFor="first_name">First name</Styles.Label>
-              <Styles.Input
-                type="text"
-                name="first_name"
-                id="first_name"
-                {...register("first_name", { required: true })}
-              />
-              {errors.first_name && (
-                <Styles.Span>First name is required</Styles.Span>
-              )}
-            </Styles.InputWrapper>
-            <Styles.InputWrapper>
-              <Styles.Label htmlFor="last_name">Last name</Styles.Label>
-              <Styles.Input
-                type="text"
-                name="last_name"
-                id="last_name"
-                {...register("last_name", { required: true })}
-              />
-              {errors.last_name && (
-                <Styles.Span>Last name is required</Styles.Span>
-              )}
-            </Styles.InputWrapper>
-            <Styles.InputWrapper>
-              <Styles.Label htmlFor="email">Email</Styles.Label>
-              <Styles.Input
-                type="email"
-                name="email"
-                id="email"
-                {...register("email", { required: true })}
-              />
-              {errors.email && <Styles.Span>Email is required</Styles.Span>}
-            </Styles.InputWrapper>
-            <Styles.InputWrapper>
-              <Styles.Label htmlFor="phone">Phone</Styles.Label>
-              <Styles.Input
-                type="number"
-                name="phone"
-                id="phone"
-                {...register("phone", { required: true })}
-              />
-              {errors.phone && <Styles.Span>Phone is required</Styles.Span>}
-            </Styles.InputWrapper>
+            <Field
+              type="text"
+              name="first_name"
+              watchName="first_name"
+              watch={watch}
+              errors={errors}
+              register={register}
+              required
+            />
+            <Field
+              type="text"
+              name="last_name"
+              watchName="last_name"
+              watch={watch}
+              errors={errors}
+              register={register}
+              required
+            />
+            <Field
+              type="email"
+              name="email"
+              watchName="email"
+              watch={watch}
+              errors={errors}
+              register={register}
+              required
+            />
+            <Field
+              type="number"
+              name="phone"
+              watchName="phone"
+              watch={watch}
+              errors={errors}
+              register={register}
+              required
+            />
             <DownshiftList
               teams={teams}
               name="assigned_to"
@@ -109,29 +101,26 @@ const ModalFrom = ({
             />
           </>
         ) : (
-          <Styles.InputWrapper>
-            <Styles.Label htmlFor="name">Name</Styles.Label>
-            <Styles.Input
-              type="text"
-              name="name"
-              id="name"
-              {...register("name", { required: true })}
-            />
-            {errors.name && <Styles.Span> Name is required</Styles.Span>}
-          </Styles.InputWrapper>
-        )}
-        <Styles.InputWrapper>
-          <Styles.Label htmlFor="description">Description</Styles.Label>
-          <Styles.Textarea
-            type="description"
-            name="description"
-            id="description"
-            {...register("description", { required: true })}
+          <Field
+            type="text"
+            name="name"
+            watchName="name"
+            watch={watch}
+            errors={errors}
+            register={register}
+            required
           />
-          {errors.description && (
-            <Styles.Span>Description is required</Styles.Span>
-          )}
-        </Styles.InputWrapper>
+        )}
+        <Field
+          type="text"
+          name="description"
+          watchName="description"
+          watch={watch}
+          errors={errors}
+          register={register}
+          required
+          textarea
+        />
         <Button>Submit</Button>
       </Styles.Form>
     </Styles.ModalWrapper>

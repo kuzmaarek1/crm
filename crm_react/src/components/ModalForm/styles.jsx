@@ -33,11 +33,7 @@ export const Label = styled.label`
   height: 13%;
   align-items: center;
 `;
-export const InputWrapper = styled.div`
-  width: 100%;
-  position: relative;
-  display: flex;
-`;
+
 export const Span = styled.span`
   position: absolute;
   bottom: 5px;
@@ -111,9 +107,10 @@ export const Ul = styled.ul`
   display: block;
   position: absolute;
   z-index: 100;
-  top: calc(2.5vh + 1px);
+  top: calc(100% - 1px);
+  margin: auto;
   right: 0;
-  width: 60%;
+  width: 100%;
   list-style: none;
   padding: 0;
 `;
