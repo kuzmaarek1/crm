@@ -8,7 +8,7 @@ import { List } from "components";
 const Teams = () => {
   const team = useTeams();
   const teamsState = useSelector((state) => state.teams);
-  const { register, watch } = useForm();
+  const { register, watch, setFocus } = useForm();
 
   const {
     data: teams,
@@ -32,6 +32,7 @@ const Teams = () => {
       fetchingData={fetchingTeams}
       fetchingSearchData={fetchingSearchTeams}
       refetchList={refetchTeams}
+      setFocus={setFocus}
       endpoint={endpoint}
       register={register}
     />

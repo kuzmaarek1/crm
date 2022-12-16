@@ -42,6 +42,9 @@ export const Link = styled(NavLink)`
   border-bottom: 2px solid transparent;
   padding-bottom: 2px;
   text-decoration: none;
+  transition-property: all;
+  transition-timing-function: ease-out;
+  transition-duration: 200ms;
   &:hover,
   &.active {
     text-decoration: none;

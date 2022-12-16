@@ -17,6 +17,9 @@ export const Input = styled.input`
   font-size: 1rem;
   border-radius: 25px;
   resize: none;
+  transition-property: all;
+  transition-timing-function: ease-in;
+  transition-duration: 200ms;
   border: ${(props) =>
     props.error ? "1px solid #a90e46" : "1px solid #616161"};
   &:focus {

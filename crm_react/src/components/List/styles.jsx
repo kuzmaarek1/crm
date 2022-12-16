@@ -46,6 +46,7 @@ export const Input = styled.input`
   &:focus {
     border: 1px solid #0f56b3;
     background-color: rgba(197, 220, 250, 0.5);
+    box-shadow: 0 0 6px#0f56b3;
     color: #0f56b3;
     outline: none;
     font-size: 1rem;
@@ -59,11 +60,11 @@ export const Input = styled.input`
 export const SearchIcon = styled(BiSearch)`
   position: absolute;
   right: 5px;
+  cursor: pointer;
   transition-property: all;
   transition-timing-function: ease-in;
   transition-duration: 200ms;
   input:focus ~ && {
-    cursor: pointer;
     background-color: transparent;
     color: #0f56b3;
     outline: none;

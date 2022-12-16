@@ -8,7 +8,7 @@ import { List } from "components";
 const Clients = () => {
   const client = useClients();
   const teams = useSelector((state) => state.teams);
-  const { watch, register } = useForm();
+  const { watch, register, setFocus } = useForm();
 
   const {
     data: clients,
@@ -34,6 +34,7 @@ const Clients = () => {
       refetchList={refetchClients}
       endpoint={endpoint}
       register={register}
+      setFocus={setFocus}
     />
   );
 };

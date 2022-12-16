@@ -12,6 +12,7 @@ const List = ({
   refetchList,
   endpoint,
   register,
+  setFocus,
 }) => {
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
@@ -58,7 +59,12 @@ const List = ({
           <Styles.Label>
             {header === "Team" ? "Name" : "First name and last name"}
           </Styles.Label>
-          <Styles.SearchIcon size={"20px"} />
+          <Styles.SearchIcon
+            size={"20px"}
+            onClick={() => {
+              setFocus(`${header.toLowerCase()}-name`);
+            }}
+          />
         </Styles.InputWrapper>
         <Styles.ButtonWrapper>
           <Button width="50%" onClick={() => setModalIsOpenFormAdd(true)}>

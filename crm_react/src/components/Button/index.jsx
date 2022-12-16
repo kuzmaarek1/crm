@@ -35,10 +35,10 @@ export const Button = styled.button`
     content: "";
     position: absolute;
     width: ${(props) => (props.team ? "15px" : "25px")};
-    height: ${(props) => (props.team ? "10px" : "15px")};
+    height: ${(props) => (props.team ? "8px" : "15px")};
     border-radius: 15px;
     inset: 0;
-    top: ${(props) => (props.team ? "-5px" : "-7px")};
+    top: ${(props) => (props.team ? "-4px" : "-7px")};
     left: ${(props) =>
       props.team ? "calc(20% - 10px)" : "calc(20% - 12.5px)"};
     background-color: ${(props) =>
@@ -50,7 +50,7 @@ export const Button = styled.button`
     pointer-events: none;
   }
   &:after {
-    top: ${(props) => (props.team ? "calc(100% - 5px)" : "calc(100% - 7px)")};
+    top: ${(props) => (props.team ? "calc(100% - 4px)" : "calc(100% - 7px)")};
     left: ${(props) =>
       props.team ? "calc(80% - 10px)" : "calc(80% - 12.5px)"};
   }
