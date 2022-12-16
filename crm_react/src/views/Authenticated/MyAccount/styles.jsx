@@ -20,19 +20,20 @@ export const ButtonWrapper = styled.div`
 
 export const DetailsWrapper = styled.div`
   display: grid;
+  width: 50%;
   grid-template-columns: 1fr 2fr;
-  grid-gap: 1px;
   margin-bottom: 3vh;
+  div:nth-child(4n),
+  div:nth-child(4n + 3) {
+    background-color: #e0e0e0;
+  }
 `;
 
 export const Details = styled.div`
-  margin-top: 1vh;
   height: 5vh;
   width: 100%;
   text-align: center;
   line-height: 5vh;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
   ${(props) =>
     props.title &&
     css`

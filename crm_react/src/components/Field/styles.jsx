@@ -80,7 +80,7 @@ export const Label = styled.label`
 
 export const Span = styled.span`
   position: absolute;
-  bottom: -2vh;
+  bottom: ${(props) => (props.textarea ? "-8vh" : "-2vh")};
   display: flex;
   font-size: 11px;
   width: 100%;

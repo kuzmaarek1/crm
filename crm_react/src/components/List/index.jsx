@@ -37,11 +37,7 @@ const List = ({
         <Styles.InputWrapper>
           <Styles.Input
             type="serach"
-            placeholder={
-              header === "Team"
-                ? "Search by name"
-                : "Search by first name and last name"
-            }
+            placeholder="Search"
             {...register(`${header.toLowerCase()}-name`, {
               required: true,
               onChange: (e) => {
@@ -59,6 +55,10 @@ const List = ({
               },
             })}
           />
+          <Styles.Label>
+            {header === "Team" ? "Name" : "First name and last name"}
+          </Styles.Label>
+          <Styles.SearchIcon size={"20px"} />
         </Styles.InputWrapper>
         <Styles.ButtonWrapper>
           <Styles.Button onClick={() => setModalIsOpenFormAdd(true)}>

@@ -42,7 +42,7 @@ const Field = ({
         {watchName.slice(1).replace("_", " ")}
       </Styles.Label>
       {errors[watchName] && (
-        <Styles.Span>
+        <Styles.Span textarea={textarea}>
           {watchName[0].toUpperCase()}
           {watchName.slice(1).replace("_", " ")} is required
         </Styles.Span>

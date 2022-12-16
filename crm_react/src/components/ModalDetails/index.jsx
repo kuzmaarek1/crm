@@ -21,42 +21,60 @@ const ModalDetails = ({
       onRequestClose={closeModal}
       ariaHideApp={false}
     >
-      <Styles.ButtonWrapper>
-        {header === "Lead" && (
-          <Button
-            onClick={() => {
-              hook.handleConvertToClient(list, teams.currentTeam.id);
-              closeModal();
-            }}
-          >
-            Client
-          </Button>
-        )}
-        {((header === "Team" &&
-          String(created_by?.id) === String(auth?.user.id)) ||
-          header !== "Team") && (
-          <>
-            {header === "Team" && (
-              <Button to={`/add-member/${list.id}`} as={NavLink} lead="true">
-                Add member
-              </Button>
-            )}
-            <Button onClick={() => setModalIsOpenFormEdit(true)} lead="true">
-              Edit
-            </Button>
+      <Styles.NavbarDetails>
+        <Styles.Header>Details {header}</Styles.Header>
+        <Styles.ButtonWrapper>
+          {header === "Lead" && (
             <Button
-              red
+              width="250px"
+              height="50px"
               onClick={() => {
-                hook.handleDelete(list, teams.currentTeam.id);
+                hook.handleConvertToClient(list, teams.currentTeam.id);
                 closeModal();
               }}
             >
-              Delete
+              Client
             </Button>
-          </>
-        )}
-      </Styles.ButtonWrapper>
-      <Styles.DetailsWrapper>
+          )}
+          {((header === "Team" &&
+            String(created_by?.id) === String(auth?.user.id)) ||
+            header !== "Team") && (
+            <>
+              {header === "Team" && (
+                <Button
+                  width="250px"
+                  height="50px"
+                  to={`/add-member/${list.id}`}
+                  as={NavLink}
+                  lead="true"
+                >
+                  Add member
+                </Button>
+              )}
+              <Button
+                width="250px"
+                height="50px"
+                onClick={() => setModalIsOpenFormEdit(true)}
+                lead="true"
+              >
+                Edit
+              </Button>
+              <Button
+                width="250px"
+                height="50px"
+                red
+                onClick={() => {
+                  hook.handleDelete(list, teams.currentTeam.id);
+                  closeModal();
+                }}
+              >
+                Delete
+              </Button>
+            </>
+          )}
+        </Styles.ButtonWrapper>
+      </Styles.NavbarDetails>
+      <Styles.DetailsWrapper team={header === "Team"}>
         {Object.entries(otherData).map(([key, value], index) => (
           <React.Fragment key={`${header}-${key}-${id}`}>
             {key !== "member" && (
