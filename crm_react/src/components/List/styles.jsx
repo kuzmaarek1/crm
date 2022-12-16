@@ -76,7 +76,7 @@ export const Label = styled.label`
   color: white;
   background-color: #616161;
   position: absolute;
-  top: -15%;
+  top: -7px;
   left: 0;
   right: 0;
   margin: auto;

@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  width: ${({ small }) => (small ? "200px" : "500px")};
+  width: ${({ small }) => (small ? "300px" : "500px")};
   display: flex;
   gap: 5px;
   justify-content: center;

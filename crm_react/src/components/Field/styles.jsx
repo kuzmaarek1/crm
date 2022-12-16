@@ -22,12 +22,16 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     font-size: 1rem;
+    box-shadow: ${(props) =>
+      props.error ? "0 0 6px #a90e46" : "0 0 6px #616161"};
   }
   ${(props) =>
-    !props.empty &&
+    props.empty &&
     css`
       outline: none;
       font-size: 1rem;
+      box-shadow: ${(props) =>
+        props.error ? "0 0 6px #a90e46" : "0 0 6px #616161"};
     `}
 `;
 

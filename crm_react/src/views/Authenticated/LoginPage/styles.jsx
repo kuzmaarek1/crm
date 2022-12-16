@@ -20,3 +20,9 @@ export const Form = styled.form`
   width: 40%;
   flex-wrap: wrap;
 `;
+
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;

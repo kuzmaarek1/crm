@@ -29,7 +29,9 @@ const MyAccount = () => {
       <Styles.ButtonWrapper small={teams.currentTeam}>
         {!teams.currentTeam && (
           <>
-            <Button onClick={() => setModalIsOpen(true)}>Add Team</Button>
+            <Button height="40px" onClick={() => setModalIsOpen(true)}>
+              Add Team
+            </Button>
             <ModalForm
               header="Team"
               modalIsOpen={modalIsOpen}
@@ -38,7 +40,11 @@ const MyAccount = () => {
             />
           </>
         )}
-        <Button onClick={() => authHook.handleLogOut()} red="true">
+        <Button
+          onClick={() => authHook.handleLogOut()}
+          red="true"
+          height="40px"
+        >
           Log out
         </Button>
       </Styles.ButtonWrapper>

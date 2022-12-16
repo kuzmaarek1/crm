@@ -61,9 +61,9 @@ const List = ({
           <Styles.SearchIcon size={"20px"} />
         </Styles.InputWrapper>
         <Styles.ButtonWrapper>
-          <Styles.Button onClick={() => setModalIsOpenFormAdd(true)}>
+          <Button width="50%" onClick={() => setModalIsOpenFormAdd(true)}>
             Add {header}
-          </Styles.Button>
+          </Button>
         </Styles.ButtonWrapper>
       </Styles.Title>
       <Styles.ListWrapper team={header === "Team"}>
@@ -108,11 +108,13 @@ const List = ({
                           button={header === "Team"}
                         >
                           {String(id) === String(teams.currentTeam?.id) ? (
-                            <Button team red>
+                            <Button team red width="200px" height="4vh">
                               Current
                             </Button>
                           ) : (
                             <Button
+                              width="200px"
+                              height="4vh"
                               team
                               onClick={(e) => {
                                 e.stopPropagation();

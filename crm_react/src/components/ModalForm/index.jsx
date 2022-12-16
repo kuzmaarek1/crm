@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field } from "components";
-import * as Styles from "./styles";
 import { modalLeadandClientField, modalTeamField } from "constans";
+import * as Styles from "./styles";
+import * as StylesForm from "views/Authenticated/LoginPage/styles.jsx";
 
 const ModalFrom = ({
   hook,
@@ -85,7 +86,11 @@ const ModalFrom = ({
             />
           ))
         )}
-        <Button>Submit</Button>
+        <StylesForm.ButtonWrapper>
+          <Button width="40%" height="40px">
+            Submit
+          </Button>
+        </StylesForm.ButtonWrapper>
       </Styles.Form>
     </Styles.ModalWrapper>
   );

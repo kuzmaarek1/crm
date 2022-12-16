@@ -34,7 +34,11 @@ const LoginPage = () => {
           register={register}
           required
         />
-        <Button>Login</Button>
+        <Styles.ButtonWrapper>
+          <Button width="50%" height="40px">
+            Login
+          </Button>
+        </Styles.ButtonWrapper>
       </Styles.Form>
     </Styles.Wrapper>
   );
