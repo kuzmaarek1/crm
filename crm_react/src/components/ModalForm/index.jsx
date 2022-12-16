@@ -57,9 +57,10 @@ const ModalFrom = ({
       >
         {header !== "Team" ? (
           <>
-            {modalLeadandClientField.map((props) => (
+            {modalLeadandClientField.map((props, index) => (
               <Field
                 {...props}
+                key={index}
                 watch={watch}
                 errors={errors}
                 register={register}
@@ -74,8 +75,9 @@ const ModalFrom = ({
             />
           </>
         ) : (
-          modalTeamField.map((props) => (
+          modalTeamField.map((props, index) => (
             <Field
+              key={index}
               {...props}
               watch={watch}
               errors={errors}

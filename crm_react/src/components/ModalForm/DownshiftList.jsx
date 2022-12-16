@@ -5,7 +5,6 @@ import * as StylesField from "components/Field/styles";
 
 const DownshiftList = ({ teams, name, register, setValue, watch }) => {
   const [items, setItems] = useState(teams?.currentTeam?.members);
-
   const getMembersFilter = (inputValue) => {
     return function membersFilter(member) {
       return (

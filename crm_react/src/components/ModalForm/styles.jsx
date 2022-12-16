@@ -105,7 +105,7 @@ export const ButtonDowshift = styled.button`
 
 export const Ul = styled.ul`
   display: block;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: none;
   min-height: 4vh;
   max-height: calc(16vh - 3.5px);

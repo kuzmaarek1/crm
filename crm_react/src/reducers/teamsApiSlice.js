@@ -1,5 +1,9 @@
 import { apiSlice } from "api/apiSlice";
-import { deleteTeamSuccess, editTeamSuccess } from "reducers/teams.js";
+import {
+  deleteTeamSuccess,
+  editTeamSuccess,
+  addMemberSuccess,
+} from "reducers/teams.js";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,8 +29,8 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
-          dispatch(editTeamSuccess({ data: { id, data } }));
+          const username = await queryFulfilled;
+          dispatch(editTeamSuccess({ data: { id, username } }));
         } catch {}
       },
       invalidatesTags: ["Team"],
@@ -57,6 +61,12 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { username },
       }),
+      async onQueryStarted({ id, username }, { dispatch, queryFulfilled }) {
+        try {
+          const user = await queryFulfilled;
+          dispatch(addMemberSuccess({ data: { id, user: user.data } }));
+        } catch {}
+      },
       invalidatesTags: ["Team"],
     }),
     addTeam: builder.mutation({

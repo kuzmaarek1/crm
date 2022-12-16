@@ -30,6 +30,11 @@ const teamReducer = createSlice({
         state.currentTeam.name = action.payload.data.data.name;
       }
     },
+    addMemberSuccess(state, action) {
+      if (String(state.currentTeam.id) === String(action.payload.data.id)) {
+        state.currentTeam.members.push(action.payload.data.user);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -58,6 +63,11 @@ const teamReducer = createSlice({
 
 const { actions, reducer } = teamReducer;
 
-export const { setCurrentTeam, deleteTeamSuccess, editTeamSuccess } = actions;
+export const {
+  setCurrentTeam,
+  deleteTeamSuccess,
+  editTeamSuccess,
+  addMemberSuccess,
+} = actions;
 
 export default reducer;

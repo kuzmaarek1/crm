@@ -8,7 +8,7 @@ export const ModalWrapper = styled(Modal)`
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 80%;
   padding: 20px;
   background-color: #f7f8fc;
   color: #303030;
@@ -28,6 +28,9 @@ export const DetailsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 5px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: none;
 `;
 
 export const Details = styled.div`
