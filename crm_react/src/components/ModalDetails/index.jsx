@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, ModalForm } from "components";
+import { Button, ModalForm, Modal } from "components";
 import * as Styles from "./styles";
 
 const ModalDetails = ({
@@ -16,13 +16,7 @@ const ModalDetails = ({
   const { id, created_by, ...otherData } = list;
   const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
   return (
-    <Styles.ModalWrapper
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      closeTimeoutMS={500}
-      ariaHideApp={false}
-    >
-      <Styles.CloseButton size="3vh" onClick={closeModal} />
+    <>
       <Styles.NavbarDetails>
         <Styles.Header>Details {header}</Styles.Header>
         <Styles.ButtonWrapper>
@@ -120,8 +114,8 @@ const ModalDetails = ({
         teams={teams}
         list={list}
       />
-    </Styles.ModalWrapper>
+    </>
   );
 };
 
-export default ModalDetails;
+export default Modal(ModalDetails);

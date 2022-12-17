@@ -101,20 +101,6 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   padding-right: 10px;
 `;
-export const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 100px;
-  height: 50px;
-  text-decoration: none;
-  border: none;
-  background: rgba(197, 220, 250, 0.5);
-  color: #0f56b3;
-  font-family: "Montserrat", sans-serif;
-  border-radius: 100px !important;
-`;
 
 export const RowWrapper = styled.div`
   display: flex;

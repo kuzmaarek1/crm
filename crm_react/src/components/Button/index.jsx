@@ -9,6 +9,7 @@ export const Button = styled.button`
   color: ${(props) => (props.red ? "#a90e46" : "#0f56b3")};
   font-family: "Mulish", sans-serif;
   border-radius: 100px !important;
+  outline: none;
   cursor: pointer;
   display: flex;
   justify-content: center;

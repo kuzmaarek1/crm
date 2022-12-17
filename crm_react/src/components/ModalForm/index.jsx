@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Button, DownshiftList, Field } from "components";
+import { Button, DownshiftList, Field, Modal } from "components";
 import { modalLeadandClientField, modalTeamField } from "constans";
 import * as Styles from "./styles";
 import * as StylesForm from "views/Authenticated/LoginPage/styles.jsx";
@@ -38,13 +38,7 @@ const ModalFrom = ({
   }, [list?.id]);
 
   return (
-    <Styles.ModalWrapper
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      closeTimeoutMS={500}
-      ariaHideApp={false}
-    >
-      <Styles.CloseButton size="3vh" onClick={closeModal} />
+    <>
       <Styles.Header>
         {list ? "Edit" : "Add"} {header}
       </Styles.Header>
@@ -95,8 +89,8 @@ const ModalFrom = ({
           </Button>
         </StylesForm.ButtonWrapper>
       </Styles.Form>
-    </Styles.ModalWrapper>
+    </>
   );
 };
 
-export default ModalFrom;
+export default Modal(ModalFrom);
