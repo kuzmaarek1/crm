@@ -41,8 +41,10 @@ const ModalFrom = ({
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
+      closeTimeoutMS={500}
       ariaHideApp={false}
     >
+      <Styles.CloseButton size="3vh" onClick={closeModal} />
       <Styles.Header>
         {list ? "Edit" : "Add"} {header}
       </Styles.Header>
@@ -73,6 +75,7 @@ const ModalFrom = ({
               register={register}
               setValue={setValue}
               watch={watch}
+              errors={errors}
             />
           </>
         ) : (

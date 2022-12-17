@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-modal";
 
 export const ModalWrapper = styled(Modal)`
@@ -12,10 +13,34 @@ export const ModalWrapper = styled(Modal)`
   padding: 20px;
   background-color: #f7f8fc;
   color: #303030;
+  border: 3px solid #e0e0e0;
+  box-shadow: 0 0 30000px #e0e0e0c0;
+  outline: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  ${(props) => {
+    if (props.isOpen)
+      return css`
+        animation-name: zoomIn;
+        animation-duration: 0.5s;
+      `;
+    else
+      return css`
+        animation-name: zoomOut;
+        animation-duration: 0.5s;
+        opacity: 0;
+      `;
+  }}
+`;
+
+export const CloseButton = styled(IoCloseSharp)`
+  position: absolute;
+  cursor: pointer;
+  color: #a90e46;
+  right: 15px;
+  top: 5px;
 `;
 
 export const Header = styled.h1`
@@ -43,54 +68,7 @@ export const Span = styled.span`
   color: #a90e46;
   justify-content: flex-end;
 `;
-export const Input = styled.input`
-  width: 60%;
-  height: 5vh;
-  padding: 8px 12px;
-  border: 1px solid #737c8e;
-  box-sizing: border-box;
-  color: #616161;
-  box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
-  font-size: 1rem;
-  border-radius: 25px;
-  font-family: "Montserrat", sans-serif;
-  resize: none;
-  &:focus {
-    outline: none;
-    font-size: 1rem;
-    color: #616161;
-    box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
-  }
-  ${(props) =>
-    props.absolute &&
-    css`
-      position: absolute;
-      right: 0;
-      top: 0;
-    `}
-`;
-export const Textarea = styled.textarea`
-  display: block;
-  z-index: 0;
-  font-family: "Montserrat", sans-serif;
-  margin-bottom: 3vh;
-  width: 60%;
-  height: 20vh;
-  padding: 10px 12px;
-  border: 1px solid #737c8e;
-  box-sizing: border-box;
-  color: #616161;
-  box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
-  font-size: 1rem;
-  border-radius: 25px;
-  resize: none;
-  &:focus {
-    outline: none;
-    font-size: 1rem;
-    color: #616161;
-    box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.3);
-  }
-`;
+
 export const ButtonDowshift = styled.button`
   position: absolute;
   top: 0;

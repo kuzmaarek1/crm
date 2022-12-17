@@ -19,8 +19,10 @@ const ModalDetails = ({
     <Styles.ModalWrapper
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
+      closeTimeoutMS={500}
       ariaHideApp={false}
     >
+      <Styles.CloseButton size="3vh" onClick={closeModal} />
       <Styles.NavbarDetails>
         <Styles.Header>Details {header}</Styles.Header>
         <Styles.ButtonWrapper>

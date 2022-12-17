@@ -3,7 +3,7 @@ import { useCombobox } from "downshift";
 import * as Styles from "./styles";
 import * as StylesField from "components/Field/styles";
 
-const DownshiftList = ({ teams, name, register, setValue, watch }) => {
+const DownshiftList = ({ teams, name, register, setValue, watch, errors }) => {
   const [items, setItems] = useState(teams?.currentTeam?.members);
   const getMembersFilter = (inputValue) => {
     return function membersFilter(member) {
@@ -42,13 +42,14 @@ const DownshiftList = ({ teams, name, register, setValue, watch }) => {
     <StylesField.FieldWrapper>
       <StylesField.Input
         name={name}
-        empty={watch(name) === undefined || watch(name) === ""}
+        empty={watch(name)}
+        error={errors[name]}
         absolute="true"
         {...getInputProps({ ref: register(name), value: watch(name) })}
       />
       <StylesField.Label
         empty={watch(name) === undefined || watch(name) === ""}
-        htmlFor="ssigned_to"
+        htmlFor="assigned_to"
         {...getLabelProps()}
       >
         Assigned to

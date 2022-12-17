@@ -20,13 +20,24 @@ const GlobalStyle = createGlobalStyle`
         border-radius:20px;
         background-color: rgba(97, 97, 97, 0.2);
     }
- 
+
     *::-webkit-scrollbar-thumb {
     background-color:rgba(97, 97, 97, 0.7);
     border-radius:20px;
     height:15px;
     }
-
+    .ReactModalPortal > * {
+        opacity: 0;
+    }
+    .ReactModal__Overlay {
+        transition: opacity 500ms ease-in-out;
+        &--after-open {
+            opacity: 1;
+        }
+        &--before-close {
+            opacity: 0;
+        }
+    }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;

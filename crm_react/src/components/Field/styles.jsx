@@ -12,6 +12,7 @@ export const Input = styled.input`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  background-color: rgba(112, 112, 112, 0.1);
   color: #616161;
   font-family: "Montserrat", sans-serif;
   font-size: 1rem;
@@ -26,7 +27,7 @@ export const Input = styled.input`
     outline: none;
     font-size: 1rem;
     box-shadow: ${(props) =>
-      props.error ? "0 0 6px #a90e46" : "0 0 6px #616161"};
+      props.error ? "0 0 2px #a90e46" : "0 0 2px #616161"};
   }
   ${(props) =>
     props.empty &&
@@ -34,7 +35,7 @@ export const Input = styled.input`
       outline: none;
       font-size: 1rem;
       box-shadow: ${(props) =>
-        props.error ? "0 0 6px #a90e46" : "0 0 6px #616161"};
+        props.error ? "0 0 2px #a90e46" : "0 0 2px #616161"};
     `}
 `;
 
