@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -8,6 +8,16 @@ export const Wrapper = styled.div`
   color: #616161;
   background-color: #f7f8fc;
   height: 92.5vh;
+  ${(props) =>
+    props.isLogin
+      ? css`
+          animation-name: backInLeft;
+          animation-duration: 0.5s;
+        `
+      : css`
+          animation-name: backInRight;
+          animation-duration: 0.5s;
+        `}
 `;
 
 export const Header = styled.h1`

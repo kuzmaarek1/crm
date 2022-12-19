@@ -28,7 +28,7 @@ const LoginPage = () => {
   }, [isLogin]);
 
   return (
-    <Styles.Wrapper>
+    <Styles.Wrapper isLogin={isLogin}>
       <Styles.Header>{isLogin ? "Login In" : "Sign Up"}</Styles.Header>
       <Styles.Form
         onSubmit={
