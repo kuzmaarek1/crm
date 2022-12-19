@@ -26,3 +26,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+export const ButtonSwitchWrapper = styled.div`
+  display: flex;
+  margin-top: 3vh;
+  width: 50%;
+  flex-direction: column;
+  justify-content: center;
+`;

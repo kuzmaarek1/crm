@@ -45,7 +45,7 @@ export const Textarea = styled(Input)`
 `;
 
 export const Label = styled.label`
-  width: 100px;
+  width: ${(props) => (props.small ? "100px" : "140px")};
   position: absolute;
   top: 50%;
   left: 5%;

@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
 import * as Styles from "./styles";
 
 const Field = ({
   type,
   name,
-  watchName,
   watch,
   errors,
   register,
   required,
   textarea,
+  validate,
 }) => {
+  const password = useRef({});
+  password.current = watch("password", "");
+  const ref = !validate
+    ? { required }
+    : {
+        required: required,
+        validate: (value) =>
+          value === password.current || "The passwords do not match",
+      };
   return (
     <Styles.FieldWrapper textarea={textarea}>
       {textarea ? (
@@ -19,32 +28,36 @@ const Field = ({
           type={type}
           name={name}
           id={name}
-          {...register(watchName, { required })}
-          empty={watch(watchName)}
-          error={errors[watchName]}
+          {...register(name, { required })}
+          empty={watch(name)}
+          error={errors[name]}
         />
       ) : (
         <Styles.Input
           type={type}
           name={name}
           id={name}
-          {...register(watchName, { required })}
-          empty={watch(watchName)}
-          error={errors[watchName]}
+          {...register(name, ref)}
+          empty={watch(name)}
+          error={errors[name]}
         />
       )}
       <Styles.Label
         htmlFor={name}
-        empty={watch(watchName) === undefined || watch(watchName) === ""}
-        error={errors[watchName]}
+        empty={watch(name) === undefined || watch(name) === ""}
+        error={errors[name]}
+        small={!validate ? true : false}
       >
-        {watchName[0].toUpperCase()}
-        {watchName.slice(1).replace("_", " ")}
+        {name[0].toUpperCase()}
+        {name.slice(1).replace("_", " ")}
       </Styles.Label>
-      {errors[watchName] && (
+      {errors[name] && (
         <Styles.Span textarea={textarea}>
-          {watchName[0].toUpperCase()}
-          {watchName.slice(1).replace("_", " ")} is required
+          {name === "password_repeat"
+            ? "The passwords must be identical"
+            : `${name[0].toUpperCase()}${name
+                .slice(1)
+                .replace("_", " ")} is required`}
         </Styles.Span>
       )}
     </Styles.FieldWrapper>

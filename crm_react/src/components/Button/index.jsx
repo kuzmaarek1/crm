@@ -15,7 +15,7 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  font-size: 1em;
+  font-size: ${(props) => (props.fontSmall ? "0.7em" : "1em")};
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.1em;

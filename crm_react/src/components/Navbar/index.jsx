@@ -23,7 +23,7 @@ const Navbar = () => {
       <Styles.Title to="/teams">
         {teams.currentTeam && auth ? teams.currentTeam.name : "CRM"}
       </Styles.Title>
-      {auth ? (
+      {auth && (
         <Styles.Links>
           {teams.currentTeam && (
             <>
@@ -33,11 +33,6 @@ const Navbar = () => {
             </>
           )}
           <Styles.Link to="my-account">My account </Styles.Link>
-        </Styles.Links>
-      ) : (
-        <Styles.Links>
-          <Styles.Link to="sign-up">Sing up</Styles.Link>
-          <Styles.Link to="login-in">Log in </Styles.Link>
         </Styles.Links>
       )}
     </Styles.Wrapper>
