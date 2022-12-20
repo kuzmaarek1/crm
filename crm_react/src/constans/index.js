@@ -35,11 +35,9 @@ export const LoginForm = [
 ];
 
 export const RegisterForm = [
-  /*
   { type: "text", name: "first_name", required: true },
   { type: "text", name: "last_name", required: true },
-  */
   { type: "email", name: "username", required: true },
   { type: "password", name: "password", required: true },
-  { type: "password", name: "password_repeat", required: true, validate: true },
+  { type: "password", name: "re_password", required: true, validate: true },
 ];

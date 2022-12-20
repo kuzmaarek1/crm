@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from team.models import Team
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Client(models.Model):
     first_name = models.CharField(max_length=100)

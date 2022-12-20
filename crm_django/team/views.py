@@ -2,10 +2,12 @@ from .models import Team
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from .serializers import TeamSerializer
-from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer

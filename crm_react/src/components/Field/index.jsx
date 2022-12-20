@@ -48,12 +48,13 @@ const Field = ({
         error={errors[name]}
         small={!validate ? true : false}
       >
-        {name[0].toUpperCase()}
-        {name.slice(1).replace("_", " ")}
+        {name === "re_password"
+          ? "Repeat password"
+          : `${name[0].toUpperCase()}${name.slice(1).replace("_", " ")}`}
       </Styles.Label>
       {errors[name] && (
         <Styles.Span textarea={textarea}>
-          {name === "password_repeat"
+          {name === "re_password"
             ? "The passwords must be identical"
             : `${name[0].toUpperCase()}${name
                 .slice(1)

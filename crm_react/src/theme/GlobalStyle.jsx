@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
         padding:0px;
         margin:0px;
         font-family: 'Montserrat',sans-serif;
+        overflow: hidden;
     }
 
     *::-webkit-scrollbar {

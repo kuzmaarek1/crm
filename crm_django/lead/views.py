@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from operator import itemgetter
 from django.db.models import Q
 from rest_framework import viewsets
@@ -7,6 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Lead
 from team.models import Team
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class LeadViewSet(viewsets.ModelViewSet):
     serializer_class = LeadSerializer

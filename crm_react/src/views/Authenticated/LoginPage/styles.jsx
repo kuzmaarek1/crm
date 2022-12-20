@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,6 +18,7 @@ export const Wrapper = styled.div`
       : css`
           animation-name: backInRight;
           animation-duration: 0.5s;
+          overflow-x: hidden;
         `}
 `;
 

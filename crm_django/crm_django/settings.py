@@ -18,6 +18,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 env = environ.Env()
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
+AUTH_USER_MODEL = "account.CustomUser" 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -58,6 +60,7 @@ INSTALLED_APPS = [
     'lead.apps.LeadConfig',
     'team.apps.TeamConfig',
     'client.apps.ClientConfig',
+    'account.apps.AccountConfig'
 ]
 
 MIDDLEWARE = [
@@ -125,6 +128,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DJOSER = {
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SERIALIZERS": {
+        'user_create': 'account.serializers.UserCreateSerializer',
+        'current_user': 'account.serializers.UserSerializer',
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

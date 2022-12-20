@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from operator import itemgetter
 from rest_framework import viewsets
@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from .models import Client
 from lead.models import Lead
 from team.models import Team
+
+User = get_user_model()
 
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer

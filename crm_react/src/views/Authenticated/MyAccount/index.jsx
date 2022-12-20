@@ -13,7 +13,6 @@ const MyAccount = () => {
   const { data: auth, isLoading } = useGetUserQuery();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  console.log(auth);
   return (
     <Styles.Wrapper>
       <h1>MyAccount</h1>
