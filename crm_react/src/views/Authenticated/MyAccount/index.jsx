@@ -15,15 +15,21 @@ const MyAccount = () => {
 
   return (
     <Styles.Wrapper>
-      <h1>MyAccount</h1>
+      <Styles.Header>MyAccount</Styles.Header>
       {isLoading ? (
         <MyAccountLoader />
       ) : (
         <Styles.DetailsWrapper>
-          <Styles.Details title="true">UserId: </Styles.Details>
-          <Styles.Details>{auth?.id}</Styles.Details>
-          <Styles.Details title="true">Login: </Styles.Details>{" "}
-          <Styles.Details>{auth?.username}</Styles.Details>
+          {Object.entries(auth).map(([key, index]) => (
+            <React.Fragment key={key}>
+              <Styles.Details title="true">
+                {" "}
+                {key[0].toUpperCase()}
+                {key.slice(1).replace("_", " ")}
+              </Styles.Details>
+              <Styles.Details>{index}</Styles.Details>
+            </React.Fragment>
+          ))}
         </Styles.DetailsWrapper>
       )}
       <Styles.ButtonWrapper small={teams.currentTeam}>

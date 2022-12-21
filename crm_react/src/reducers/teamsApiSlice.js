@@ -29,8 +29,8 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
         try {
-          const username = await queryFulfilled;
-          dispatch(editTeamSuccess({ data: { id, username } }));
+          await queryFulfilled;
+          dispatch(editTeamSuccess({ data: { id, data } }));
         } catch {}
       },
       invalidatesTags: ["Team"],
@@ -82,11 +82,28 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         url: `/api/teams/delete_team/${id}/`,
         method: "PUT",
       }),
-      async onQueryStarted({ id, teams }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { id, teams },
+        { dispatch, queryFulfilled, getState }
+      ) {
         try {
           await queryFulfilled;
-          dispatch(deleteTeamSuccess({ data: { id, teams } }));
-        } catch {}
+          console.log(String(getState().teams.currentTeam.id) === String(id));
+          if (String(getState().teams.currentTeam.id) === String(id)) {
+            dispatch(
+              teamsApiSlice.util.prefetch("getTeams", undefined, {
+                force: true,
+              })
+            );
+            dispatch(
+              teamsApiSlice.util.prefetch("getTeam", undefined, {
+                force: true,
+              })
+            );
+          }
+        } catch (er) {
+          console.log(er);
+        }
       },
       invalidatesTags: ["Team"],
     }),

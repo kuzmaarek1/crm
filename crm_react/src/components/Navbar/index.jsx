@@ -21,7 +21,11 @@ const Navbar = () => {
   return (
     <Styles.Wrapper>
       <Styles.Title to="/teams">
-        {teams.currentTeam && auth ? teams.currentTeam.name : "CRM"}
+        {teams.currentTeam && auth
+          ? teams.currentTeam.name.length > 15
+            ? `${teams.currentTeam.name.substring(0, 15)}...`
+            : teams.currentTeam.name
+          : "CRM"}
       </Styles.Title>
       {auth && (
         <Styles.Links>

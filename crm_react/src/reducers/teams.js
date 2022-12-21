@@ -12,19 +12,6 @@ const teamReducer = createSlice({
     setCurrentTeam(state, action) {
       state.currentTeam = action.payload.data;
     },
-    deleteTeamSuccess(state, action) {
-      const deleteTeam = action.payload.data.teams.filter(
-        (team) => String(team.id) !== String(action.payload.data.id)
-      );
-
-      const currentTeam =
-        String(state.currentTeam.id) !== String(action.payload.data.id)
-          ? state.currentTeam
-          : deleteTeam?.length
-          ? deleteTeam[0]
-          : null;
-      state.currentTeam = currentTeam;
-    },
     editTeamSuccess(state, action) {
       if (state.currentTeam.id === action.payload.data.id) {
         state.currentTeam.name = action.payload.data.data.name;
