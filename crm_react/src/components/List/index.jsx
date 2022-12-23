@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   TableLoader,
-  Button,
   ModalDetails,
   ModalForm,
   HeaderList,
+  TableRow,
+  ButtonTeamList,
 } from "components";
 import * as Styles from "./styles";
 
@@ -47,80 +48,56 @@ const List = ({
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}
       />
-      <Styles.ListWrapper team={header === "Team"}>
-        {objectKey &&
-          Object.entries(objectKey).map(([key]) => (
-            <Styles.RowWrapper title="true" key={`${header}s-${key}`}>
-              <Styles.GridWrapper team={header === "Team"}>
-                {key[0].toUpperCase()}
-                {key.slice(1).replace("_", " ")}
-              </Styles.GridWrapper>
-              {header === "Team" && (
-                <Styles.GridWrapper
-                  team={header === "Team"}
-                ></Styles.GridWrapper>
-              )}
-            </Styles.RowWrapper>
-          ))}
-        {fetchingData || fetchingSearchData ? (
-          <TableLoader />
-        ) : (
-          data?.map(
-            ({ id, members, created_by, description, ...otherProps }) => (
-              <React.Fragment key={id}>
-                {Object.entries(otherProps).map(([key, value]) => {
-                  return (
-                    <Styles.RowWrapper
-                      onClick={() => openModal(id)}
-                      key={`${header}-${key}`}
-                    >
-                      {value !== null ? (
-                        <Styles.GridWrapper team={header === "Team"}>
-                          {key === "assigned_to" ? value.username : value}
-                        </Styles.GridWrapper>
-                      ) : (
-                        <Styles.GridWrapper team={header === "Team"}>
-                          None
-                        </Styles.GridWrapper>
-                      )}
-                      {header === "Team" && (
-                        <Styles.GridWrapper
-                          team="true"
-                          button={header === "Team"}
-                        >
-                          {String(id) === String(teams.currentTeam?.id) ? (
-                            <Button team red width="200px" height="4vh">
-                              Current
-                            </Button>
-                          ) : (
-                            <Button
-                              width="200px"
-                              height="4vh"
-                              team
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                hook.handleChangeTeams({
-                                  id,
-                                  members,
-                                  created_by,
-                                  description,
-                                  ...otherProps,
-                                });
-                              }}
-                            >
-                              Activate
-                            </Button>
-                          )}
-                        </Styles.GridWrapper>
-                      )}
-                    </Styles.RowWrapper>
-                  );
-                })}
-              </React.Fragment>
-            )
-          )
-        )}
-      </Styles.ListWrapper>
+      {fetchingData || fetchingSearchData ? (
+        <TableLoader />
+      ) : (
+        <Styles.ListWrapper team={header === "Team"}>
+          {objectKey &&
+            Object.entries(objectKey).map(([key]) => {
+              let description = `${key[0].toUpperCase()}${key
+                .slice(1)
+                .replace("_", " ")}`;
+              return (
+                <TableRow
+                  header={header}
+                  title="true"
+                  key={`${header}s-${key}`}
+                  description={description}
+                />
+              );
+            })}
+          {data?.map((props) => {
+            const { id, members, created_by, description, ...otherProps } =
+              props;
+            return Object.entries(otherProps).map(([key, value]) => {
+              let description =
+                value !== null
+                  ? key === "assigned_to"
+                    ? value.username
+                    : value
+                  : "None";
+              return (
+                <React.Fragment key={`${key}-${id}`}>
+                  <TableRow
+                    header={header}
+                    description={description}
+                    onClick={() => openModal(id)}
+                  />
+                  {header === "Team" && (
+                    <ButtonTeamList
+                      id={id}
+                      teams={teams}
+                      hook={hook}
+                      props={props}
+                      openModal={() => openModal(id)}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            });
+          })}
+        </Styles.ListWrapper>
+      )}
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}

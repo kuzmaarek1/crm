@@ -9,3 +9,5 @@ export { default as ModalDetails } from "components/ModalDetails";
 export { default as ModalForm } from "components/ModalForm";
 export { default as DownshiftList } from "components/ModalForm/DownshiftList";
 export { default as Field } from "components/Field";
+export { default as TableRow } from "components/TableRow";
+export { default as ButtonTeamList } from "components/ButtonTeamList";
