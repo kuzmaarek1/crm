@@ -82,6 +82,7 @@ export const MobileNavbar = styled.div`
 `;
 
 export const HaburgerLines = styled.div`
+  transform: scale(0.7);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -105,7 +106,7 @@ export const HaburgerLine = styled.span`
     if (props.number === 1) {
       return css`
         transition: transform 0.4s ease-in-out;
-        transform-origin: 0% 0%;
+        transform-origin: 0% 50%;
       `;
     }
     if (props.number === 2) {

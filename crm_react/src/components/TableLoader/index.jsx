@@ -4,8 +4,8 @@ import ContentLoader from "react-content-loader";
 const TableLoader = (props) => (
   <ContentLoader
     speed={3}
-    width={`100vw`}
-    height={`75vh`}
+    width={`100%`}
+    height={`75%`}
     backgroundColor="#eaeced"
     foregroundColor="#ffffff"
     {...props}

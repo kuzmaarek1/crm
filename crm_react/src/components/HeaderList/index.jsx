@@ -49,7 +49,11 @@ const HeaderList = ({
         />
       </Styles.InputWrapper>
       <Styles.ButtonWrapper>
-        <Button width="50%" onClick={() => setModalIsOpenFormAdd(true)}>
+        <Button
+          width="60%"
+          height="7vh"
+          onClick={() => setModalIsOpenFormAdd(true)}
+        >
           Add {header}
         </Button>
       </Styles.ButtonWrapper>

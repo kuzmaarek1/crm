@@ -16,6 +16,12 @@ export const ModalWrapper = styled(Modal)`
   box-shadow: 0 0 30000px #e0e0e0c0;
   color: #303030;
   outline: none;
+  @media (max-width: 640px) {
+    //height: 95%;
+    max-height: 95%;
+    width: 95%;
+    padding: 10px;
+  }
   ${(props) => {
     if (props.isOpen)
       return css`

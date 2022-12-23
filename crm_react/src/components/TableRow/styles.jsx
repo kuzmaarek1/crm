@@ -20,6 +20,28 @@ export const CellWrapper = styled.div`
       grid-column: span 2 / span 2;
       width: 85%;
     `}
+  @media (max-width:  1024px) and (min-width:768px) {
+    ${(props) =>
+      props.index > 3 &&
+      css`
+        display: none;
+      `}
+  }
+  @media (max-width: 768px) and (min-width: 640px) {
+    ${(props) =>
+      props.index > 2 &&
+      css`
+        display: none;
+      `}
+  }
+  @media (max-width: 640px) {
+    ${(props) =>
+      props.index > 1 &&
+      css`
+        display: none;
+      `}
+  }
+
   &:hover {
     cursor: ${(props) => (props.title ? "default" : "pointer")};
   }

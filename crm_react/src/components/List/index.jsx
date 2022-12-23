@@ -53,7 +53,7 @@ const List = ({
       ) : (
         <Styles.ListWrapper team={header === "Team"}>
           {objectKey &&
-            Object.entries(objectKey).map(([key]) => {
+            Object.entries(objectKey).map(([key], index) => {
               let description = `${key[0].toUpperCase()}${key
                 .slice(1)
                 .replace("_", " ")}`;
@@ -63,13 +63,14 @@ const List = ({
                   title="true"
                   key={`${header}s-${key}`}
                   description={description}
+                  index={index}
                 />
               );
             })}
           {data?.map((props) => {
             const { id, members, created_by, description, ...otherProps } =
               props;
-            return Object.entries(otherProps).map(([key, value]) => {
+            return Object.entries(otherProps).map(([key, value], index) => {
               let description =
                 value !== null
                   ? key === "assigned_to"
@@ -82,6 +83,7 @@ const List = ({
                     header={header}
                     description={description}
                     onClick={() => openModal(id)}
+                    index={index}
                   />
                   {header === "Team" && (
                     <ButtonTeamList

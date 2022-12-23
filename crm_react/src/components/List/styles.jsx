@@ -1,9 +1,10 @@
 import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
+  width: 100%;
   height: 92.5vh;
-  overflow-y: auto;
-  overflow-x: none;
+  overflow-x: auto;
+  overflow-y: none;
   color: #303030;
   background-color: #f7f8fc;
 `;
@@ -35,4 +36,20 @@ export const ListWrapper = styled.div`
       ? "minmax(0, 0.85fr) minmax(0, 0.15fr)"
       : "repeat(5, minmax(0, 1fr))"};
   ${(props) => backgroundRow(props)}
+  ${(props) =>
+    !props.team &&
+    css`
+      @media (max-width: 1024px) and (min-width: 768px) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+      }
+      @media (max-width: 768px) and (min-width: 640px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+      @media (max-width: 640px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+      }
+    `}
 `;
