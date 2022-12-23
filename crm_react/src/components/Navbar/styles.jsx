@@ -105,7 +105,7 @@ export const HaburgerLine = styled.span`
     if (props.number === 1) {
       return css`
         transition: transform 0.4s ease-in-out;
-        transform-origin: -1px 0%;
+        transform-origin: 0% 0%;
       `;
     }
     if (props.number === 2) {
@@ -116,7 +116,7 @@ export const HaburgerLine = styled.span`
     if (props.number === 3) {
       return css`
         transition: transform 0.4s ease-in-out;
-        transform-origin: -1px 100%;
+        transform-origin: 0% 100%;
       `;
     }
   }}

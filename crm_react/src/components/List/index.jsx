@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { TableLoader, Button, ModalDetails, ModalForm } from "components";
+import { useSelector } from "react-redux";
+import {
+  TableLoader,
+  Button,
+  ModalDetails,
+  ModalForm,
+  HeaderList,
+} from "components";
 import * as Styles from "./styles";
 
 const List = ({
@@ -14,7 +20,6 @@ const List = ({
   register,
   setFocus,
 }) => {
-  const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
   const [modalIsOpenDetails, setModalIsOpenDetails] = useState(false);
   const [modalIsOpenFormAdd, setModalIsOpenFormAdd] = useState(false);
@@ -33,45 +38,15 @@ const List = ({
   }
   return (
     <Styles.Wrapper>
-      <Styles.Title>
-        <Styles.Header>{header}s</Styles.Header>
-        <Styles.InputWrapper>
-          <Styles.Input
-            type="serach"
-            placeholder="Search"
-            {...register(`${header.toLowerCase()}-name`, {
-              required: true,
-              onChange: (e) => {
-                if (e.target.value === "") {
-                  refetchList();
-                } else {
-                  dispatch(
-                    endpoint.util.prefetch(
-                      `search${header}`,
-                      { team: teams.currentTeam.id, name: e.target.value },
-                      { force: true }
-                    )
-                  );
-                }
-              },
-            })}
-          />
-          <Styles.Label>
-            {header === "Team" ? "Name" : "First name and last name"}
-          </Styles.Label>
-          <Styles.SearchIcon
-            size={"20px"}
-            onClick={() => {
-              setFocus(`${header.toLowerCase()}-name`);
-            }}
-          />
-        </Styles.InputWrapper>
-        <Styles.ButtonWrapper>
-          <Button width="50%" onClick={() => setModalIsOpenFormAdd(true)}>
-            Add {header}
-          </Button>
-        </Styles.ButtonWrapper>
-      </Styles.Title>
+      <HeaderList
+        header={header}
+        register={register}
+        endpoint={endpoint}
+        teams={teams}
+        refetchList={refetchList}
+        setFocus={setFocus}
+        setModalIsOpenFormAdd={setModalIsOpenFormAdd}
+      />
       <Styles.ListWrapper team={header === "Team"}>
         {objectKey &&
           Object.entries(objectKey).map(([key]) => (
