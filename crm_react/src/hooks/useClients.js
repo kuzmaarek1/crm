@@ -13,7 +13,7 @@ export const useClients = () => {
   const [editClient] = useEditClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  const handleAddClient = (id, data) => {
+  const handleAdd = (id, data) => {
     toast.handleDisplayBanner(
       createClient({ id, data }),
       `Adding client ${data.first_name} ${data.last_name}`,
@@ -22,7 +22,7 @@ export const useClients = () => {
     navigate("/clients");
   };
 
-  const handleDeleteClient = (client, team) => {
+  const handleDelete = (client, team) => {
     toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,
@@ -30,7 +30,7 @@ export const useClients = () => {
     );
   };
 
-  const handleEditClient = (client, team, data) => {
+  const handleEdit = (client, team, data) => {
     toast.handleDisplayBanner(
       editClient({ client, team, data }),
       `Updating client ${data.first_name} ${data.last_name}`,
@@ -40,8 +40,8 @@ export const useClients = () => {
   };
 
   return {
-    handleAddClient,
-    handleDeleteClient,
-    handleEditClient,
+    handleAdd,
+    handleDelete,
+    handleEdit,
   };
 };

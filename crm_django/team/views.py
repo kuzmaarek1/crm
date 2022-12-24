@@ -2,17 +2,19 @@ from .models import Team
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from .serializers import TeamSerializer
-from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     queryset = Team.objects.all()
 
     def get_queryset(self):
-       return self.queryset.filter(members__in=[self.request.user])
+       return self.queryset.filter(members__in=[self.request.user]).order_by('-id')
 
     def perform_create(self, serializer):
        object=serializer.save(created_by=self.request.user)
@@ -32,7 +34,7 @@ def get_team(request):
 
 @api_view(['GET'])
 def search_team(request, search):
-    team = Team.objects.filter(members__in=[request.user], name__icontains=search)
+    team = Team.objects.filter(members__in=[request.user], name__icontains=search).order_by('-id')
     serializer = TeamSerializer(team, many=True)
     return Response(serializer.data)
 
@@ -51,3 +53,11 @@ def add_member(request, team_id):
         return Response(user_dict)
     else:
         return HttpResponse(status=500)
+
+@api_view(['PUT'])
+def update_team(request, team_id):
+    team = Team.objects.filter(id=team_id).first()
+    serializer = TeamSerializer(team, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Update'})

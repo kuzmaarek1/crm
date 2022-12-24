@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useToast } from "hooks/useToast";
@@ -7,26 +6,26 @@ import {
   useAddMemberMutation,
   useAddTeamMutation,
   useDeleteTeamMutation,
+  useEditTeamMutation,
 } from "reducers/teamsApiSlice";
 
 export const useTeams = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const toastHook = useToast();
   const [addMember] = useAddMemberMutation();
   const [addTeam] = useAddTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
+  const [editTeam] = useEditTeamMutation();
 
-  const handleAddTeam = (data) => {
+  const handleAdd = (team, data) => {
     toastHook.handleDisplayBanner(
       addTeam(data),
       `Adding team ${data.name}`,
       `Added team ${data.name}`
     );
-    navigate("/teams");
   };
 
-  const handleDeleteTeam = (team, teams) => {
+  const handleDelete = (team, teams) => {
     toastHook.handleDisplayBanner(
       deleteTeam({ id: team.id, teams }),
       `Deleting Team ${team.name}`,
@@ -48,10 +47,19 @@ export const useTeams = () => {
     toast.success(`Change team ${team.name}`);
   };
 
+  const handleEdit = (id, team, data) => {
+    toastHook.handleDisplayBanner(
+      editTeam({ id, data }),
+      `Updating team ${data.name}`,
+      `Updated team  ${data.name}`
+    );
+  };
+
   return {
-    handleAddTeam,
+    handleAdd,
     handleChangeTeams,
-    handleDeleteTeam,
+    handleDelete,
+    handleEdit,
     handleAddMember,
   };
 };

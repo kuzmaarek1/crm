@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from operator import itemgetter
 from rest_framework import viewsets
 from .serializers import ClientSerializer
 from rest_framework.decorators import api_view
@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from .models import Client
 from lead.models import Lead
 from team.models import Team
+
+User = get_user_model()
 
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
@@ -24,7 +26,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 def get_client(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    client=Client.objects.filter(team=team)
+    client=Client.objects.filter(team=team).order_by('-id')
     serializer = ClientSerializer(client, many=True)
     data = serializer.data
     return Response(data)
@@ -32,7 +34,7 @@ def get_client(request,team_id):
 @api_view(['GET'])
 def search_client(request,team_id,search):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    client=Client.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team))
+    client=Client.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team)).order_by('-id')
     serializer = ClientSerializer(client, many=True)
     data = serializer.data
     return Response(data)
@@ -40,27 +42,35 @@ def search_client(request,team_id,search):
 @api_view(['POST'])
 def create_client(request,team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    serializer = ClientSerializer(data=request.data)
+    first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
+    serializer =  ClientSerializer(data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
     if serializer.is_valid():
-        serializer.save(created_by=request.user, team=team)
-    return Response({'message':'Create'})
+        assigned_to = itemgetter("assigned_to")(request.data)
+        try:
+            user = User.objects.get(username=assigned_to)
+            serializer.save(created_by=request.user, team=team, assigned_to=user)
+            return Response({'message':'Create'})
+        except User.DoesNotExist:
+            if  assigned_to =="":
+                serializer.save(created_by=request.user, team=team)
+                return Response({'message':'Create'})
 
 @api_view(['PUT'])
 def update_client(request, client_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
+    first_name, last_name, email, phone, description = itemgetter("first_name", "last_name", "email", "phone", "description")(request.data)
     client = Client.objects.get(id=client_id)
-    serializer = ClientSerializer(client, data=request.data)
-    username = request.data['assigned_to']
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        user = 0
+    serializer = ClientSerializer(client, data={'first_name':first_name, 'last_name':last_name, 'email':email, 'phone':phone, 'description':description})
     if serializer.is_valid():
-        if user:
+        assigned_to = itemgetter("assigned_to")(request.data)
+        try:
+            user = User.objects.get(username=assigned_to)
             serializer.save(team=team, assigned_to=user)
-        else:
-            serializer.save(team=team)
-    return Response({'message':'Update'})
+            return Response({'message':'Update'})
+        except User.DoesNotExist:
+            if  assigned_to =="":
+                serializer.save(team=team, assigned_to=None)
+                return Response({'message':'Update'})
 
 @api_view(['PUT'])
 def delete_client(request,client_id, team_id):
@@ -73,6 +83,6 @@ def convert_lead_to_client(request, lead_id, team_id):
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.filter(team=team).get(id=lead_id)
     client = Client.objects.create(team=team, first_name=lead.first_name, last_name=lead.last_name, phone=lead.phone,
-                                   email=lead.email, created_by=request.user)
+                                   email=lead.email, created_by=request.user, description=lead.description, assigned_to=lead.assigned_to)
     Lead.objects.filter(team=team, id=lead_id).delete()
     return Response(client.pk)

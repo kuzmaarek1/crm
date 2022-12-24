@@ -4,38 +4,53 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   color: #616161;
   background-color: #f7f8fc;
   height: 92.5vh;
   width: 100%;
+  @media (max-width: 640px) {
+    font-size: 0.8rem;
+  }
 `;
 
-export const Button = styled.button`
-  width: 20%;
-  height: 7vh;
-  border: none;
-  background: rgba(197, 220, 250, 0.5);
-  color: #0f56b3;
-  font-family: "Mulish", sans-serif;
-  border-radius: 100px !important;
-  cursor: pointer;
+export const Header = styled.h1`
+  margin-top: -7.5vh;
+`;
+
+export const ButtonWrapper = styled.div`
+  width: ${({ small }) => (small ? "300px" : "500px")};
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-content: center;
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `;
 
 export const DetailsWrapper = styled.div`
+  margin-top: -3vh;
   display: grid;
+  width: 50%;
   grid-template-columns: 1fr 2fr;
-  grid-gap: 1px;
   margin-bottom: 3vh;
+  div:nth-child(4n),
+  div:nth-child(4n + 3) {
+    background-color: #e0e0e0;
+  }
+  @media (max-width: 640px) {
+    width: 90%;
+  }
 `;
 
 export const Details = styled.div`
-  margin-top: 1vh;
   height: 5vh;
   width: 100%;
   text-align: center;
-  line-height: 5vh;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${(props) =>
     props.title &&
     css`
