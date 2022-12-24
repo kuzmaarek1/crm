@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, ModalForm, Modal } from "components";
+import {
+  LeadDetailsButton,
+  TeamDetailsButton,
+  ClientDetailsButton,
+} from "constans";
 import * as Styles from "./styles";
 
 const ModalDetails = ({
@@ -15,93 +20,94 @@ const ModalDetails = ({
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
   const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
+
+  const handleButtonClick = (name) => {
+    switch (name) {
+      case "handleConvert":
+        hook.handleConvertToClient(list, teams.currentTeam.id);
+        closeModal();
+        break;
+      case "handleEdit":
+        setModalIsOpenFormEdit(true);
+        break;
+      case "handleAddMember":
+        break;
+      default:
+        hook.handleDelete(list, teams.currentTeam.id);
+        closeModal();
+        break;
+    }
+  };
+  const buttonData =
+    header === "Lead"
+      ? LeadDetailsButton
+      : header === "Team"
+      ? TeamDetailsButton
+      : ClientDetailsButton;
+
   return (
     <>
-      <Styles.NavbarDetails>
+      <Styles.HeaderDetails>
         <Styles.Header>Details {header}</Styles.Header>
         <Styles.ButtonWrapper>
-          {header === "Lead" && (
-            <Button
-              width="250px"
-              height="50px"
-              onClick={() => {
-                hook.handleConvertToClient(list, teams.currentTeam.id);
-                closeModal();
-              }}
-            >
-              Client
-            </Button>
-          )}
           {((header === "Team" &&
             String(created_by?.id) === String(auth?.user.id)) ||
-            header !== "Team") && (
-            <>
-              {header === "Team" && (
+            header !== "Team") &&
+            buttonData.map(({ name, func, red }) => (
+              <Button
+                width="250px"
+                height="50px"
+                red={red}
+                onClick={() => handleButtonClick(func)}
+                key={name}
+              >
+                {name}
+              </Button>
+            ))}
+          {/*  
                 <Button
                   width="250px"
                   height="50px"
                   to={`/add-member/${list.id}`}
                   as={NavLink}
-                  lead="true"
                 >
                   Add member
                 </Button>
-              )}
-              <Button
-                width="250px"
-                height="50px"
-                onClick={() => setModalIsOpenFormEdit(true)}
-                lead="true"
-              >
-                Edit
-              </Button>
-              <Button
-                width="250px"
-                height="50px"
-                red
-                onClick={() => {
-                  hook.handleDelete(list, teams.currentTeam.id);
-                  closeModal();
-                }}
-              >
-                Delete
-              </Button>
-            </>
-          )}
+            */}
         </Styles.ButtonWrapper>
-      </Styles.NavbarDetails>
+      </Styles.HeaderDetails>
       <Styles.DetailsWrapper team={header === "Team"}>
-        {Object.entries(otherData).map(([key, value], index) => (
-          <React.Fragment key={`${header}-${key}-${id}`}>
-            {key !== "member" && (
-              <>
-                <Styles.Details
-                  title="true"
-                  description={key === "description"}
-                  member={key === "members"}
-                >
-                  {key[0].toUpperCase()}
-                  {key.slice(1).replace("_", " ")}
+        {Object.entries(otherData).map(([key, value], index) => {
+          let valueData =
+            value !== null
+              ? key === "assigned_to"
+                ? value.username
+                : value
+              : "None";
+          return (
+            <React.Fragment key={`${key}-${index}`}>
+              <Styles.Details
+                title="true"
+                description={key === "description"}
+                member={key === "members"}
+              >
+                {key[0].toUpperCase()}
+                {key.slice(1).replace("_", " ")}
+              </Styles.Details>
+              {key !== "members" ? (
+                <Styles.Details description={key === "description"}>
+                  {valueData}
                 </Styles.Details>
-                {value !== null ? (
-                  key !== "members" ? (
-                    <Styles.Details description={key === "description"}>
-                      {key === "assigned_to" ? value.username : value}
-                    </Styles.Details>
-                  ) : (
-                    value.map(({ username }) => (
-                      <Styles.Details key={`member-${username}`} member="true">
-                        {username}
-                      </Styles.Details>
-                    ))
-                  )
-                ) : (
-                  <Styles.Details>Not</Styles.Details>
-                )}
-              </>
-            )}
-          </React.Fragment>
-        ))}
+              ) : (
+                valueData.map(({ username }) => (
+                  <Styles.Details key={`member-${username}`} member="true">
+                    {username}
+                  </Styles.Details>
+                ))
+              )}
+            </React.Fragment>
+          );
+        })}
       </Styles.DetailsWrapper>
       <ModalForm
         header={header}

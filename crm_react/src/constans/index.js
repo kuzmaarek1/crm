@@ -41,3 +41,20 @@ export const RegisterForm = [
   { type: "password", name: "password", required: true },
   { type: "password", name: "re_password", required: true, validate: true },
 ];
+
+export const LeadDetailsButton = [
+  { name: "Client", func: "handleConvert" },
+  { name: "Edit", func: "handleEdit" },
+  { name: "Delete", red: true, func: "handleDelete" },
+];
+
+export const TeamDetailsButton = [
+  { name: "Add member", func: "handleAddMember" },
+  { name: "Edit", func: "handleEdit" },
+  { name: "Delete", red: true, func: "handleDelete" },
+];
+
+export const ClientDetailsButton = [
+  { name: "Edit", func: "handleEdit" },
+  { name: "Delete", red: true, func: "handleDelete" },
+];

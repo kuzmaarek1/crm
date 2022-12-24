@@ -31,6 +31,9 @@ export const Form = styled.form`
   display: flex;
   width: 40%;
   flex-wrap: wrap;
+  @media (max-width: 820px) {
+    width: 90vw;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
@@ -45,4 +48,7 @@ export const ButtonSwitchWrapper = styled.div`
   width: 50%;
   flex-direction: column;
   justify-content: center;
+  @media (max-width: 820px) {
+    width: 90vw;
+  }
 `;

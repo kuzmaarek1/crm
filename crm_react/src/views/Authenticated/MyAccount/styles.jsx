@@ -24,6 +24,9 @@ export const ButtonWrapper = styled.div`
   gap: 5px;
   justify-content: center;
   align-content: center;
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `;
 
 export const DetailsWrapper = styled.div`

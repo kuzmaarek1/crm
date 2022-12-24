@@ -46,7 +46,6 @@ const Field = ({
         htmlFor={name}
         empty={watch(name) === undefined || watch(name) === ""}
         error={errors[name]}
-        small={!validate ? true : false}
       >
         {name === "re_password"
           ? "Repeat password"

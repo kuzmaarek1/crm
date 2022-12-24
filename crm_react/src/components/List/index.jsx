@@ -71,7 +71,7 @@ const List = ({
             const { id, members, created_by, description, ...otherProps } =
               props;
             return Object.entries(otherProps).map(([key, value], index) => {
-              let description =
+              let valueData =
                 value !== null
                   ? key === "assigned_to"
                     ? value.username
@@ -81,7 +81,7 @@ const List = ({
                 <React.Fragment key={`${key}-${id}`}>
                   <TableRow
                     header={header}
-                    description={description}
+                    description={valueData}
                     onClick={() => openModal(id)}
                     index={index}
                   />

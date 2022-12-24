@@ -14,7 +14,7 @@ class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
 
     def get_queryset(self):
-       return self.queryset.filter(members__in=[self.request.user])
+       return self.queryset.filter(members__in=[self.request.user]).order_by('-id')
 
     def perform_create(self, serializer):
        object=serializer.save(created_by=self.request.user)

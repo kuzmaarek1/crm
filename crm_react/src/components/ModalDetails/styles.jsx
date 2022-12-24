@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const NavbarDetails = styled.div`
+export const HeaderDetails = styled.header`
   display: flex;
   justify-content: flex-start;
   align-content: center;
@@ -25,6 +25,7 @@ export const ButtonWrapper = styled.div`
   gap: 5px;
   @media (max-width: 640px) {
     width: 100%;
+    justify-content: center;
   }
 `;
 

@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 export const FieldWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 6vh;
+  height: 50px;
   margin-bottom: ${(props) => (props.textarea ? "10vh" : "3vh")};
 `;
 export const Input = styled.input`
@@ -45,7 +45,7 @@ export const Textarea = styled(Input)`
 `;
 
 export const Label = styled.label`
-  width: ${(props) => (props.small ? "100px" : "140px")};
+  width: 100px;
   position: absolute;
   top: 50%;
   left: 5%;
@@ -58,7 +58,7 @@ export const Label = styled.label`
 
   input:focus ~ &&,
   textarea:focus ~ && {
-    transform: translate(-30%, -4.5vh) scale(0.9);
+    transform: translate(-30%, -40px) scale(0.9);
     text-align: start;
     font-size: 12px;
     color: white;
@@ -73,7 +73,7 @@ export const Label = styled.label`
     let backgroundColor = props.error ? "#a90e46" : "#616161";
     if (props.empty === false)
       return css`
-        transform: translate(-30%, -4.5vh) scale(0.9);
+        transform: translate(-30%, -40px) scale(0.9);
         text-align: start;
         font-size: 12px;
         color: white;

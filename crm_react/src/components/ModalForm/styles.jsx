@@ -31,7 +31,7 @@ export const ButtonDowshift = styled.button`
   position: absolute;
   top: 0;
   right: 2%;
-  height: 5vh;
+  height: 50px;
   margin: auto;
   cursor: pointer;
   background-color: transparent;
