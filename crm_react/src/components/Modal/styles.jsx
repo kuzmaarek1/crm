@@ -17,7 +17,6 @@ export const ModalWrapper = styled(Modal)`
   color: #303030;
   outline: none;
   @media (max-width: 640px) {
-    //height: 95%;
     max-height: 95%;
     width: 95%;
     padding: 10px;

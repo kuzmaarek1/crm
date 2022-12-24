@@ -12,7 +12,6 @@ const MyAccount = () => {
   const teams = useSelector((state) => state.teams);
   const { data: auth, isLoading } = useGetUserQuery();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   return (
     <Styles.Wrapper>
       <Styles.Header>MyAccount</Styles.Header>

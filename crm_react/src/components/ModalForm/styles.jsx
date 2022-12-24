@@ -3,12 +3,17 @@ import styled, { css } from "styled-components";
 export const Header = styled.h1`
   color: #616161;
   text-align: center;
+  padding-top: 0px;
+  margin: 10px;
 `;
+
 export const Form = styled.form`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  justify-content: center;
 `;
+
 export const Label = styled.label`
   display: flex;
   margin-bottom: 5vh;
@@ -25,6 +30,13 @@ export const Span = styled.span`
   width: 100%;
   color: #a90e46;
   justify-content: flex-end;
+`;
+
+export const ButtonWrapper = styled.div`
+  width: 50%;
+  @media (max-width: 640px) {
+    width: 90%;
+  }
 `;
 
 export const ButtonDowshift = styled.button`

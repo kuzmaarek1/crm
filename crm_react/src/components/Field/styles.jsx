@@ -4,7 +4,7 @@ export const FieldWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 50px;
-  margin-bottom: ${(props) => (props.textarea ? "10vh" : "3vh")};
+  margin-bottom: ${(props) => (props.textarea ? "40px" : "20px")};
 `;
 export const Input = styled.input`
   position: absolute;
@@ -40,7 +40,7 @@ export const Input = styled.input`
 `;
 
 export const Textarea = styled(Input)`
-  height: 12vh;
+  height: 70px;
   padding-top: 2vh;
 `;
 

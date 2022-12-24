@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field, Modal } from "components";
 import { modalLeadandClientField, modalTeamField } from "constans";
 import * as Styles from "./styles";
-import * as StylesForm from "views/Authenticated/LoginPage/styles.jsx";
 
 const ModalFrom = ({
   hook,
@@ -15,6 +14,7 @@ const ModalFrom = ({
   list,
 }) => {
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
+  const formData = header !== "Team" ? modalLeadandClientField : modalTeamField;
   const {
     register,
     handleSubmit,
@@ -52,42 +52,28 @@ const ModalFrom = ({
           reset();
         })}
       >
-        {header !== "Team" ? (
-          <>
-            {modalLeadandClientField.map((props, index) => (
-              <Field
-                {...props}
-                key={index}
-                watch={watch}
-                errors={errors}
-                register={register}
-              />
-            ))}
-            <DownshiftList
-              teams={teams}
-              name="assigned_to"
-              register={register}
-              setValue={setValue}
-              watch={watch}
-              errors={errors}
-            />
-          </>
-        ) : (
-          modalTeamField.map((props, index) => (
-            <Field
-              key={index}
-              {...props}
-              watch={watch}
-              errors={errors}
-              register={register}
-            />
-          ))
+        {formData.map((props, index) => (
+          <Field
+            {...props}
+            key={index}
+            watch={watch}
+            errors={errors}
+            register={register}
+          />
+        ))}
+        {header !== "Team" && (
+          <DownshiftList
+            teams={teams}
+            name="assigned_to"
+            register={register}
+            setValue={setValue}
+            watch={watch}
+            errors={errors}
+          />
         )}
-        <StylesForm.ButtonWrapper>
-          <Button width="40%" height="40px">
-            Submit
-          </Button>
-        </StylesForm.ButtonWrapper>
+        <Styles.ButtonWrapper>
+          <Button height="40px">Submit</Button>
+        </Styles.ButtonWrapper>
       </Styles.Form>
     </>
   );

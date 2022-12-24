@@ -1,9 +1,5 @@
 import { apiSlice } from "api/apiSlice";
-import {
-  deleteTeamSuccess,
-  editTeamSuccess,
-  addMemberSuccess,
-} from "reducers/teams.js";
+import { editTeamSuccess, addMemberSuccess } from "reducers/teams.js";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
