@@ -33,7 +33,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
     }),
     searchTeam: builder.query({
       query: ({ name }) => ({
-        url: `api/teams/search_team/${name}/`,
+        url: `api/teams/search_team/?search=${name}`,
         method: "GET",
       }),
       async onQueryStarted({ name }, { dispatch, queryFulfilled }) {
