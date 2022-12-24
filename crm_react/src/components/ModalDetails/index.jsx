@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, ModalForm, Modal } from "components";
 import {
@@ -20,6 +19,8 @@ const ModalDetails = ({
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
   const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
+  const [modalIsOpenFormAddMembers, setModalIsOpenFormAddMembers] =
+    useState(false);
 
   const handleButtonClick = (name) => {
     switch (name) {
@@ -31,6 +32,7 @@ const ModalDetails = ({
         setModalIsOpenFormEdit(true);
         break;
       case "handleAddMember":
+        setModalIsOpenFormAddMembers(true);
         break;
       default:
         hook.handleDelete(list, teams.currentTeam.id);
@@ -64,16 +66,6 @@ const ModalDetails = ({
                 {name}
               </Button>
             ))}
-          {/*  
-                <Button
-                  width="250px"
-                  height="50px"
-                  to={`/add-member/${list.id}`}
-                  as={NavLink}
-                >
-                  Add member
-                </Button>
-            */}
         </Styles.ButtonWrapper>
       </Styles.HeaderDetails>
       <Styles.DetailsWrapper team={header === "Team"}>
@@ -119,7 +111,22 @@ const ModalDetails = ({
         hook={hook}
         teams={teams}
         list={list}
+        addMember={false}
       />
+      {header === "Team" && (
+        <ModalForm
+          header={header}
+          modalIsOpen={modalIsOpenFormAddMembers}
+          closeModal={() => {
+            setModalIsOpenFormAddMembers(false);
+          }}
+          closeDetails={closeModal}
+          hook={hook}
+          teams={teams}
+          list={list}
+          addMember={true}
+        />
+      )}
     </>
   );
 };

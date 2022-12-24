@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field, Modal } from "components";
-import { modalLeadandClientField, modalTeamField } from "constans";
+import {
+  modalLeadandClientField,
+  modalTeamField,
+  modalTeamAddMemberField,
+} from "constans";
 import * as Styles from "./styles";
 
 const ModalFrom = ({
@@ -12,9 +16,16 @@ const ModalFrom = ({
   closeModal,
   closeDetails,
   list,
+  addMember,
 }) => {
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
-  const formData = header !== "Team" ? modalLeadandClientField : modalTeamField;
+  const formData =
+    header !== "Team"
+      ? modalLeadandClientField
+      : addMember
+      ? modalTeamAddMemberField
+      : modalTeamField;
+  const headerData = addMember ? "member" : header;
   const {
     register,
     handleSubmit,
@@ -27,7 +38,7 @@ const ModalFrom = ({
   });
 
   useEffect(() => {
-    if (list) {
+    if (list && !addMember) {
       const { id, created_by, members, ...otherData } = list;
       Object.entries(otherData).forEach(([key, value]) => {
         key === "assigned_to"
@@ -40,12 +51,14 @@ const ModalFrom = ({
   return (
     <>
       <Styles.Header>
-        {list ? "Edit" : "Add"} {header}
+        {list && !addMember ? "Edit" : "Add"} {headerData}
       </Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit((register) => {
           list
-            ? hook.handleEdit(list.id, teams?.currentTeam?.id, register)
+            ? addMember
+              ? hook.handleAddMember(list.id, register)
+              : hook.handleEdit(list.id, teams?.currentTeam?.id, register)
             : hook.handleAdd(teams?.currentTeam?.id, register);
           closeModal();
           list && closeDetails();

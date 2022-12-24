@@ -29,6 +29,10 @@ export const modalTeamField = [
   },
 ];
 
+export const modalTeamAddMemberField = [
+  { type: "email", name: "username", required: true },
+];
+
 export const LoginForm = [
   { type: "email", name: "username", required: true },
   { type: "password", name: "password", required: true },

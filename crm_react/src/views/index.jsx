@@ -6,4 +6,3 @@ export { default as MyAccount } from "views/Authenticated/MyAccount";
 export { default as Clients } from "views/Clients";
 export { default as Leads } from "views/Leads";
 export { default as Teams } from "views/Teams";
-export { default as AddMember } from "views/Teams/AddMember";
