@@ -8,7 +8,7 @@ router.register('clients', ClientViewSet, basename='clients')
 urlpatterns = [
     path('', include(router.urls)),
     path('clients/get_client/<int:team_id>/', get_client, name='get_client'),
-    path('clients/search_client/<int:team_id>/<str:search>/', search_client, name='search_client'),
+    path('clients/search_client/<int:team_id>/', search_client, name='search_client'),
     path('clients/update_client/<int:client_id>/<int:team_id>/', update_client, name='update_client'),
     path('clients/create_client/<int:team_id>/', create_client, name='create_client'),
     path('clients/delete_client/<int:client_id>/<int:team_id>/', delete_client, name='delete_client'),
