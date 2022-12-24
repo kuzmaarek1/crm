@@ -8,7 +8,7 @@ router.register('leads', LeadViewSet, basename='leads')
 urlpatterns = [
     path('', include(router.urls)),
     path('leads/get_lead/<int:team_id>/', get_lead, name='get_lead'),
-    path('leads/search_lead/<int:team_id>/<str:search>/', search_lead, name='search_lead'),
+    path('leads/search_lead/<int:team_id>/', search_lead, name='search_lead'),
     path('leads/update_lead/<int:lead_id>/<int:team_id>/', update_lead, name='update_lead'),
     path('leads/create_lead/<int:team_id>/', create_lead, name='create_lead'),
     path('leads/delete_lead/<int:lead_id>/<int:team_id>/', delete_lead, name='delete_lead')

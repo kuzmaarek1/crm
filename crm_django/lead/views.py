@@ -31,7 +31,8 @@ def get_lead(request,team_id):
     return Response(data)
 
 @api_view(['GET'])
-def search_lead(request,team_id,search):
+def search_lead(request,team_id):
+    search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team)).order_by('-id')
     serializer = LeadSerializer(lead, many=True)
