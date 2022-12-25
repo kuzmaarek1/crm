@@ -35,10 +35,13 @@ def get_client(request,team_id):
 def search_client(request,team_id):
     search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    client=Client.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team)).order_by('-id')
-    serializer = ClientSerializer(client, many=True)
-    data = serializer.data
-    return Response(data)
+    for idx, key in enumerate(search.split()):
+        if idx == 0:
+            client = Client.objects.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
+        else:
+            client = client.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
+        serializer = ClientSerializer(client, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def create_client(request,team_id):
