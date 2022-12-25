@@ -27,6 +27,19 @@ const GlobalStyle = createGlobalStyle`
     border-radius:20px;
     height:15px;
     }
+
+    ::-moz-selection{
+        background-color: rgba(15,86, 179, 0.7);
+        color:white;
+    }
+
+    
+    ::selection{
+        background-color:rgba(15,86, 179, 0.7);
+        color:white;
+    }
+
+
     .ReactModalPortal > * {
         opacity: 0;
     }
