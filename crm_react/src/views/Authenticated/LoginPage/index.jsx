@@ -29,7 +29,7 @@ const LoginPage = () => {
 
   return (
     <Styles.Wrapper isLogin={isLogin}>
-      <Styles.Header>{isLogin ? "Login In" : "Sign Up"}</Styles.Header>
+      <Styles.Header>{isLogin ? "Log In" : "Sign Up"}</Styles.Header>
       <Styles.Form
         onSubmit={
           isLogin
