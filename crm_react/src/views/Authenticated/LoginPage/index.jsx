@@ -48,7 +48,7 @@ const LoginPage = () => {
           />
         ))}
         <Styles.ButtonWrapper>
-          <Button width="100%" height="40px">
+          <Button width="100%" height="40px" aria-label="login-or-signup">
             {isLogin ? " Log In" : "Sign Up"}
           </Button>
         </Styles.ButtonWrapper>
@@ -60,6 +60,7 @@ const LoginPage = () => {
           width="100%"
           height="40px"
           onClick={switchMode}
+          aria-label="switch-button"
         >
           {isLogin
             ? "Don't have an account? Sign Up"

@@ -9,7 +9,6 @@ const Navbar = () => {
   const auth = useSelector((state) => state.auth.authData);
   const teams = useSelector((state) => state.teams);
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (auth?.auth_token && !teams.currentTeam) {
       dispatch(
