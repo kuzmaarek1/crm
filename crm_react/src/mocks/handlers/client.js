@@ -1,6 +1,10 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { authenticateRequest, getTeam } from "mocks/helpers";
+import {
+  authenticateRequest,
+  getTeam,
+  sanitizeLeadsAndClients,
+} from "mocks/helpers";
 
 export const client = [
   rest.get(
@@ -8,14 +12,14 @@ export const client = [
     (req, res, ctx) => {
       if (req.params.id) {
         const team = getTeam(req.params.id);
-
-        const clientData = db.client.findFirst({
+        const clientData = db.client.findMany({
           where: {
             team: { id: { equals: team.id } },
           },
         });
+        const data = sanitizeLeadsAndClients(clientData);
         if (authenticateRequest(req)) {
-          return res(ctx.status(200), ctx.json(clientData));
+          return res(ctx.status(200), ctx.json(data));
         }
         return res(
           ctx.status(401),

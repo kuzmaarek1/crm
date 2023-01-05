@@ -34,9 +34,20 @@ describe("Login", () => {
 });
 
 describe("Lead", () => {
-  test("Display lead list", async () => {
+  test("Display leads list", async () => {
     render(<Root />);
     fireEvent.click(screen.getByTestId("leads"));
+    const loadingElement = await screen.findByTestId(/loading/i);
+    expect(loadingElement).toBeInTheDocument();
+    const cellElement = await screen.findAllByTestId(/cell/i);
+    expect(cellElement).toHaveLength(80);
+  });
+});
+
+describe("Client", () => {
+  test("Display clients list", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("clients"));
     const loadingElement = await screen.findByTestId(/loading/i);
     expect(loadingElement).toBeInTheDocument();
     const cellElement = await screen.findAllByTestId(/cell/i);
