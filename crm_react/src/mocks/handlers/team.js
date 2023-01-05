@@ -13,9 +13,14 @@ export const team = [
         },
       },
     });
-
+    const members = team.members.map((member) => {
+      const { password, ...otherData } = member;
+      return otherData;
+    });
+    const { password, ...otherDataUser } = team.created_by;
+    const data = { ...team, members: members, created_by: otherDataUser };
     if (authenticateRequest(req)) {
-      return res(ctx.status(200), ctx.json(team));
+      return res(ctx.status(200), ctx.json(data));
     }
     return res(
       ctx.status(401),

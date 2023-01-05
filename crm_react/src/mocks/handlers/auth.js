@@ -25,8 +25,9 @@ export const auth = [
   }),
   rest.get("http://localhost:8000/api/users/me/", (req, res, ctx) => {
     const user = getUser();
+    const { password, ...otherData } = user;
     if (authenticateRequest(req)) {
-      return res(ctx.status(200), ctx.json(user));
+      return res(ctx.status(200), ctx.json(otherData));
     }
     return res(
       ctx.status(401),
@@ -34,5 +35,12 @@ export const auth = [
         error: "error",
       })
     );
+  }),
+  rest.post("http://localhost:8000/api/token/logout/", (req, res, ctx) => {
+    if (authenticateRequest(req)) {
+      localStorage.removeItem("__be_token__");
+      return res(ctx.status(200), ctx.json({ message: "Logout" }));
+    }
+    return res(ctx.status(500), ctx.json({ message: "Error" }));
   }),
 ];
