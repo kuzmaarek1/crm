@@ -5,9 +5,9 @@ import { Root } from "views";
 test("Login", async () => {
   render(<Root />);
   const labelUsername = screen.getByLabelText(/username/i);
-  const username = "akuzma5@gmail.com";
+  const username = "akuzma555@gmail.com";
   const labelPassword = screen.getByLabelText(/password/i);
-  const password = "Krokodyle1v";
+  const password = "Mrooodyle1eee@";
   fireEvent.change(labelUsername, {
     target: { value: username },
   });
