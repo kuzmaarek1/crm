@@ -10,7 +10,15 @@ const TableLoader = (props) => (
     foregroundColor="#ffffff"
     {...props}
   >
-    <rect x="5vw" y="1.5vh" rx="5" ry="5" width="90vw" height="2vh" />
+    <rect
+      x="5vw"
+      y="1.5vh"
+      rx="5"
+      ry="5"
+      width="90vw"
+      height="2vh"
+      data-testid="loading"
+    />
     <rect x="0" y="4.8vh" rx="1" ry="1" width="100vw" height="0.2vh" />
 
     <rect x="5vw" y="6.5vh" rx="5" ry="5" width="90vw" height="2vh" />

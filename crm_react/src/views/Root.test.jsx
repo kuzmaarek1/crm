@@ -14,7 +14,7 @@ const handleChangeInputsAuth = (username, password) => {
   });
 };
 
-describe("Login and Logout", () => {
+describe("Login", () => {
   test("Login with incorrect username, password", async () => {
     render(<Root />);
     handleChangeInputsAuth("akuzma5@gmail.com", "Mrooodyle1eee@");
@@ -31,9 +31,23 @@ describe("Login and Logout", () => {
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
     await waitFor(() => screen.findByText(/dawid/i));
   });
+});
 
-  test("Logout", async () => {
+describe("Lead", () => {
+  test("Display lead list", async () => {
     render(<Root />);
+    fireEvent.click(screen.getByTestId("leads"));
+    const loadingElement = await screen.findByTestId(/loading/i);
+    expect(loadingElement).toBeInTheDocument();
+    const cellElement = await screen.findAllByTestId(/cell/i);
+    expect(cellElement).toHaveLength(80);
+  });
+});
+
+describe("Logout", () => {
+  test("Display login page after logout", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("my-account"));
     const buttonLogout = screen.getByRole("button", {
       name: /logout-button/i,
     });

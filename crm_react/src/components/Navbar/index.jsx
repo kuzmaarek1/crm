@@ -34,12 +34,14 @@ const Navbar = () => {
         <Styles.Ul>
           {teams.currentTeam &&
             ["leads", "teams", "clients"].map((props, index) => (
-              <Styles.Link key={index} to={props}>
+              <Styles.Link key={index} to={props} data-testid={props}>
                 {props[0].toUpperCase()}
                 {props.slice(1)}
               </Styles.Link>
             ))}
-          <Styles.Link to="my-account">My account </Styles.Link>
+          <Styles.Link to="my-account" data-testid="my-account">
+            My account{" "}
+          </Styles.Link>
         </Styles.Ul>
       )}
       <MobileNavbar

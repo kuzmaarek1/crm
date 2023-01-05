@@ -22,11 +22,21 @@ export const getUser = () => {
   return user;
 };
 
+export const changeDataTems = (team) => {
+  const members = team.members.map((member) => {
+    const { password, ...otherData } = member;
+    return otherData;
+  });
+  const { password, ...otherDataUser } = team.created_by;
+  const data = { ...team, members: members, created_by: otherDataUser };
+  return data;
+};
+
 export const getTeam = (id) => {
-  const user = db.user.findFirst({
+  const team = db.team.findFirst({
     where: {
-      id: id,
+      id: { equals: Number(id) },
     },
   });
-  return user;
+  return changeDataTems(team);
 };
