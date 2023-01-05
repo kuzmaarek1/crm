@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { authenticateRequest, getUser } from "mocks/helpers";
+import { authenticateRequest, getUser, sanitizeData } from "mocks/helpers";
 
 export const auth = [
   rest.post("http://localhost:8000/api/token/login/", (req, res, ctx) => {
@@ -25,9 +25,9 @@ export const auth = [
   }),
   rest.get("http://localhost:8000/api/users/me/", (req, res, ctx) => {
     const user = getUser();
-    const { password, ...otherData } = user;
+    const data = sanitizeData(user);
     if (authenticateRequest(req)) {
-      return res(ctx.status(200), ctx.json(otherData));
+      return res(ctx.status(200), ctx.json(data));
     }
     return res(
       ctx.status(401),

@@ -1,6 +1,10 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { authenticateRequest, getTeam } from "mocks/helpers";
+import {
+  authenticateRequest,
+  getTeam,
+  sanitizeLeadsAndClients,
+} from "mocks/helpers";
 
 export const lead = [
   rest.get("http://localhost:8000/api/leads/get_lead/:id/", (req, res, ctx) => {
@@ -11,18 +15,7 @@ export const lead = [
           team: { id: { equals: team.id } },
         },
       });
-      const data = leadData.map((lead) => {
-        const { team, ...otherDataLead } = lead;
-        const { password: passwordCeatedUser, ...otherDataCreatedUser } =
-          otherDataLead.created_by;
-        const { password: passwordAssignedUser, ...otherDataAssignedUser } =
-          otherDataLead.assigned_to;
-        return {
-          ...otherDataLead,
-          created_by: otherDataCreatedUser,
-          assigned_to: otherDataAssignedUser,
-        };
-      });
+      const data = sanitizeLeadsAndClients(leadData);
       if (authenticateRequest(req)) {
         return res(ctx.status(200), ctx.json(data));
       }

@@ -21,14 +21,29 @@ export const getUser = () => {
   });
   return user;
 };
+export const sanitizeData = (data) => {
+  const { password, ...rest } = data;
+  return rest;
+};
 
-export const changeDataTems = (team) => {
-  const members = team.members.map((member) => {
-    const { password, ...otherData } = member;
-    return otherData;
+export const sanitizeTems = (team) => {
+  const members = team.members.map((member) => sanitizeData(member));
+  const created_by = sanitizeData(team.created_by);
+  const data = { ...team, members: members, created_by: created_by };
+  return data;
+};
+
+export const sanitizeLeadsAndClients = (persons) => {
+  const data = persons.map((person) => {
+    const { team, ...otherDataPerson } = person;
+    const created_by = sanitizeData(otherDataPerson.created_by);
+    const assigned_to = sanitizeData(otherDataPerson.assigned_to);
+    return {
+      ...otherDataPerson,
+      created_by: created_by,
+      assigned_to: assigned_to,
+    };
   });
-  const { password, ...otherDataUser } = team.created_by;
-  const data = { ...team, members: members, created_by: otherDataUser };
   return data;
 };
 
@@ -38,5 +53,5 @@ export const getTeam = (id) => {
       id: { equals: Number(id) },
     },
   });
-  return changeDataTems(team);
+  return sanitizeTems(team);
 };
