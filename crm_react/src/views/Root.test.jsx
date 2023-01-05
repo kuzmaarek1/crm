@@ -1,13 +1,14 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "test-utils";
+import { render, screen, fireEvent, waitFor, logRoles } from "test-utils";
 import { Root } from "views";
 
 test("Login", async () => {
-  render(<Root />);
+  const view = render(<Root />);
   const labelUsername = screen.getByLabelText(/username/i);
   const username = "akuzma555@gmail.com";
   const labelPassword = screen.getByLabelText(/password/i);
   const password = "Mrooodyle1eee@";
+  logRoles(view.container);
   fireEvent.change(labelUsername, {
     target: { value: username },
   });
@@ -16,4 +17,5 @@ test("Login", async () => {
   });
   fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
   await waitFor(() => screen.findByText(/dawid/i));
+  logRoles(view.container);
 });
