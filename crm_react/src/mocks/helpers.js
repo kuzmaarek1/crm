@@ -10,12 +10,12 @@ export const authenticateRequest = (req) => {
   return token === userToken;
 };
 
-export const getUser = () => {
-  const username = atob(localStorage.getItem("__be_token__"));
+export const getUser = (username) => {
+  const data = username ? username : atob(localStorage.getItem("__be_token__"));
   const user = db.user.findFirst({
     where: {
       username: {
-        equals: username,
+        equals: data,
       },
     },
   });
@@ -54,4 +54,8 @@ export const getTeam = (id) => {
     },
   });
   return sanitizeTems(team);
+};
+
+export const createLead = (data) => {
+  db.lead.create(data);
 };

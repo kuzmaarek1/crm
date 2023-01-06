@@ -85,7 +85,9 @@ const ModalFrom = ({
           />
         )}
         <Styles.ButtonWrapper>
-          <Button height="40px">Submit</Button>
+          <Button height="40px" aria-label="submit">
+            Submit
+          </Button>
         </Styles.ButtonWrapper>
       </Styles.Form>
     </>

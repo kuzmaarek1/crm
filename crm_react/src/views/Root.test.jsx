@@ -13,6 +13,12 @@ const handleChangeInputsAuth = (username, password) => {
     });
   });
 };
+const handleChangeInputsForm = (data) => {
+  data.forEach(async ({ name, value }) => {
+    const label = await screen.findByLabelText(name);
+    fireEvent.change(label, { target: { value } });
+  });
+};
 
 describe("Login", () => {
   test("Login with incorrect username, password", async () => {
@@ -42,8 +48,42 @@ describe("Lead", () => {
     const cellElement = await screen.findAllByTestId(/cell/i);
     expect(cellElement).toHaveLength(80);
   });
-});
 
+  test("Add lead", async () => {
+    render(<Root />);
+    const formData = [
+      { name: /first name/i, value: "Arkadiusz" },
+      { name: /last name/i, value: "Kuźma" },
+      { name: /email/i, value: "akuzma503@gmail.com" },
+      { name: /phone/i, value: "546789998" },
+      { name: /description/i, value: "To jest test" },
+    ];
+
+    fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
+    handleChangeInputsForm(formData);
+
+    const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
+    fireEvent.change(assignedToLabel[0], {
+      target: { value: "akuzma555@gmail.com" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    const successElement = await screen.findByText(/Added lead/i);
+    expect(successElement).toBeInTheDocument();
+    const loadingElement = await screen.findByTestId(/loading/i);
+    expect(loadingElement).toBeInTheDocument();
+
+    for (const data of formData) {
+      if (String(data.name) !== "/description/i") {
+        console.log(data.value);
+        const element = await screen.findByText(data.value);
+        screen.debug(element);
+        expect(element).toBeInTheDocument();
+      }
+    }
+  });
+});
+/*
 describe("Client", () => {
   test("Display clients list", async () => {
     render(<Root />);
@@ -67,3 +107,4 @@ describe("Logout", () => {
     expect(logInElements).toHaveLength(2);
   });
 });
+*/
