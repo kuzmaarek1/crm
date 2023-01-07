@@ -5,7 +5,7 @@ import { LoginForm, RegisterForm } from "constans";
 import { Button, Field } from "components";
 import * as Styles from "./styles";
 
-const LoginPage = () => {
+const Auth = () => {
   const auth = useAuth();
   const {
     register,
@@ -71,4 +71,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Auth;

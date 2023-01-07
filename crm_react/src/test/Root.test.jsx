@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "test-utils";
+import { render, screen, fireEvent, waitFor } from "test-utils";
+import { formDataAddLead } from "test/constant.js";
 import { Root } from "views";
 
 const handleChangeInputsAuth = (username, password) => {
@@ -19,11 +14,22 @@ const handleChangeInputsAuth = (username, password) => {
     });
   });
 };
+
 const handleChangeInputsForm = (data) => {
   data.forEach(async ({ name, value }) => {
     const label = await screen.findByLabelText(name);
     fireEvent.change(label, { target: { value } });
   });
+};
+const loadingData = async () => {
+  const loadingElement = await screen.findByTestId(/loading/i);
+  expect(loadingElement).toBeInTheDocument();
+};
+
+const displayList = async (number) => {
+  await loadingData();
+  const cellElement = await screen.findAllByTestId(/cell/i);
+  expect(cellElement).toHaveLength(number);
 };
 
 describe("Login", () => {
@@ -49,24 +55,13 @@ describe("Lead", () => {
   test("Display leads list", async () => {
     render(<Root />);
     fireEvent.click(screen.getByTestId("leads"));
-    const loadingElement = await screen.findByTestId(/loading/i);
-    expect(loadingElement).toBeInTheDocument();
-    const cellElement = await screen.findAllByTestId(/cell/i);
-    expect(cellElement).toHaveLength(80);
+    await displayList(80);
   });
 
   test("Add lead", async () => {
     render(<Root />);
-    const formData = [
-      { name: "First name", value: "Arkadiusz" },
-      { name: "Last name", value: "Kuźma" },
-      { name: /email/i, value: "akuzma503@gmail.com" },
-      { name: /phone/i, value: "546789998" },
-      { name: /description/i, value: "To jest test" },
-    ];
-
     fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
-    handleChangeInputsForm(formData);
+    handleChangeInputsForm(formDataAddLead);
 
     const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
     fireEvent.change(assignedToLabel[0], {
@@ -76,39 +71,23 @@ describe("Lead", () => {
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
     const successElement = await screen.findByText(/Added lead/i);
     expect(successElement).toBeInTheDocument();
-    const loadingElement = await screen.findByTestId(/loading/i);
-    expect(loadingElement).toBeInTheDocument();
 
-    for (const data of formData) {
-      if (String(data.name) !== "/description/i") {
-        const element = await screen.findByText(data.value);
-        expect(element).toBeInTheDocument();
-      }
-    }
+    await displayList(85);
   });
 
   test("Search lead", async () => {
     render(<Root />);
     const searchForm = screen.getByLabelText(/first name and last name/i);
     fireEvent.change(searchForm, { target: { value: "arkadiusz Kuźma" } });
-
-    const loadingElement = screen.getByTestId(/loading/i);
-    expect(loadingElement).toBeInTheDocument();
-
-    const elements = await screen.findAllByTestId(/cell/i);
-    expect(elements).toHaveLength(10);
-    screen.debug(undefined, 1000000);
+    await displayList(10);
   });
 });
-/*
+
 describe("Client", () => {
   test("Display clients list", async () => {
     render(<Root />);
     fireEvent.click(screen.getByTestId("clients"));
-    const loadingElement = await screen.findByTestId(/loading/i);
-    expect(loadingElement).toBeInTheDocument();
-    const cellElement = await screen.findAllByTestId(/cell/i);
-    expect(cellElement).toHaveLength(80);
+    await displayList(75);
   });
 });
 
@@ -124,4 +103,3 @@ describe("Logout", () => {
     expect(logInElements).toHaveLength(2);
   });
 });
-*/

@@ -59,3 +59,12 @@ export const getTeam = (id) => {
 export const createLead = (data) => {
   db.lead.create(data);
 };
+
+export const searchLeadsOrClients = (data, search) => {
+  const dataByFilter = data.filter(
+    ({ first_name, last_name }) =>
+      first_name.toLowerCase().includes(search.toLowerCase()) ||
+      last_name.toLowerCase().includes(search.toLowerCase())
+  );
+  return dataByFilter;
+};

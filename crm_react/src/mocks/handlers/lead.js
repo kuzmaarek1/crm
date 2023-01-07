@@ -6,6 +6,7 @@ import {
   getUser,
   sanitizeLeadsAndClients,
   createLead,
+  searchLeadsOrClients,
 } from "mocks/helpers";
 
 export const lead = [
@@ -91,17 +92,9 @@ export const lead = [
         let leadBySearch = [];
         searchParm.forEach((search, index) => {
           if (index === 0) {
-            leadBySearch = leadData.filter(
-              ({ first_name, last_name }) =>
-                first_name.toLowerCase().includes(search.toLowerCase()) ||
-                last_name.toLowerCase().includes(search.toLowerCase())
-            );
+            leadBySearch = searchLeadsOrClients(leadData, search);
           } else {
-            leadBySearch = leadBySearch.filter(
-              ({ first_name, last_name }) =>
-                first_name.toLowerCase().includes(search.toLowerCase()) ||
-                last_name.toLowerCase().includes(search.toLowerCase())
-            );
+            leadBySearch = searchLeadsOrClients(leadBySearch, search);
           }
         });
         const data = sanitizeLeadsAndClients(leadBySearch);
