@@ -77,4 +77,51 @@ export const lead = [
       );
     }
   ),
+  rest.get(
+    "http://localhost:8000/api/leads/search_lead/:id/",
+    (req, res, ctx) => {
+      if (req.params.id) {
+        const team = getTeam(req.params.id);
+        const searchParm = req.url.searchParams.get("search").split(" ");
+        let leadData = db.lead.findMany({
+          where: {
+            team: { id: { equals: team.id } },
+          },
+        });
+        let leadBySearch = [];
+        searchParm.forEach((search, index) => {
+          if (index === 0) {
+            leadBySearch = leadData.filter(
+              ({ first_name, last_name }) =>
+                first_name.toLowerCase().includes(search.toLowerCase()) ||
+                last_name.toLowerCase().includes(search.toLowerCase())
+            );
+          } else {
+            leadBySearch = leadBySearch.filter(
+              ({ first_name, last_name }) =>
+                first_name.toLowerCase().includes(search.toLowerCase()) ||
+                last_name.toLowerCase().includes(search.toLowerCase())
+            );
+          }
+        });
+        const data = sanitizeLeadsAndClients(leadBySearch);
+        if (authenticateRequest(req)) {
+          return res(ctx.status(200), ctx.json(data));
+        }
+
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: "error",
+          })
+        );
+      }
+      return res(
+        ctx.status(500),
+        ctx.json({
+          error: "error",
+        })
+      );
+    }
+  ),
 ];

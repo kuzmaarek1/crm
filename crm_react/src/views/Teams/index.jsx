@@ -1,28 +1,46 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useTeams } from "hooks/useTeams.js";
-import { useGetTeamsQuery, teamsApiSlice } from "reducers/teamsApiSlice";
+import { teamsApiSlice } from "reducers/teamsApiSlice";
 import { List } from "components";
 
 const Teams = () => {
   const team = useTeams();
+  const dispatch = useDispatch();
   const teamsState = useSelector((state) => state.teams);
   const { register, watch, setFocus } = useForm();
+  const [fetchingSearchTeams, setFetchingSearchTeams] = useState(false);
 
-  const {
-    data: teams,
-    isFetching: fetchingTeams,
-    refetch: refetchTeams,
-  } = useGetTeamsQuery();
+  useEffect(() => {
+    dispatch(
+      endpoint.util.prefetch(`getTeams`, undefined, {
+        force: true,
+      })
+    );
+  }, []);
 
-  const { isFetching: fetchingSearchTeams } =
+  const { data: teams, isFetching: fetchingTeams } =
+    teamsApiSlice.endpoints.getTeams.useQueryState();
+
+  const { data: teamsBySearch, isFetching: fetchingSearch } =
     teamsApiSlice.endpoints.searchTeam.useQueryState({
       team: teamsState?.currentTeam?.id,
-      name: watch("team-name"),
+      name: watch("team-search"),
     });
 
   const endpoint = teamsApiSlice;
+
+  useEffect(() => {
+    if (fetchingSearch === true) {
+      setFetchingSearchTeams(true);
+    } else if (
+      teams?.length === teamsBySearch?.length &&
+      fetchingSearchTeams === true
+    ) {
+      setFetchingSearchTeams(false);
+    }
+  }, [teams, fetchingSearch]);
 
   return (
     <List
@@ -31,7 +49,6 @@ const Teams = () => {
       data={teams}
       fetchingData={fetchingTeams}
       fetchingSearchData={fetchingSearchTeams}
-      refetchList={refetchTeams}
       setFocus={setFocus}
       endpoint={endpoint}
       register={register}

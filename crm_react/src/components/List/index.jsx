@@ -16,7 +16,6 @@ const List = ({
   data,
   fetchingData,
   fetchingSearchData,
-  refetchList,
   endpoint,
   register,
   setFocus,
@@ -37,14 +36,14 @@ const List = ({
     let { id, created_by, description, members, ...otherData } = data[0];
     objectKey = otherData;
   }
+  // data && console.log(data[0].first_name);
   return (
     <Styles.Wrapper>
       <HeaderList
         header={header}
-        register={register}
         endpoint={endpoint}
         teams={teams}
-        refetchList={refetchList}
+        register={register}
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}
       />
