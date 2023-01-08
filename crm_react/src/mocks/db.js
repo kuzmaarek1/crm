@@ -1,4 +1,4 @@
-import { factory, primaryKey, oneOf, manyOf } from "@mswjs/data";
+import { factory, primaryKey, oneOf, manyOf, nullable } from "@mswjs/data";
 import { faker } from "@faker-js/faker";
 
 faker.seed(123);
@@ -26,7 +26,7 @@ export const db = factory({
     description: String,
     created_by: oneOf("user"),
     team: oneOf("team"),
-    assigned_to: oneOf("user"),
+    assigned_to: nullable(oneOf("user")),
   },
   client: {
     id: primaryKey(faker.datatype.number),
@@ -37,6 +37,6 @@ export const db = factory({
     description: String,
     created_by: oneOf("user"),
     team: oneOf("team"),
-    assigned_to: oneOf("user"),
+    assigned_to: nullable(oneOf("user")),
   },
 });

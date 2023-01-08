@@ -37,7 +37,9 @@ export const sanitizeLeadsAndClients = (persons) => {
   const data = persons.map((person) => {
     const { team, ...otherDataPerson } = person;
     const created_by = sanitizeData(otherDataPerson.created_by);
-    const assigned_to = sanitizeData(otherDataPerson.assigned_to);
+    const assigned_to = otherDataPerson?.assigned_to
+      ? sanitizeData(otherDataPerson.assigned_to)
+      : null;
     return {
       ...otherDataPerson,
       created_by: created_by,

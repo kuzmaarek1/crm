@@ -5,3 +5,5 @@ export const formDataAddLead = [
   { name: /phone/i, value: "546789998" },
   { name: /description/i, value: "To jest test" },
 ];
+
+export const formDataEditLead = [{ name: "First name", value: "Dawid" }];

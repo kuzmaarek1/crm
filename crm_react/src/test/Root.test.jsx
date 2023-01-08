@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "test-utils";
-import { formDataAddLead } from "test/constant.js";
+import { formDataAddLead, formDataEditLead } from "test/constant.js";
 import { Root } from "views";
 
 const handleChangeInputsAuth = (username, password) => {
@@ -80,6 +80,29 @@ describe("Lead", () => {
     const searchForm = screen.getByLabelText(/first name and last name/i);
     fireEvent.change(searchForm, { target: { value: "arkadiusz Kuźma" } });
     await displayList(10);
+  });
+
+  test("Update lead", async () => {
+    render(<Root />);
+    await loadingData();
+    const lead = await screen.findByText("Arkadiusz");
+    fireEvent.click(lead);
+    const editButton = await screen.findByRole("button", { name: /edit/i });
+    fireEvent.click(editButton);
+
+    handleChangeInputsForm(formDataEditLead);
+    const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
+    fireEvent.change(assignedToLabel[0], {
+      target: { value: " " },
+    });
+    const submitButton = await screen.findByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const successElement = await screen.findByText(/Updated lead/i);
+    expect(successElement).toBeInTheDocument();
+    await displayList(85);
+    const leadEdit = await screen.findByText("Dawid");
+    expect(leadEdit).toBeInTheDocument();
   });
 });
 

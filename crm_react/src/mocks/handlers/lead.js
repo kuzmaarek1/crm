@@ -117,4 +117,39 @@ export const lead = [
       );
     }
   ),
+  rest.put(
+    "http://localhost:8000/api/leads/update_lead/:id_lead/:id_team/",
+    (req, res, ctx) => {
+      if (req.params.id_team && req.params.id_lead) {
+        const team = getTeam(req.params.id_team);
+        const { assigned_to, ...otherData } = req.body;
+        const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
+        db.lead.update({
+          where: {
+            team: { id: { equals: team.id } },
+            id: { equals: Number(req.params.id_lead) },
+          },
+          data: {
+            ...otherData,
+            assigned_to: assignedToUser,
+          },
+        });
+        if (authenticateRequest(req)) {
+          return res(ctx.status(200), ctx.json({ message: "Update" }));
+        }
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: "error",
+          })
+        );
+      }
+      return res(
+        ctx.status(500),
+        ctx.json({
+          error: "error",
+        })
+      );
+    }
+  ),
 ];

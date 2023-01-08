@@ -36,7 +36,7 @@ const List = ({
     let { id, created_by, description, members, ...otherData } = data[0];
     objectKey = otherData;
   }
-  // data && console.log(data[0].first_name);
+
   return (
     <Styles.Wrapper>
       <HeaderList
