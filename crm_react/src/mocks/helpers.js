@@ -50,9 +50,13 @@ export const sanitizeLeadsAndClients = (persons) => {
 };
 
 export const getTeam = (id) => {
+  const user = getUser();
   const team = db.team.findFirst({
     where: {
       id: { equals: Number(id) },
+      members: {
+        id: { equals: user.id },
+      },
     },
   });
   return sanitizeTems(team);

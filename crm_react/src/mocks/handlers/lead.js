@@ -15,7 +15,9 @@ export const lead = [
       const team = getTeam(req.params.id);
       const leadData = db.lead.findMany({
         where: {
-          team: { id: { equals: team.id } },
+          team: {
+            id: { equals: team.id },
+          },
         },
       });
       const data = sanitizeLeadsAndClients(leadData);
@@ -86,7 +88,9 @@ export const lead = [
         const searchParm = req.url.searchParams.get("search").split(" ");
         let leadData = db.lead.findMany({
           where: {
-            team: { id: { equals: team.id } },
+            team: {
+              id: { equals: team.id },
+            },
           },
         });
         let leadBySearch = [];
@@ -126,7 +130,9 @@ export const lead = [
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
         db.lead.update({
           where: {
-            team: { id: { equals: team.id } },
+            team: {
+              id: { equals: team.id },
+            },
             id: { equals: Number(req.params.id_lead) },
           },
           data: {
@@ -136,6 +142,37 @@ export const lead = [
         });
         if (authenticateRequest(req)) {
           return res(ctx.status(200), ctx.json({ message: "Update" }));
+        }
+        return res(
+          ctx.status(401),
+          ctx.json({
+            error: "error",
+          })
+        );
+      }
+      return res(
+        ctx.status(500),
+        ctx.json({
+          error: "error",
+        })
+      );
+    }
+  ),
+  rest.put(
+    "http://localhost:8000/api/leads/delete_lead/:id_lead/:id_team",
+    (req, res, ctx) => {
+      if (req.params.id_team && req.params.id_lead) {
+        const team = getTeam(req.params.id_team);
+        db.lead.delete({
+          where: {
+            id: { equals: Number(req.params.id_lead) },
+            team: {
+              id: { equals: team.id },
+            },
+          },
+        });
+        if (authenticateRequest(req)) {
+          return res(ctx.status(200), ctx.json({ message: "Deleted" }));
         }
         return res(
           ctx.status(401),

@@ -1,3 +1,13 @@
+export const formDataLoginIncorrect = [
+  { name: /username/i, value: "akuzma5@gmail.com" },
+  { name: /password/i, value: "Mrooodyle1eee@" },
+];
+
+export const formDataLoginCorrect = [
+  { name: /username/i, value: "akuzma555@gmail.com" },
+  { name: /password/i, value: "Mrooodyle1eee@" },
+];
+
 export const formDataAddLead = [
   { name: "First name", value: "Arkadiusz" },
   { name: "Last name", value: "Kuźma" },

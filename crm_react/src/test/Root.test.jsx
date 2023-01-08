@@ -1,17 +1,17 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "test-utils";
-import { formDataAddLead, formDataEditLead } from "test/constant.js";
+import {
+  formDataAddLead,
+  formDataEditLead,
+  formDataLoginIncorrect,
+  formDataLoginCorrect,
+} from "test/constant.js";
 import { Root } from "views";
 
-const handleChangeInputsAuth = (username, password) => {
-  [username, password].forEach((items, index) => {
-    const label =
-      index === 0
-        ? screen.getByLabelText(/username/i)
-        : screen.getByLabelText(/password/i);
-    fireEvent.change(label, {
-      target: { value: items },
-    });
+const handleChangeInputsAuth = (data) => {
+  data.forEach(({ name, value }) => {
+    const label = screen.getByLabelText(name);
+    fireEvent.change(label, { target: { value } });
   });
 };
 
@@ -21,6 +21,14 @@ const handleChangeInputsForm = (data) => {
     fireEvent.change(label, { target: { value } });
   });
 };
+
+const handleChangeInputAssigned = async (value) => {
+  const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
+  fireEvent.change(assignedToLabel[0], {
+    target: { value: value ? value : " " },
+  });
+};
+
 const loadingData = async () => {
   const loadingElement = await screen.findByTestId(/loading/i);
   expect(loadingElement).toBeInTheDocument();
@@ -32,20 +40,34 @@ const displayList = async (number) => {
   expect(cellElement).toHaveLength(number);
 };
 
+export const handleOpenDetailsModalAndAction = async (name, buttonName) => {
+  const element = await screen.findByText(name);
+  fireEvent.click(element);
+  const button = await screen.findByRole("button", { name: buttonName });
+  fireEvent.click(button);
+};
+
+export const handleSubmitAndDisplayToast = async (toast) => {
+  const submitButton = await screen.findByRole("button", { name: /submit/i });
+  fireEvent.click(submitButton);
+  await displayToast(toast);
+};
+
+export const displayToast = async (toast) => {
+  const successElement = await screen.findByText(toast);
+  expect(successElement).toBeInTheDocument();
+};
+
 describe("Login", () => {
   test("Login with incorrect username, password", async () => {
     render(<Root />);
-    handleChangeInputsAuth("akuzma5@gmail.com", "Mrooodyle1eee@");
+    handleChangeInputsAuth(formDataLoginIncorrect);
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
-    const errorElement = await screen.findByText(
-      /your username or password is incorrect/i
-    );
-    expect(errorElement).toBeInTheDocument();
+    await displayToast(/your username or password is incorrect/i);
   });
-
   test("Login with correct username, password", async () => {
     render(<Root />);
-    handleChangeInputsAuth("akuzma555@gmail.com", "Mrooodyle1eee@");
+    handleChangeInputsAuth(formDataLoginCorrect);
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
     await waitFor(() => screen.findByText(/dawid/i));
   });
@@ -61,17 +83,10 @@ describe("Lead", () => {
   test("Add lead", async () => {
     render(<Root />);
     fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
+
     handleChangeInputsForm(formDataAddLead);
-
-    const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
-    fireEvent.change(assignedToLabel[0], {
-      target: { value: "akuzma555@gmail.com" },
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-    const successElement = await screen.findByText(/Added lead/i);
-    expect(successElement).toBeInTheDocument();
-
+    await handleChangeInputAssigned("akuzma555@gmail.com");
+    await handleSubmitAndDisplayToast(/Added lead/i);
     await displayList(85);
   });
 
@@ -85,24 +100,22 @@ describe("Lead", () => {
   test("Update lead", async () => {
     render(<Root />);
     await loadingData();
-    const lead = await screen.findByText("Arkadiusz");
-    fireEvent.click(lead);
-    const editButton = await screen.findByRole("button", { name: /edit/i });
-    fireEvent.click(editButton);
-
+    await handleOpenDetailsModalAndAction("Arkadiusz", /edit/i);
     handleChangeInputsForm(formDataEditLead);
-    const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
-    fireEvent.change(assignedToLabel[0], {
-      target: { value: " " },
-    });
-    const submitButton = await screen.findByRole("button", { name: /submit/i });
-    fireEvent.click(submitButton);
-
-    const successElement = await screen.findByText(/Updated lead/i);
-    expect(successElement).toBeInTheDocument();
+    await handleChangeInputAssigned();
+    await handleSubmitAndDisplayToast(/Updated lead/i);
     await displayList(85);
     const leadEdit = await screen.findByText("Dawid");
     expect(leadEdit).toBeInTheDocument();
+  });
+
+  test("Delete lead", async () => {
+    render(<Root />);
+    await loadingData();
+    await displayList(85);
+    await handleOpenDetailsModalAndAction("Dawid", /Delete/i);
+    await displayToast(/Deleted lead/i);
+    await displayList(80);
   });
 });
 

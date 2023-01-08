@@ -2,6 +2,7 @@ import { rest } from "msw";
 import { db } from "mocks/db";
 import {
   authenticateRequest,
+  getUser,
   getTeam,
   sanitizeLeadsAndClients,
 } from "mocks/helpers";
@@ -14,7 +15,9 @@ export const client = [
         const team = getTeam(req.params.id);
         const clientData = db.client.findMany({
           where: {
-            team: { id: { equals: team.id } },
+            team: {
+              id: { equals: team.id },
+            },
           },
         });
         const data = sanitizeLeadsAndClients(clientData);
