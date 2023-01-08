@@ -62,8 +62,43 @@ export const getTeam = (id) => {
   return sanitizeTems(team);
 };
 
-export const createLead = (data) => {
-  db.lead.create(data);
+export const findLeadsOrClientsByTeam = (db, team) => {
+  const data = db.findMany({
+    where: {
+      team: {
+        id: { equals: team },
+      },
+    },
+  });
+  return data;
+};
+
+export const create = (db, data) => {
+  db.create(data);
+};
+
+export const updateLeadOrClient = (db, id, team, data) => {
+  db.update({
+    where: {
+      id: { equals: Number(id) },
+      team: {
+        id: { equals: team },
+      },
+    },
+    data: data,
+  });
+};
+
+export const deleteLeadOrClient = (db, id, team) => {
+  const data = db.delete({
+    where: {
+      id: { equals: Number(id) },
+      team: {
+        id: { equals: team },
+      },
+    },
+  });
+  return data;
 };
 
 export const searchLeadsOrClients = (data, search) => {
@@ -73,4 +108,26 @@ export const searchLeadsOrClients = (data, search) => {
       last_name.toLowerCase().includes(search.toLowerCase())
   );
   return dataByFilter;
+};
+
+export const responseData = (req, res, ctx, conditional, func, data) => {
+  if (conditional) {
+    if (!authenticateRequest(req)) {
+      return res(
+        ctx.status(401),
+        ctx.json({
+          error: "Unauthorized",
+        })
+      );
+    }
+    const functionValue = func();
+    const responseJson = data ? data : functionValue;
+    return res(ctx.status(200), ctx.json(responseJson));
+  }
+  return res(
+    ctx.status(500),
+    ctx.json({
+      error: "Error",
+    })
+  );
 };

@@ -1,27 +1,21 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { authenticateRequest, getUser, sanitizeTems } from "mocks/helpers";
+import { getUser, sanitizeTems, responseData } from "mocks/helpers";
 
 export const team = [
   rest.get("http://localhost:8000/api/teams/get_team/", (req, res, ctx) => {
-    const user = getUser();
-
-    const team = db.team.findFirst({
-      where: {
-        members: {
-          id: { equals: user.id },
+    const getTeam = () => {
+      const user = getUser();
+      const team = db.team.findFirst({
+        where: {
+          members: {
+            id: { equals: user.id },
+          },
         },
-      },
-    });
-    const data = sanitizeTems(team);
-    if (authenticateRequest(req)) {
-      return res(ctx.status(200), ctx.json(data));
-    }
-    return res(
-      ctx.status(401),
-      ctx.json({
-        error: "error",
-      })
-    );
+      });
+      const data = sanitizeTems(team);
+      return data;
+    };
+    return responseData(req, res, ctx, true, getTeam, null);
   }),
 ];

@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { authenticateRequest, getUser, sanitizeData } from "mocks/helpers";
+import { getUser, sanitizeData, responseData } from "mocks/helpers";
 
 export const auth = [
   rest.post("http://localhost:8000/api/token/login/", (req, res, ctx) => {
@@ -24,23 +24,17 @@ export const auth = [
     );
   }),
   rest.get("http://localhost:8000/api/users/me/", (req, res, ctx) => {
-    const user = getUser();
-    const data = sanitizeData(user);
-    if (authenticateRequest(req)) {
-      return res(ctx.status(200), ctx.json(data));
-    }
-    return res(
-      ctx.status(401),
-      ctx.json({
-        error: "error",
-      })
-    );
+    const getDetailsUser = () => {
+      const user = getUser();
+      const data = sanitizeData(user);
+      return data;
+    };
+    return responseData(req, res, ctx, true, getDetailsUser, null);
   }),
   rest.post("http://localhost:8000/api/token/logout/", (req, res, ctx) => {
-    if (authenticateRequest(req)) {
+    const logout = () => {
       localStorage.removeItem("__be_token__");
-      return res(ctx.status(200), ctx.json({ message: "Logout" }));
-    }
-    return res(ctx.status(500), ctx.json({ message: "Error" }));
+    };
+    return responseData(req, res, ctx, true, logout, { message: "Logout" });
   }),
 ];

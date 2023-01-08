@@ -1,98 +1,58 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
 import {
-  authenticateRequest,
+  responseData,
   getTeam,
   getUser,
   sanitizeLeadsAndClients,
-  createLead,
+  findLeadsOrClientsByTeam,
+  create,
   searchLeadsOrClients,
+  updateLeadOrClient,
+  deleteLeadOrClient,
 } from "mocks/helpers";
 
 export const lead = [
   rest.get("http://localhost:8000/api/leads/get_lead/:id/", (req, res, ctx) => {
-    if (req.params.id) {
+    const getLead = () => {
       const team = getTeam(req.params.id);
-      const leadData = db.lead.findMany({
-        where: {
-          team: {
-            id: { equals: team.id },
-          },
-        },
-      });
+      const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
       const data = sanitizeLeadsAndClients(leadData);
-      if (authenticateRequest(req)) {
-        return res(ctx.status(200), ctx.json(data));
-      }
+      return data;
+    };
 
-      return res(
-        ctx.status(401),
-        ctx.json({
-          error: "error",
-        })
-      );
-    }
-    return res(
-      ctx.status(500),
-      ctx.json({
-        error: "error",
-      })
-    );
+    return responseData(req, res, ctx, req.params.id, getLead, null);
   }),
   rest.post(
     "http://localhost:8000/api/leads/create_lead/:id/",
     (req, res, ctx) => {
-      if (req.params.id) {
-        if (authenticateRequest(req)) {
-          const user = getUser();
-          const team = getTeam(req.params.id);
-          const { assigned_to, ...otherData } = req.body;
-          const lead = {
-            ...otherData,
-            created_by: user,
-            team: team,
-          };
-          if (assigned_to !== "") {
-            const assignedToUser = getUser(assigned_to);
-            createLead({
-              ...lead,
-              assigned_to: assignedToUser,
-            });
-          } else {
-            createLead({
-              ...lead,
-            });
-          }
-          return res(ctx.status(200), ctx.json({ message: "Create" }));
-        }
-        return res(
-          ctx.status(401),
-          ctx.json({
-            error: "error",
-          })
-        );
-      }
-      return res(
-        ctx.status(500),
-        ctx.json({
-          error: "error",
-        })
-      );
+      const createLead = () => {
+        const user = getUser();
+        const team = getTeam(req.params.id);
+        const { assigned_to, ...otherData } = req.body;
+        const lead = {
+          ...otherData,
+          created_by: user,
+          team: team,
+        };
+        const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
+        create(db.lead, {
+          ...lead,
+          assigned_to: assignedToUser,
+        });
+      };
+      return responseData(req, res, ctx, req.params.id, createLead, {
+        message: "Create",
+      });
     }
   ),
   rest.get(
     "http://localhost:8000/api/leads/search_lead/:id/",
     (req, res, ctx) => {
-      if (req.params.id) {
+      const searchLead = () => {
         const team = getTeam(req.params.id);
         const searchParm = req.url.searchParams.get("search").split(" ");
-        let leadData = db.lead.findMany({
-          where: {
-            team: {
-              id: { equals: team.id },
-            },
-          },
-        });
+        const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
         let leadBySearch = [];
         searchParm.forEach((search, index) => {
           if (index === 0) {
@@ -102,90 +62,47 @@ export const lead = [
           }
         });
         const data = sanitizeLeadsAndClients(leadBySearch);
-        if (authenticateRequest(req)) {
-          return res(ctx.status(200), ctx.json(data));
-        }
-
-        return res(
-          ctx.status(401),
-          ctx.json({
-            error: "error",
-          })
-        );
-      }
-      return res(
-        ctx.status(500),
-        ctx.json({
-          error: "error",
-        })
-      );
+        return data;
+      };
+      return responseData(req, res, ctx, req.params.id, searchLead, null);
     }
   ),
   rest.put(
     "http://localhost:8000/api/leads/update_lead/:id_lead/:id_team/",
     (req, res, ctx) => {
-      if (req.params.id_team && req.params.id_lead) {
+      const updateLead = () => {
         const team = getTeam(req.params.id_team);
         const { assigned_to, ...otherData } = req.body;
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
-        db.lead.update({
-          where: {
-            team: {
-              id: { equals: team.id },
-            },
-            id: { equals: Number(req.params.id_lead) },
-          },
-          data: {
-            ...otherData,
-            assigned_to: assignedToUser,
-          },
+        updateLeadOrClient(db.lead, req.params.id_lead, team.id, {
+          ...otherData,
+          assigned_to: assignedToUser,
         });
-        if (authenticateRequest(req)) {
-          return res(ctx.status(200), ctx.json({ message: "Update" }));
-        }
-        return res(
-          ctx.status(401),
-          ctx.json({
-            error: "error",
-          })
-        );
-      }
-      return res(
-        ctx.status(500),
-        ctx.json({
-          error: "error",
-        })
+      };
+      return responseData(
+        req,
+        res,
+        ctx,
+        req.params.id_team && req.params.id_lead,
+        updateLead,
+        { message: "Update" }
       );
     }
   ),
   rest.put(
     "http://localhost:8000/api/leads/delete_lead/:id_lead/:id_team",
     (req, res, ctx) => {
-      if (req.params.id_team && req.params.id_lead) {
+      const deleteLead = () => {
         const team = getTeam(req.params.id_team);
-        db.lead.delete({
-          where: {
-            id: { equals: Number(req.params.id_lead) },
-            team: {
-              id: { equals: team.id },
-            },
-          },
-        });
-        if (authenticateRequest(req)) {
-          return res(ctx.status(200), ctx.json({ message: "Deleted" }));
-        }
-        return res(
-          ctx.status(401),
-          ctx.json({
-            error: "error",
-          })
-        );
-      }
-      return res(
-        ctx.status(500),
-        ctx.json({
-          error: "error",
-        })
+        deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
+      };
+      return responseData(
+        req,
+        res,
+        ctx,
+        req.params.id_team && req.params.id_lead,
+        deleteLead,
+        { message: "Deleted" }
       );
     }
   ),
