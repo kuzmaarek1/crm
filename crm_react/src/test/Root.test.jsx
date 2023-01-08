@@ -58,6 +58,14 @@ export const displayToast = async (toast) => {
   expect(successElement).toBeInTheDocument();
 };
 
+export const addElement = async (dataForm, assigned, toast, numberElements) => {
+  fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
+  handleChangeInputsForm(dataForm);
+  await handleChangeInputAssigned(assigned);
+  await handleSubmitAndDisplayToast(toast);
+  await displayList(numberElements);
+};
+
 describe("Login", () => {
   test("Login with incorrect username, password", async () => {
     render(<Root />);
@@ -82,19 +90,16 @@ describe("Lead", () => {
 
   test("Add lead with field assigned", async () => {
     render(<Root />);
-    fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
-    handleChangeInputsForm(formDataAddLeads[0]);
-    await handleChangeInputAssigned("akuzma555@gmail.com");
-    await handleSubmitAndDisplayToast(/added lead/i);
-    await displayList(85);
+    await addElement(
+      formDataAddLeads[0],
+      "akuzma555@gmail.com",
+      /added lead/i,
+      85
+    );
   });
   test("Add lead without field assigned", async () => {
     render(<Root />);
-    fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
-    handleChangeInputsForm(formDataAddLeads[1]);
-    await handleChangeInputAssigned(null);
-    await handleSubmitAndDisplayToast(/added lead Mateusz/i);
-    await displayList(90);
+    await addElement(formDataAddLeads[1], null, /added lead Mateusz/i, 90);
   });
 
   test("Search lead", async () => {
@@ -138,7 +143,6 @@ describe("Client", () => {
     render(<Root />);
     //   fireEvent.click(screen.getByTestId("clients"));
     await displayList(80);
-    screen.debug(undefined, 8000000);
   });
 });
 
