@@ -89,4 +89,4 @@ def convert_lead_to_client(request, lead_id, team_id):
     client = Client.objects.create(team=team, first_name=lead.first_name, last_name=lead.last_name, phone=lead.phone,
                                    email=lead.email, created_by=request.user, description=lead.description, assigned_to=lead.assigned_to)
     Lead.objects.filter(team=team, id=lead_id).delete()
-    return Response(client.pk)
+    return Response({'message':'Convert'})

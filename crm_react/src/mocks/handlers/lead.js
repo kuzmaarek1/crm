@@ -106,4 +106,31 @@ export const lead = [
       );
     }
   ),
+  rest.post(
+    "http://localhost:8000/api/convert_lead_to_client/:id_lead/:id_team/",
+    (req, res, ctx) => {
+      const convertLeadToClient = () => {
+        const team = getTeam(req.params.id_team);
+        const lead = db.lead.findFirst({
+          where: {
+            id: { equals: Number(req.params.id_lead) },
+            team: {
+              id: { equals: team.id },
+            },
+          },
+        });
+        const { id, ...otherData } = lead;
+        create(db.client, otherData);
+        deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
+      };
+      return responseData(
+        req,
+        res,
+        ctx,
+        req.params.id_team && req.params.id_lead,
+        convertLeadToClient,
+        { message: "Convert" }
+      );
+    }
+  ),
 ];

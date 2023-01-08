@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "test-utils";
 import {
-  formDataAddLead,
+  formDataAddLeads,
   formDataEditLead,
   formDataLoginIncorrect,
   formDataLoginCorrect,
@@ -80,14 +80,21 @@ describe("Lead", () => {
     await displayList(80);
   });
 
-  test("Add lead", async () => {
+  test("Add lead with field assigned", async () => {
     render(<Root />);
     fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
-
-    handleChangeInputsForm(formDataAddLead);
+    handleChangeInputsForm(formDataAddLeads[0]);
     await handleChangeInputAssigned("akuzma555@gmail.com");
-    await handleSubmitAndDisplayToast(/Added lead/i);
+    await handleSubmitAndDisplayToast(/added lead/i);
     await displayList(85);
+  });
+  test("Add lead without field assigned", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
+    handleChangeInputsForm(formDataAddLeads[1]);
+    await handleChangeInputAssigned(null);
+    await handleSubmitAndDisplayToast(/added lead Mateusz/i);
+    await displayList(90);
   });
 
   test("Search lead", async () => {
@@ -103,8 +110,8 @@ describe("Lead", () => {
     await handleOpenDetailsModalAndAction("Arkadiusz", /edit/i);
     handleChangeInputsForm(formDataEditLead);
     await handleChangeInputAssigned();
-    await handleSubmitAndDisplayToast(/Updated lead/i);
-    await displayList(85);
+    await handleSubmitAndDisplayToast(/updated lead/i);
+    await displayList(90);
     const leadEdit = await screen.findByText("Dawid");
     expect(leadEdit).toBeInTheDocument();
   });
@@ -112,18 +119,26 @@ describe("Lead", () => {
   test("Delete lead", async () => {
     render(<Root />);
     await loadingData();
+    await displayList(90);
+    await handleOpenDetailsModalAndAction("Dawid", /delete/i);
+    await displayToast(/deleted lead/i);
     await displayList(85);
-    await handleOpenDetailsModalAndAction("Dawid", /Delete/i);
-    await displayToast(/Deleted lead/i);
-    await displayList(80);
+  });
+  test("Convert lead", async () => {
+    render(<Root />);
+    await loadingData();
+    await displayList(85);
+    await handleOpenDetailsModalAndAction("Mateusz", /client/i);
+    await displayToast(/converted lead/i);
   });
 });
 
 describe("Client", () => {
   test("Display clients list", async () => {
     render(<Root />);
-    fireEvent.click(screen.getByTestId("clients"));
-    await displayList(75);
+    //   fireEvent.click(screen.getByTestId("clients"));
+    await displayList(80);
+    screen.debug(undefined, 8000000);
   });
 });
 

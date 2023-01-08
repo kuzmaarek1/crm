@@ -8,12 +8,21 @@ export const formDataLoginCorrect = [
   { name: /password/i, value: "Mrooodyle1eee@" },
 ];
 
-export const formDataAddLead = [
-  { name: "First name", value: "Arkadiusz" },
-  { name: "Last name", value: "Kuźma" },
-  { name: /email/i, value: "akuzma503@gmail.com" },
-  { name: /phone/i, value: "546789998" },
-  { name: /description/i, value: "To jest test" },
+export const formDataAddLeads = [
+  [
+    { name: "First name", value: "Arkadiusz" },
+    { name: "Last name", value: "Kuźma" },
+    { name: /email/i, value: "akuzma503@gmail.com" },
+    { name: /phone/i, value: "546789998" },
+    { name: /description/i, value: "To jest -1" },
+  ],
+  [
+    { name: "First name", value: "Mateusz" },
+    { name: "Last name", value: "Marek" },
+    { name: /email/i, value: "akuzma3@gmail.com" },
+    { name: /phone/i, value: "546789298" },
+    { name: /description/i, value: "To jest test-2" },
+  ],
 ];
 
 export const formDataEditLead = [{ name: "First name", value: "Dawid" }];
