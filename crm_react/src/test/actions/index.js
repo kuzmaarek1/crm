@@ -1,23 +1,23 @@
 import { screen, fireEvent } from "test-utils";
 
-export const handleChangeInputsAuth = (data) => {
+export const handleChangeInputsLogIn = (data) => {
   data.forEach(({ name, value }) => {
     const label = screen.getByLabelText(name);
     fireEvent.change(label, { target: { value } });
   });
 };
 
-export const handleChangeInputsForm = (data) => {
-  data.forEach(async ({ name, value }) => {
+export const handleChangeInputsForm = async (data) => {
+  for await (const { name, value } of data) {
     const label = await screen.findByLabelText(name);
     fireEvent.change(label, { target: { value } });
-  });
+  }
 };
 
 export const handleChangeInputAssigned = async (value) => {
   const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
   fireEvent.change(assignedToLabel[0], {
-    target: { value: value ? value : " " },
+    target: { value: value ? value : "" },
   });
 };
 

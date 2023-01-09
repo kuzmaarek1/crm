@@ -8,13 +8,13 @@ import { Root } from "views";
 describe("Login", () => {
   test("Login with incorrect username, password", async () => {
     render(<Root />);
-    actions.handleChangeInputsAuth(constants.formDataLogin[0]);
+    actions.handleChangeInputsLogIn(constants.formDataLogin[0]);
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
     await actions.displayToast(/your username or password is incorrect/i);
   });
   test("Login with correct username, password", async () => {
     render(<Root />);
-    actions.handleChangeInputsAuth(constants.formDataLogin[1]);
+    actions.handleChangeInputsLogIn(constants.formDataLogin[1]);
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
     await waitFor(() => screen.findByText(/dawid/i));
   });
@@ -36,6 +36,7 @@ describe("Lead", () => {
       85
     );
   });
+
   test("Add lead without field assigned", async () => {
     render(<Root />);
     await actionsOnDatabse.addElement(

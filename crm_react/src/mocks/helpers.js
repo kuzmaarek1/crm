@@ -19,7 +19,7 @@ export const getUser = (username) => {
       },
     },
   });
-  return user;
+  return user !== null ? user : false;
 };
 export const sanitizeData = (data) => {
   const { password, ...rest } = data;
@@ -78,7 +78,7 @@ export const create = (db, data) => {
 };
 
 export const updateLeadOrClient = (db, id, team, data) => {
-  db.update({
+  const user = db.update({
     where: {
       id: { equals: Number(id) },
       team: {
@@ -87,6 +87,7 @@ export const updateLeadOrClient = (db, id, team, data) => {
     },
     data: data,
   });
+  return user;
 };
 
 export const deleteLeadOrClient = (db, id, team) => {

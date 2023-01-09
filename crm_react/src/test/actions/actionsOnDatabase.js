@@ -3,7 +3,7 @@ import * as actions from "test/actions/index.js";
 
 export const addElement = async (dataForm, assigned, toast, numberElements) => {
   fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
-  actions.handleChangeInputsForm(dataForm);
+  await actions.handleChangeInputsForm(dataForm);
   await actions.handleChangeInputAssigned(assigned);
   await actions.handleSubmitAndDisplayToast(toast);
   await actions.displayList(numberElements);
@@ -24,7 +24,7 @@ export const updateElement = async (
 ) => {
   await actions.loadingData();
   await actions.handleOpenDetailsModalAndAction(updateElement, /edit/i);
-  actions.handleChangeInputsForm(formDataEdit);
+  await actions.handleChangeInputsForm(formDataEdit);
   await actions.handleChangeInputAssigned();
   await actions.handleSubmitAndDisplayToast(toast);
   await actions.displayList(numberElements);

@@ -1,10 +1,34 @@
 import React from "react";
-import { render, screen, fireEvent } from "test-utils";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "test-utils";
+import { formDataSignUp } from "test/constants";
+import { handleChangeInputsForm, displayToast } from "test/actions";
 import { Auth } from "views";
 
 const handleChangePage = () => {
   const switchButton = screen.getByRole("button", { name: /switch-button/i });
   fireEvent.click(switchButton);
+};
+
+const createUser = async (data, toast, loadingToast) => {
+  render(<Auth />);
+  handleChangePage();
+  const firstNameInput = await screen.findByLabelText(/first name/i);
+  expect(firstNameInput).toBeInTheDocument();
+  await handleChangeInputsForm(data);
+  fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
+  if (loadingToast) {
+    const loadingElement = await screen.findByText(/creating new user/i);
+    expect(loadingElement).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryAllByText(toast)).toHaveLength(2));
+  } else {
+    await displayToast(toast);
+  }
 };
 
 describe("Render login page", () => {
@@ -39,5 +63,14 @@ describe("Render signup page", () => {
     handleChangePage();
     const labelElements = screen.queryByLabelText(/first name/i);
     expect(labelElements).toBeInTheDocument();
+  });
+  test("Create user", async () => {
+    await createUser(formDataSignUp[0], /created new user/i, false);
+  });
+  test("Not create user, because user is exist", async () => {
+    await createUser(formDataSignUp[0], /probability user is exist/i, false);
+  });
+  test("Not create user, because password is too short", async () => {
+    await createUser(formDataSignUp[1], /probability user is exist/i, true);
   });
 });

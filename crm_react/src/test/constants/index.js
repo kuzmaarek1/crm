@@ -10,11 +10,20 @@ export const formDataLogin = [
 ];
 
 export const formDataSignUp = [
-  { name: /first name/i, value: "Arkadiusz" },
-  { name: /last name/i, value: "Kuźma" },
-  { name: /username/i, value: "akuzma503@gmail.com" },
-  { name: "Passsword", value: "Mrooodyle1eee@" },
-  { name: "Repeate password", value: "Mrooodyle1eee@" },
+  [
+    { name: /first name/i, value: "Arkadiusz" },
+    { name: /last name/i, value: "Kuźma" },
+    { name: "Username", value: "akuzma503@gmail.com" },
+    { name: "Password", value: "Mrooodyle1eee@" },
+    { name: "Repeat password", value: "Mrooodyle1eee@" },
+  ],
+  [
+    { name: /first name/i, value: "Arkadiusz" },
+    { name: /last name/i, value: "Kuźma" },
+    { name: "Username", value: "akuzma504@gmail.com" },
+    { name: "Password", value: "Mro@" },
+    { name: "Repeat password", value: "Mro@" },
+  ],
 ];
 
 export const formDataAddLeads = [
