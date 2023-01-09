@@ -34,7 +34,7 @@ describe("Render signup page", () => {
     const signUpElements = screen.queryByText(/log in/i);
     expect(signUpElements).not.toBeInTheDocument();
   });
-  test("Render input first name on login page", () => {
+  test("Render input first name on signup page", () => {
     render(<Auth />);
     handleChangePage();
     const labelElements = screen.queryByLabelText(/first name/i);

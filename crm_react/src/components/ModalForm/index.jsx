@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field, Modal } from "components";
 import {
-  modalLeadandClientField,
+  modalLeadAndClientField,
   modalTeamField,
   modalTeamAddMemberField,
 } from "constans";
@@ -21,7 +21,7 @@ const ModalFrom = ({
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
   const formData =
     header !== "Team"
-      ? modalLeadandClientField
+      ? modalLeadAndClientField
       : addMember
       ? modalTeamAddMemberField
       : modalTeamField;
