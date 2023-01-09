@@ -37,7 +37,7 @@ beforeAll(() => {
       assigned_to: firstUser,
     });
   }
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 12; i++) {
     db.client.create({
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),

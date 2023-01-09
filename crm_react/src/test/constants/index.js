@@ -44,3 +44,13 @@ export const formDataAddLeads = [
 ];
 
 export const formDataEditLead = [{ name: "First name", value: "Dawid" }];
+
+export const formDataAddClient = [
+  { name: "First name", value: "Amadeusz" },
+  { name: "Last name", value: "Kuźma" },
+  { name: /email/i, value: "akuzma503@gmail.com" },
+  { name: /phone/i, value: "546789998" },
+  { name: /description/i, value: "To jest test" },
+];
+
+export const formDataEditClient = [{ name: "First name", value: "Dariusz" }];

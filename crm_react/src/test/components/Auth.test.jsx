@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "test-utils";
+import { render, screen, fireEvent, waitFor } from "test-utils";
 import { formDataSignUp } from "test/constants";
 import { handleChangeInputsForm, displayToast } from "test/actions";
 import { Auth } from "views";
@@ -52,24 +46,29 @@ describe("Render signup page", () => {
     const signUpElements = screen.getAllByText(/sign up/i);
     expect(signUpElements).toHaveLength(2);
   });
+
   test("Not render elements with login page", () => {
     render(<Auth />);
     handleChangePage();
     const signUpElements = screen.queryByText(/log in/i);
     expect(signUpElements).not.toBeInTheDocument();
   });
+
   test("Render input first name on signup page", () => {
     render(<Auth />);
     handleChangePage();
     const labelElements = screen.queryByLabelText(/first name/i);
     expect(labelElements).toBeInTheDocument();
   });
+
   test("Create user", async () => {
     await createUser(formDataSignUp[0], /created new user/i, false);
   });
+
   test("Not create user, because user is exist", async () => {
     await createUser(formDataSignUp[0], /probability user is exist/i, false);
   });
+
   test("Not create user, because password is too short", async () => {
     await createUser(formDataSignUp[1], /probability user is exist/i, true);
   });

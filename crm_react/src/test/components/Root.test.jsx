@@ -12,6 +12,7 @@ describe("Login", () => {
     fireEvent.click(screen.getByRole("button", { name: /login-or-signup/i }));
     await actions.displayToast(/your username or password is incorrect/i);
   });
+
   test("Login with correct username, password", async () => {
     render(<Root />);
     actions.handleChangeInputsLogIn(constants.formDataLogin[1]);
@@ -71,6 +72,7 @@ describe("Lead", () => {
     render(<Root />);
     await actionsOnDatabse.deleteElement(90, "Dawid", /deleted lead/i, 85);
   });
+
   test("Convert lead", async () => {
     render(<Root />);
     await actions.loadingData();
@@ -83,7 +85,42 @@ describe("Lead", () => {
 describe("Client", () => {
   test("Display clients list", async () => {
     render(<Root />);
-    await actions.displayList(80);
+    await actions.displayList(70);
+  });
+
+  test("Add client with field assigned", async () => {
+    render(<Root />);
+    await actionsOnDatabse.addElement(
+      constants.formDataAddClient,
+      "akuzma555@gmail.com",
+      /added client/i,
+      75
+    );
+  });
+
+  test("Search client", async () => {
+    render(<Root />);
+    await actionsOnDatabse.searchElement(
+      /first name and last name/i,
+      "Amadeusz Kuźma",
+      10
+    );
+  });
+
+  test("Update client", async () => {
+    render(<Root />);
+    await actionsOnDatabse.updateElement(
+      "Amadeusz",
+      constants.formDataEditClient,
+      /updated client/i,
+      75,
+      "Dariusz"
+    );
+  });
+
+  test("Delete lead", async () => {
+    render(<Root />);
+    await actionsOnDatabse.deleteElement(75, "Dariusz", /deleted client/i, 70);
   });
 });
 
