@@ -19,7 +19,7 @@ export const useLeads = () => {
     toast.handleDisplayBanner(
       createLead({ id, data }),
       `Adding lead ${data.first_name} ${data.last_name}`,
-      `Added lead  ${data.first_name} ${data.last_name}`
+      `Added lead ${data.first_name} ${data.last_name}`
     );
     navigate("/leads");
   };
@@ -28,7 +28,7 @@ export const useLeads = () => {
     toast.handleDisplayBanner(
       deleteLead({ lead: lead.id, team }),
       `Deleting lead ${lead.first_name} ${lead.last_name}`,
-      `Deleted lead  ${lead.first_name} ${lead.last_name}`
+      `Deleted lead ${lead.first_name} ${lead.last_name}`
     );
   };
 
@@ -36,7 +36,7 @@ export const useLeads = () => {
     toast.handleDisplayBanner(
       editLead({ lead, team, data }),
       `Updating lead ${data.first_name} ${data.last_name}`,
-      `Updated lead  ${data.first_name} ${data.last_name}`
+      `Updated lead ${data.first_name} ${data.last_name}`
     );
     navigate("/leads");
   };
@@ -48,7 +48,7 @@ export const useLeads = () => {
         team,
       }),
       `Converting lead ${lead.first_name} ${lead.last_name}`,
-      `Converted lead  ${lead.first_name} ${lead.last_name}`
+      `Converted lead ${lead.first_name} ${lead.last_name}`
     );
 
     navigate("/clients");

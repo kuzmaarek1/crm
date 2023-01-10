@@ -21,15 +21,20 @@ export const updateElement = async (
   toast,
   numberElements,
   updatedElement,
-  team
+  isManyElements
 ) => {
   await actions.loadingData();
-  await actions.handleOpenDetailsModalAndAction(updateElement, /edit/i, team);
+  await actions.handleOpenDetailsModalAndAction(
+    updateElement,
+    /edit/i,
+    isManyElements,
+    2
+  );
   await actions.handleChangeInputsForm(formDataEdit);
-  if (!team) await actions.handleChangeInputAssigned();
+  if (!isManyElements) await actions.handleChangeInputAssigned();
   await actions.handleSubmitAndDisplayToast(toast);
   await actions.displayList(numberElements);
-  if (!team) {
+  if (!isManyElements) {
     const element = await screen.findByText(updatedElement);
     expect(element).toBeInTheDocument();
   } else {
@@ -42,11 +47,16 @@ export const deleteElement = async (
   numberElementBeforeDelete,
   deleteElement,
   toast,
-  numberElementAfterDelete
+  numberElementAfterDelete,
+  isManyElements
 ) => {
-  await actions.loadingData();
   await actions.displayList(numberElementBeforeDelete);
-  await actions.handleOpenDetailsModalAndAction(deleteElement, /delete/i);
+  await actions.handleOpenDetailsModalAndAction(
+    deleteElement,
+    /delete/i,
+    isManyElements,
+    1
+  );
   await actions.displayToast(toast);
   await actions.displayList(numberElementAfterDelete);
 };

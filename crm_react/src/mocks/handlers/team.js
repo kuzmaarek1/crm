@@ -87,4 +87,23 @@ export const team = [
     };
     return responseData(req, res, ctx, true, searchTeam, null);
   }),
+  rest.put(
+    "http://localhost:8000/api/teams/delete_team/:id/",
+    (req, res, ctx) => {
+      const deleteTeam = () => {
+        const user = getUser();
+        db.team.delete({
+          where: {
+            id: { equals: Number(req.params.id) },
+            created_by: {
+              id: { equals: user.id },
+            },
+          },
+        });
+      };
+      return responseData(req, res, ctx, req.params.id, deleteTeam, {
+        message: "Deleted",
+      });
+    }
+  ),
 ];

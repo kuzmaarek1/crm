@@ -31,6 +31,11 @@ export const loadingData = async () => {
   expect(loadingElement).toBeInTheDocument();
 };
 
+export const checkIsTeamActive = async (team, number) => {
+  const cellElement = await screen.findAllByText(team);
+  expect(cellElement).toHaveLength(number);
+};
+
 export const displayList = async (number) => {
   await loadingData();
   if (number) {
@@ -46,15 +51,16 @@ export const displayList = async (number) => {
 export const handleOpenDetailsModalAndAction = async (
   name,
   buttonName,
-  team
+  isManyElements,
+  numberElements
 ) => {
-  if (!team) {
+  if (!isManyElements) {
     const element = await screen.findByText(name);
     fireEvent.click(element);
   } else {
     const cellElement = await screen.findAllByTestId(/cell/i);
     expect(cellElement).toHaveLength(3);
-    fireEvent.click(cellElement[2]);
+    fireEvent.click(cellElement[numberElements]);
   }
   const button = await screen.findByRole("button", { name: buttonName });
   fireEvent.click(button);
@@ -69,9 +75,4 @@ export const handleSubmitAndDisplayToast = async (toast) => {
 export const displayToast = async (toast) => {
   const element = await screen.findByText(toast);
   expect(element).toBeInTheDocument();
-};
-
-export const checkIsTeamActive = async (team, number) => {
-  const cellElement = await screen.findAllByText(team);
-  expect(cellElement).toHaveLength(number);
 };

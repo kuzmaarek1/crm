@@ -51,7 +51,7 @@ export const useTeams = () => {
     toastHook.handleDisplayBanner(
       editTeam({ id, data }),
       `Updating team ${data.name}`,
-      `Updated team  ${data.name}`
+      `Updated team ${data.name}`
     );
   };
 

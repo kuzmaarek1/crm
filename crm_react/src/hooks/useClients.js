@@ -17,7 +17,7 @@ export const useClients = () => {
     toast.handleDisplayBanner(
       createClient({ id, data }),
       `Adding client ${data.first_name} ${data.last_name}`,
-      `Added client  ${data.first_name} ${data.last_name}`
+      `Added client ${data.first_name} ${data.last_name}`
     );
     navigate("/clients");
   };
@@ -26,7 +26,7 @@ export const useClients = () => {
     toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,
-      `Deleted client  ${client.first_name} ${client.last_name}`
+      `Deleted client ${client.first_name} ${client.last_name}`
     );
   };
 
@@ -34,7 +34,7 @@ export const useClients = () => {
     toast.handleDisplayBanner(
       editClient({ client, team, data }),
       `Updating client ${data.first_name} ${data.last_name}`,
-      `Updated client  ${data.first_name} ${data.last_name}`
+      `Updated client ${data.first_name} ${data.last_name}`
     );
     navigate("/clients");
   };

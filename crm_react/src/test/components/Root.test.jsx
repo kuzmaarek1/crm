@@ -5,6 +5,7 @@ import {
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
+  findByText,
 } from "test-utils";
 import * as constants from "test/constants";
 import * as actions from "test/actions";
@@ -181,6 +182,23 @@ describe("Team", () => {
 
     fireEvent.click(screen.getByTestId("clients"));
     await actions.displayList(70);
+  });
+
+  test("Delete team", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("teams"));
+    await actionsOnDatabse.deleteElement(
+      3,
+      /moj zespol/i,
+      /deleted team/i,
+      2,
+      true
+    );
+    await waitFor(() =>
+      expect(screen.queryAllByText(/nowy zespół testowy/i)).toHaveLength(3)
+    );
+    const currentElement = await screen.findByText(/current/i);
+    expect(currentElement).toBeInTheDocument();
   });
 });
 
