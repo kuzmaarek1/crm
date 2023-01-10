@@ -91,6 +91,7 @@ const List = ({
                       hook={hook}
                       props={props}
                       openModal={() => openModal(id)}
+                      valueData={valueData}
                     />
                   )}
                 </React.Fragment>

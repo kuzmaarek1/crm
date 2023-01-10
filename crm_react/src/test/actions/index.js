@@ -1,4 +1,4 @@
-import { screen, fireEvent, waitFor } from "test-utils";
+import { screen, fireEvent, waitForElementToBeRemoved } from "test-utils";
 
 export const handleChangeInputsLogIn = (data) => {
   data.forEach(({ name, value }) => {
@@ -33,8 +33,14 @@ export const loadingData = async () => {
 
 export const displayList = async (number) => {
   await loadingData();
-  const cellElement = await screen.findAllByTestId(/cell/i);
-  expect(cellElement).toHaveLength(number);
+  if (number) {
+    const cellElement = await screen.findAllByTestId(/cell/i);
+    expect(cellElement).toHaveLength(number);
+  } else {
+    await waitForElementToBeRemoved(screen.getByTestId(/loading/i));
+    const notClientsElement = screen.queryByTestId(/cell/i);
+    expect(notClientsElement).not.toBeInTheDocument();
+  }
 };
 
 export const handleOpenDetailsModalAndAction = async (
@@ -61,6 +67,11 @@ export const handleSubmitAndDisplayToast = async (toast) => {
 };
 
 export const displayToast = async (toast) => {
-  const successElement = await screen.findByText(toast);
-  expect(successElement).toBeInTheDocument();
+  const element = await screen.findByText(toast);
+  expect(element).toBeInTheDocument();
+};
+
+export const checkIsTeamActive = async (team, number) => {
+  const cellElement = await screen.findAllByText(team);
+  expect(cellElement).toHaveLength(number);
 };

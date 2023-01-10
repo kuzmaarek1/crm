@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "test-utils";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "test-utils";
 import * as constants from "test/constants";
 import * as actions from "test/actions";
 import * as actionsOnDatabse from "test/actions/actionsOnDatabase.js";
@@ -157,6 +163,24 @@ describe("Team", () => {
       "Nowy zespół testowy",
       true
     );
+  });
+
+  test("Change active team", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("clients"));
+    await actions.displayList();
+
+    fireEvent.click(screen.getByTestId("teams"));
+    await actions.loadingData();
+    await waitForElementToBeRemoved(screen.queryByTestId(/loading/i));
+    await actions.checkIsTeamActive("Moj zespol", 1);
+
+    fireEvent.click(screen.getByRole("button", { name: /moj zespol/i }));
+    await actions.displayToast(/Change team/i);
+    await actions.checkIsTeamActive("Moj zespol", 2);
+
+    fireEvent.click(screen.getByTestId("clients"));
+    await actions.displayList(70);
   });
 });
 
