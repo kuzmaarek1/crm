@@ -4,7 +4,7 @@ import * as actions from "test/actions/index.js";
 export const addElement = async (dataForm, assigned, toast, numberElements) => {
   fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
   await actions.handleChangeInputsForm(dataForm);
-  await actions.handleChangeInputAssigned(assigned);
+  assigned !== "team" && (await actions.handleChangeInputAssigned(assigned));
   await actions.handleSubmitAndDisplayToast(toast);
   await actions.displayList(numberElements);
 };

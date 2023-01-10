@@ -24,7 +24,7 @@ const Navbar = () => {
       <Styles.TitleWrapper>
         <Styles.Title to="/teams">
           {teams.currentTeam && auth
-            ? teams.currentTeam.name.length > 30
+            ? teams.currentTeam?.name?.length > 30
               ? `${teams.currentTeam.name.substring(0, 30)}...`
               : teams.currentTeam.name
             : "CRM"}

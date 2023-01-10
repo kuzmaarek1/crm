@@ -54,3 +54,8 @@ export const formDataAddClient = [
 ];
 
 export const formDataEditClient = [{ name: "First name", value: "Dariusz" }];
+
+export const formDataAddTeam = [
+  { name: "Name", value: "Zespol testowy" },
+  { name: "Description", value: "To jest test" },
+];

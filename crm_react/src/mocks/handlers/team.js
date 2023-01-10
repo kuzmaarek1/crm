@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { getUser, sanitizeTeams, responseData } from "mocks/helpers";
+import { getUser, sanitizeTeams, responseData, create } from "mocks/helpers";
 
 export const team = [
   rest.get("http://localhost:8000/api/teams/get_team/", (req, res, ctx) => {
@@ -32,5 +32,18 @@ export const team = [
       return data;
     };
     return responseData(req, res, ctx, true, getTeams, null);
+  }),
+  rest.post("http://localhost:8000/api/teams/", (req, res, ctx) => {
+    const createTeam = () => {
+      const user = getUser();
+      const team = create(db.team, {
+        ...req.body,
+        created_by: user,
+        members: user,
+      });
+      const data = sanitizeTeams(team);
+      return data;
+    };
+    return responseData(req, res, ctx, true, createTeam, null);
   }),
 ];

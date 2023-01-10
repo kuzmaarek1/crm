@@ -9,8 +9,14 @@ export const handleChangeInputsLogIn = (data) => {
 
 export const handleChangeInputsForm = async (data) => {
   for await (const { name, value } of data) {
-    const label = await screen.findByLabelText(name);
-    fireEvent.change(label, { target: { value } });
+    if (name !== "Name") {
+      const label = await screen.findByLabelText(name);
+      fireEvent.change(label, { target: { value } });
+    } else {
+      const label = await screen.findAllByLabelText(name);
+      screen.debug(label[1]);
+      fireEvent.change(label[1], { target: { value } });
+    }
   }
 };
 

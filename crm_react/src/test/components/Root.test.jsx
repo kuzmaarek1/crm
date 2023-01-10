@@ -130,6 +130,16 @@ describe("Team", () => {
     fireEvent.click(screen.getByTestId("teams"));
     await actions.displayList(2);
   });
+  test("Add team", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("teams"));
+    await actionsOnDatabse.addElement(
+      constants.formDataAddTeam,
+      "team",
+      /added team/i,
+      3
+    );
+  });
 });
 
 describe("Logout", () => {

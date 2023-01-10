@@ -74,7 +74,7 @@ export const findLeadsOrClientsByTeam = (db, team) => {
 };
 
 export const create = (db, data) => {
-  db.create(data);
+  return db.create(data);
 };
 
 export const updateLeadOrClient = (db, id, team, data) => {
