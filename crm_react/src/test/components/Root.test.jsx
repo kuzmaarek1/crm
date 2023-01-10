@@ -142,6 +142,11 @@ describe("Team", () => {
     );
   });
 
+  test("Search team", async () => {
+    render(<Root />);
+    await actionsOnDatabse.searchElement(/name/i, "Moj zespol", 2);
+  });
+
   test("Update team", async () => {
     render(<Root />);
     await actionsOnDatabse.updateElement(

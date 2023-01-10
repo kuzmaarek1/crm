@@ -66,4 +66,25 @@ export const team = [
       });
     }
   ),
+  rest.get("http://localhost:8000/api/teams/search_team/", (req, res, ctx) => {
+    const searchTeam = () => {
+      const user = getUser();
+      const search = req.url.searchParams.get("search");
+      const teams = db.team.findMany({
+        where: {
+          members: {
+            id: { equals: user.id },
+          },
+        },
+      });
+      const teamsByFilter = teams.filter(({ name }) =>
+        name.toLowerCase().includes(search.toLowerCase())
+      );
+      const data = teamsByFilter.map((teamByFilter) =>
+        sanitizeTeams(teamByFilter)
+      );
+      return data;
+    };
+    return responseData(req, res, ctx, true, searchTeam, null);
+  }),
 ];
