@@ -5,7 +5,6 @@ import {
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
-  findByText,
 } from "test-utils";
 import * as constants from "test/constants";
 import * as actions from "test/actions";
@@ -177,7 +176,7 @@ describe("Team", () => {
     await actions.checkIsTeamActive("Moj zespol", 1);
 
     fireEvent.click(screen.getByRole("button", { name: /moj zespol/i }));
-    await actions.displayToast(/Change team/i);
+    await actions.displayToast(/changed team/i);
     await actions.checkIsTeamActive("Moj zespol", 2);
 
     fireEvent.click(screen.getByTestId("clients"));
@@ -199,6 +198,19 @@ describe("Team", () => {
     );
     const currentElement = await screen.findByText(/current/i);
     expect(currentElement).toBeInTheDocument();
+  });
+  test("AddMember", async () => {
+    render(<Root />);
+    await actions.displayList(2);
+    await actions.handleOpenDetailsModalAndAction(
+      /nowy zespół testowy/i,
+      /add member/i,
+      true,
+      2,
+      1
+    );
+    await actions.handleChangeInputsForm(constants.formAddMembers);
+    await actions.handleSubmitAndDisplayToast(/added member/i);
   });
 });
 

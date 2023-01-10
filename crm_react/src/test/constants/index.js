@@ -64,3 +64,7 @@ export const formDataEditTeam = [
   { name: "Name", value: "Nowy zespół testowy" },
   { name: "Description", value: "To jest test" },
 ];
+
+export const formAddMembers = [
+  { name: /username/i, value: "akuzma55@gmail.com" },
+];

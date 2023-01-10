@@ -52,15 +52,16 @@ export const handleOpenDetailsModalAndAction = async (
   name,
   buttonName,
   isManyElements,
-  numberElements
+  numberElemenet,
+  numberElementsToActions
 ) => {
   if (!isManyElements) {
     const element = await screen.findByText(name);
     fireEvent.click(element);
   } else {
     const cellElement = await screen.findAllByTestId(/cell/i);
-    expect(cellElement).toHaveLength(3);
-    fireEvent.click(cellElement[numberElements]);
+    expect(cellElement).toHaveLength(numberElemenet);
+    fireEvent.click(cellElement[numberElementsToActions]);
   }
   const button = await screen.findByRole("button", { name: buttonName });
   fireEvent.click(button);

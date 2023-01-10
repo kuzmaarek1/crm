@@ -1,6 +1,12 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
-import { getUser, sanitizeTeams, responseData, create } from "mocks/helpers";
+import {
+  getUser,
+  sanitizeTeams,
+  responseData,
+  create,
+  sanitizeData,
+} from "mocks/helpers";
 
 export const team = [
   rest.get("http://localhost:8000/api/teams/get_team/", (req, res, ctx) => {
@@ -104,6 +110,41 @@ export const team = [
       return responseData(req, res, ctx, req.params.id, deleteTeam, {
         message: "Deleted",
       });
+    }
+  ),
+  rest.patch(
+    "http://localhost:8000/api/teams/add_member/:id/",
+    (req, res, ctx) => {
+      const addMember = () => {
+        const userCreated = getUser();
+        const userMember = getUser(req.body.username);
+        const editTeam = db.team.findFirst({
+          where: {
+            id: { equals: Number(req.params.id) },
+            created_by: {
+              id: { equals: userCreated.id },
+            },
+          },
+        });
+        const isMemberExist = editTeam.members.filter(
+          ({ username }) => username === userMember.username
+        );
+        if (isMemberExist.length === 0) {
+          db.team.update({
+            where: {
+              id: { equals: Number(req.params.id) },
+              created_by: {
+                id: { equals: userCreated.id },
+              },
+            },
+            data: {
+              members: [...editTeam.members, userMember],
+            },
+          });
+        }
+        return sanitizeData(userMember);
+      };
+      return responseData(req, res, ctx, req.params.id, addMember, null);
     }
   ),
 ];

@@ -28,6 +28,7 @@ export const updateElement = async (
     updateElement,
     /edit/i,
     isManyElements,
+    3,
     2
   );
   await actions.handleChangeInputsForm(formDataEdit);
@@ -55,6 +56,7 @@ export const deleteElement = async (
     deleteElement,
     /delete/i,
     isManyElements,
+    3,
     1
   );
   await actions.displayToast(toast);

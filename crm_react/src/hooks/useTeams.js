@@ -38,13 +38,13 @@ export const useTeams = () => {
     toastHook.handleDisplayBanner(
       addMember({ id, username }),
       `Adding member ${username}`,
-      `Add member ${username}`
+      `Added member ${username}`
     );
   };
 
   const handleChangeTeams = (team) => {
     dispatch(setCurrentTeam({ data: team }));
-    toast.success(`Change team ${team.name}`);
+    toast.success(`Changed team ${team.name}`);
   };
 
   const handleEdit = (id, team, data) => {
