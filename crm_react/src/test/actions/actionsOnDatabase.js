@@ -20,16 +20,22 @@ export const updateElement = async (
   formDataEdit,
   toast,
   numberElements,
-  updatedElement
+  updatedElement,
+  team
 ) => {
   await actions.loadingData();
-  await actions.handleOpenDetailsModalAndAction(updateElement, /edit/i);
+  await actions.handleOpenDetailsModalAndAction(updateElement, /edit/i, team);
   await actions.handleChangeInputsForm(formDataEdit);
-  await actions.handleChangeInputAssigned();
+  if (!team) await actions.handleChangeInputAssigned();
   await actions.handleSubmitAndDisplayToast(toast);
   await actions.displayList(numberElements);
-  const element = await screen.findByText(updatedElement);
-  expect(element).toBeInTheDocument();
+  if (!team) {
+    const element = await screen.findByText(updatedElement);
+    expect(element).toBeInTheDocument();
+  } else {
+    const element = await screen.findAllByText(updatedElement);
+    expect(element).toHaveLength(2);
+  }
 };
 
 export const deleteElement = async (

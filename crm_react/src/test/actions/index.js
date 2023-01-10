@@ -1,4 +1,4 @@
-import { screen, fireEvent } from "test-utils";
+import { screen, fireEvent, waitFor } from "test-utils";
 
 export const handleChangeInputsLogIn = (data) => {
   data.forEach(({ name, value }) => {
@@ -14,7 +14,6 @@ export const handleChangeInputsForm = async (data) => {
       fireEvent.change(label, { target: { value } });
     } else {
       const label = await screen.findAllByLabelText(name);
-      screen.debug(label[1]);
       fireEvent.change(label[1], { target: { value } });
     }
   }
@@ -38,9 +37,19 @@ export const displayList = async (number) => {
   expect(cellElement).toHaveLength(number);
 };
 
-export const handleOpenDetailsModalAndAction = async (name, buttonName) => {
-  const element = await screen.findByText(name);
-  fireEvent.click(element);
+export const handleOpenDetailsModalAndAction = async (
+  name,
+  buttonName,
+  team
+) => {
+  if (!team) {
+    const element = await screen.findByText(name);
+    fireEvent.click(element);
+  } else {
+    const cellElement = await screen.findAllByTestId(/cell/i);
+    expect(cellElement).toHaveLength(3);
+    fireEvent.click(cellElement[2]);
+  }
   const button = await screen.findByRole("button", { name: buttonName });
   fireEvent.click(button);
 };

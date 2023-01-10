@@ -46,4 +46,24 @@ export const team = [
     };
     return responseData(req, res, ctx, true, createTeam, null);
   }),
+  rest.put(
+    "http://localhost:8000/api/teams/update_team/:id/",
+    (req, res, ctx) => {
+      const updateTeam = () => {
+        const user = getUser();
+        db.team.update({
+          where: {
+            id: { equals: Number(req.params.id) },
+            created_by: {
+              id: { equals: user.id },
+            },
+          },
+          data: { ...req.body },
+        });
+      };
+      return responseData(req, res, ctx, req.params.id, updateTeam, {
+        message: "Update",
+      });
+    }
+  ),
 ];

@@ -59,3 +59,8 @@ export const formDataAddTeam = [
   { name: "Name", value: "Zespol testowy" },
   { name: "Description", value: "To jest test" },
 ];
+
+export const formDataEditTeam = [
+  { name: "Name", value: "Nowy zespół testowy" },
+  { name: "Description", value: "To jest test" },
+];

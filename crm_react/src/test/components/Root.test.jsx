@@ -130,6 +130,7 @@ describe("Team", () => {
     fireEvent.click(screen.getByTestId("teams"));
     await actions.displayList(2);
   });
+
   test("Add team", async () => {
     render(<Root />);
     fireEvent.click(screen.getByTestId("teams"));
@@ -138,6 +139,18 @@ describe("Team", () => {
       "team",
       /added team/i,
       3
+    );
+  });
+
+  test("Update team", async () => {
+    render(<Root />);
+    await actionsOnDatabse.updateElement(
+      /zespol testowy/i,
+      constants.formDataEditTeam,
+      /updated team/i,
+      3,
+      "Nowy zespół testowy",
+      true
     );
   });
 });
