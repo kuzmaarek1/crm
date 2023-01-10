@@ -26,7 +26,7 @@ export const sanitizeData = (data) => {
   return rest;
 };
 
-export const sanitizeTems = (team) => {
+export const sanitizeTeams = (team) => {
   const members = team.members.map((member) => sanitizeData(member));
   const created_by = sanitizeData(team.created_by);
   const data = { ...team, members: members, created_by: created_by };
@@ -59,7 +59,7 @@ export const getTeam = (id) => {
       },
     },
   });
-  return sanitizeTems(team);
+  return sanitizeTeams(team);
 };
 
 export const findLeadsOrClientsByTeam = (db, team) => {

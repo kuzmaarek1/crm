@@ -118,9 +118,17 @@ describe("Client", () => {
     );
   });
 
-  test("Delete lead", async () => {
+  test("Delete client", async () => {
     render(<Root />);
     await actionsOnDatabse.deleteElement(75, "Dariusz", /deleted client/i, 70);
+  });
+});
+
+describe("Team", () => {
+  test("Display team", async () => {
+    render(<Root />);
+    fireEvent.click(screen.getByTestId("teams"));
+    await actions.displayList(2);
   });
 });
 
