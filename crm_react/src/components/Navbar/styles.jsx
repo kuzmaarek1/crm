@@ -82,64 +82,49 @@ export const MobileNavbar = styled.div`
 `;
 
 export const HaburgerLines = styled.div`
-  transform: scale(0.7);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-right: 5px;
-  height: 26px;
-  width: 32px;
+  height: 40px;
+  width: 30px;
   @media (min-width: 640px) {
     display: none;
   }
 `;
 
 export const HaburgerLine = styled.span`
-  height: 4px;
-  background-color: white;
+  height: 3px;
+  background-color: ${(props) => (props.showNavbar ? "transparent" : "white")};
   width: 100%;
   border-radius: 10px;
-
-  ${(props) => {
-    if (props.number === 1) {
-      return css`
-        transition: transform 0.4s ease-in-out;
-        transform-origin: 0% 50%;
-      `;
-    }
-    if (props.number === 2) {
-      return css`
-        transition: transform 0.2s ease-in-out;
-      `;
-    }
-    if (props.number === 3) {
-      return css`
-        transition: transform 0.4s ease-in-out;
-        transform-origin: 0% 100%;
-      `;
-    }
-  }}
-  ${(props) => {
-    if (props.showNavbar) {
-      if (props.number === 1) {
-        return css`
-          transform: rotate(45deg);
-        `;
-      }
-      if (props.number === 2) {
-        return css`
-          transform: scaleY(0);
-        `;
-      }
-      if (props.number === 3) {
-        return css`
-          transform: rotate(-45deg);
-        `;
-      }
-    }
-  }}
+  transition: transform 0.2s ease-in-out;
+  position: relative;
+  &:before,
+  &:after {
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 10px;
+  }
+  &:before {
+    bottom: 10px;
+    //transform-origin: 0% 0%;
+    transition: transform 0.4s ease-in-out;
+    transform: ${(props) =>
+      props.showNavbar && "translate(0px, 10px) rotateZ(45deg)  "};
+  }
+  &:after {
+    top: 10px;
+    //transform-origin: 0% 100%;
+    transition: transform 0.4s ease-in-out;
+    transform: ${(props) =>
+      props.showNavbar && "translate(0px, -10px) rotateZ(-45deg)  "};
+  }
 `;
 
 export const MobileUl = styled.div`
