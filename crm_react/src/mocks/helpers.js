@@ -1,4 +1,5 @@
 import { db } from "mocks/db";
+import { curry } from "ramda";
 
 export const authenticateRequest = (req) => {
   const token = localStorage.getItem("__be_token__") || null;
@@ -26,12 +27,16 @@ export const sanitizeData = (data) => {
   return rest;
 };
 
+export const curriedSanitizeData = curry(sanitizeData);
+
 export const sanitizeTeams = (team) => {
-  const members = team.members.map((member) => sanitizeData(member));
+  const members = team.members.map(curriedSanitizeData());
   const created_by = sanitizeData(team.created_by);
   const data = { ...team, members: members, created_by: created_by };
   return data;
 };
+
+export const curriedSanitizeTeams = curry(sanitizeTeams);
 
 export const sanitizeLeadsAndClients = (persons) => {
   const data = persons.map((person) => {

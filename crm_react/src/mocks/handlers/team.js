@@ -2,10 +2,11 @@ import { rest } from "msw";
 import { db } from "mocks/db";
 import {
   getUser,
-  sanitizeTeams,
   responseData,
   create,
   sanitizeData,
+  sanitizeTeams,
+  curriedSanitizeTeams,
 } from "mocks/helpers";
 
 export const team = [
@@ -34,7 +35,7 @@ export const team = [
           },
         },
       });
-      const data = teams.map((team) => sanitizeTeams(team));
+      const data = teams.map(curriedSanitizeTeams());
       return data;
     };
     return responseData(req, res, ctx, true, getTeams, null);
@@ -86,9 +87,7 @@ export const team = [
       const teamsByFilter = teams.filter(({ name }) =>
         name.toLowerCase().includes(search.toLowerCase())
       );
-      const data = teamsByFilter.map((teamByFilter) =>
-        sanitizeTeams(teamByFilter)
-      );
+      const data = teamsByFilter.map(curriedSanitizeTeams());
       return data;
     };
     return responseData(req, res, ctx, true, searchTeam, null);
