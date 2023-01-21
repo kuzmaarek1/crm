@@ -33,7 +33,8 @@ def get_team(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def search_team(request, search):
+def search_team(request):
+    search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], name__icontains=search).order_by('-id')
     serializer = TeamSerializer(team, many=True)
     return Response(serializer.data)

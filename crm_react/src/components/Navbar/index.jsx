@@ -9,7 +9,6 @@ const Navbar = () => {
   const auth = useSelector((state) => state.auth.authData);
   const teams = useSelector((state) => state.teams);
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (auth?.auth_token && !teams.currentTeam) {
       dispatch(
@@ -25,7 +24,7 @@ const Navbar = () => {
       <Styles.TitleWrapper>
         <Styles.Title to="/teams">
           {teams.currentTeam && auth
-            ? teams.currentTeam.name.length > 30
+            ? teams.currentTeam?.name?.length > 30
               ? `${teams.currentTeam.name.substring(0, 30)}...`
               : teams.currentTeam.name
             : "CRM"}
@@ -35,12 +34,14 @@ const Navbar = () => {
         <Styles.Ul>
           {teams.currentTeam &&
             ["leads", "teams", "clients"].map((props, index) => (
-              <Styles.Link key={index} to={props}>
+              <Styles.Link key={index} to={props} data-testid={props}>
                 {props[0].toUpperCase()}
                 {props.slice(1)}
               </Styles.Link>
             ))}
-          <Styles.Link to="my-account">My account </Styles.Link>
+          <Styles.Link to="my-account" data-testid="my-account">
+            My account{" "}
+          </Styles.Link>
         </Styles.Ul>
       )}
       <MobileNavbar

@@ -2,26 +2,27 @@ import React from "react";
 import { Button } from "components";
 import * as Styles from "./styles";
 
-const ButtonTeamList = ({ id, teams, hook, props, openModal }) => (
-  <Styles.ButtonWrapper onClick={openModal}>
-    {String(id) === String(teams.currentTeam?.id) ? (
-      <Button team red width="200px" height="4vh">
-        Current
-      </Button>
-    ) : (
+const ButtonTeamList = ({ id, teams, hook, props, openModal, valueData }) => {
+  const isCurrentTeam = String(id) === String(teams.currentTeam?.id);
+  return (
+    <Styles.ButtonWrapper onClick={openModal}>
       <Button
+        team
+        red={isCurrentTeam}
         width="200px"
         height="4vh"
-        team
+        aria-label={valueData}
         onClick={(e) => {
-          e.stopPropagation();
-          hook.handleChangeTeams(props);
+          if (!isCurrentTeam) {
+            e.stopPropagation();
+            hook.handleChangeTeams(props);
+          }
         }}
       >
-        Activate
+        {isCurrentTeam ? "Current" : "Activate"}
       </Button>
-    )}
-  </Styles.ButtonWrapper>
-);
+    </Styles.ButtonWrapper>
+  );
+};
 
 export default ButtonTeamList;

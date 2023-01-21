@@ -49,6 +49,7 @@ const MyAccount = () => {
           onClick={() => authHook.handleLogOut()}
           red="true"
           height="40px"
+          aria-label="logout-button"
         >
           Log out
         </Button>

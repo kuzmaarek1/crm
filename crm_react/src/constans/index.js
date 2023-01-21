@@ -1,4 +1,17 @@
-export const modalLeadandClientField = [
+export const LoginForm = [
+  { type: "email", name: "username", required: true },
+  { type: "password", name: "password", required: true },
+];
+
+export const RegisterForm = [
+  { type: "text", name: "first_name", required: true },
+  { type: "text", name: "last_name", required: true },
+  { type: "email", name: "username", required: true },
+  { type: "password", name: "password", required: true },
+  { type: "password", name: "re_password", required: true, validate: true },
+];
+
+export const modalLeadAndClientField = [
   {
     type: "text",
     name: "first_name",
@@ -31,19 +44,6 @@ export const modalTeamField = [
 
 export const modalTeamAddMemberField = [
   { type: "email", name: "username", required: true },
-];
-
-export const LoginForm = [
-  { type: "email", name: "username", required: true },
-  { type: "password", name: "password", required: true },
-];
-
-export const RegisterForm = [
-  { type: "text", name: "first_name", required: true },
-  { type: "text", name: "last_name", required: true },
-  { type: "email", name: "username", required: true },
-  { type: "password", name: "password", required: true },
-  { type: "password", name: "re_password", required: true, validate: true },
 ];
 
 export const LeadDetailsButton = [

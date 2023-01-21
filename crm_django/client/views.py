@@ -32,12 +32,16 @@ def get_client(request,team_id):
     return Response(data)
 
 @api_view(['GET'])
-def search_client(request,team_id,search):
+def search_client(request,team_id):
+    search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
-    client=Client.objects.filter(Q(first_name__icontains=search, team=team) | Q(last_name__icontains=search, team=team)).order_by('-id')
-    serializer = ClientSerializer(client, many=True)
-    data = serializer.data
-    return Response(data)
+    for idx, key in enumerate(search.split()):
+        if idx == 0:
+            client = Client.objects.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
+        else:
+            client = client.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
+        serializer = ClientSerializer(client, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def create_client(request,team_id):
@@ -85,4 +89,4 @@ def convert_lead_to_client(request, lead_id, team_id):
     client = Client.objects.create(team=team, first_name=lead.first_name, last_name=lead.last_name, phone=lead.phone,
                                    email=lead.email, created_by=request.user, description=lead.description, assigned_to=lead.assigned_to)
     Lead.objects.filter(team=team, id=lead_id).delete()
-    return Response(client.pk)
+    return Response({'message':'Convert'})

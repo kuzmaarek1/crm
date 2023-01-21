@@ -16,7 +16,6 @@ const List = ({
   data,
   fetchingData,
   fetchingSearchData,
-  refetchList,
   endpoint,
   register,
   setFocus,
@@ -37,14 +36,14 @@ const List = ({
     let { id, created_by, description, members, ...otherData } = data[0];
     objectKey = otherData;
   }
+
   return (
     <Styles.Wrapper>
       <HeaderList
         header={header}
-        register={register}
         endpoint={endpoint}
         teams={teams}
-        refetchList={refetchList}
+        register={register}
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}
       />
@@ -92,6 +91,7 @@ const List = ({
                       hook={hook}
                       props={props}
                       openModal={() => openModal(id)}
+                      valueData={valueData}
                     />
                   )}
                 </React.Fragment>

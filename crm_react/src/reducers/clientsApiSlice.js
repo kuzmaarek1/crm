@@ -27,7 +27,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
     }),
     searchClient: builder.query({
       query: ({ team, name }) => ({
-        url: `/api/clients/search_client/${team}/${name}/`,
+        url: `/api/clients/search_client/${team}/?search=${name}`,
         method: "GET",
       }),
       async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {

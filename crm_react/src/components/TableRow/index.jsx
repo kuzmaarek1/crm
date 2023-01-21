@@ -8,6 +8,7 @@ const TableRow = ({ header, title, description, onClick, index }) => {
       title={title}
       onClick={onClick}
       index={index}
+      data-testid="cell"
     >
       {description}
     </Styles.CellWrapper>

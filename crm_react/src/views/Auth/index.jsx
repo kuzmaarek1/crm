@@ -5,7 +5,7 @@ import { LoginForm, RegisterForm } from "constans";
 import { Button, Field } from "components";
 import * as Styles from "./styles";
 
-const LoginPage = () => {
+const Auth = () => {
   const auth = useAuth();
   const {
     register,
@@ -29,7 +29,7 @@ const LoginPage = () => {
 
   return (
     <Styles.Wrapper isLogin={isLogin}>
-      <Styles.Header>{isLogin ? "Login In" : "Sign Up"}</Styles.Header>
+      <Styles.Header>{isLogin ? "Log In" : "Sign Up"}</Styles.Header>
       <Styles.Form
         onSubmit={
           isLogin
@@ -48,7 +48,7 @@ const LoginPage = () => {
           />
         ))}
         <Styles.ButtonWrapper>
-          <Button width="100%" height="40px">
+          <Button width="100%" height="40px" aria-label="login-or-signup">
             {isLogin ? " Log In" : "Sign Up"}
           </Button>
         </Styles.ButtonWrapper>
@@ -60,6 +60,7 @@ const LoginPage = () => {
           width="100%"
           height="40px"
           onClick={switchMode}
+          aria-label="switch-button"
         >
           {isLogin
             ? "Don't have an account? Sign Up"
@@ -70,4 +71,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Auth;

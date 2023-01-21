@@ -5,17 +5,22 @@ import * as Styles from "./styles";
 
 const HeaderList = ({
   header,
-  register,
   endpoint,
   teams,
-  refetchList,
   setFocus,
+  register,
   setModalIsOpenFormAdd,
 }) => {
   const dispatch = useDispatch();
+
   const handleChangeInput = (e) => {
+    const props = header !== "Team" ? teams.currentTeam.id : undefined;
     if (e.target.value === "") {
-      refetchList();
+      dispatch(
+        endpoint.util.prefetch(`get${header}s`, props, {
+          force: true,
+        })
+      );
     } else {
       dispatch(
         endpoint.util.prefetch(
@@ -33,18 +38,20 @@ const HeaderList = ({
         <Styles.Input
           type="serach"
           placeholder="Search"
-          {...register(`${header.toLowerCase()}-name`, {
+          {...register(`${header.toLowerCase()}-search`, {
             required: true,
             onChange: (e) => handleChangeInput(e),
           })}
+          name={`${header.toLowerCase()}-search`}
+          id={`${header.toLowerCase()}-search`}
         />
-        <Styles.Label>
+        <Styles.Label htmlFor={`${header.toLowerCase()}-search`}>
           {header === "Team" ? "Name" : "First name and last name"}
         </Styles.Label>
         <Styles.SearchIcon
           size={"20px"}
           onClick={() => {
-            setFocus(`${header.toLowerCase()}-name`);
+            setFocus(`${header.toLowerCase()}-search`);
           }}
         />
       </Styles.InputWrapper>
@@ -53,6 +60,7 @@ const HeaderList = ({
           width="60%"
           height="7vh"
           onClick={() => setModalIsOpenFormAdd(true)}
+          aria-label="add-button"
         >
           Add {header}
         </Button>

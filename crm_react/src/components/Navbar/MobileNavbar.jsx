@@ -8,13 +8,7 @@ const MobileNavbar = ({ auth, teams, setShowNabar, showNavbar }) => {
         <Styles.HaburgerLines
           onClick={() => setShowNabar((prevState) => !prevState)}
         >
-          {[...Array(3).keys()].map((key) => (
-            <Styles.HaburgerLine
-              showNavbar={showNavbar}
-              number={key + 1}
-              key={key}
-            ></Styles.HaburgerLine>
-          ))}
+          <Styles.HaburgerLine showNavbar={showNavbar}></Styles.HaburgerLine>
         </Styles.HaburgerLines>
 
         <Styles.MobileUl showNavbar={!showNavbar}>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mswjs/data": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -11,9 +12,12 @@
     "axios": "^1.2.0",
     "cra-template": "1.2.0",
     "downshift": "^7.0.4",
+    "faker": "^6.6.6",
     "http-proxy-middleware": "^2.0.6",
     "jsconfig.json": "^2.3.3",
+    "msw": "^0.49.2",
     "prettier": "^2.8.0",
+    "ramda": "^0.28.0",
     "react": "^18.2.0",
     "react-content-loader": "^6.2.0",
     "react-dom": "^18.2.0",
@@ -53,5 +57,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0"
   }
 }
