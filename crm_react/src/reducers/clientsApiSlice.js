@@ -4,7 +4,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getClients: builder.query({
       query: (id) => ({
-        url: `/api/clients/get_client/${id}/`,
+        url: `/api/clients/get_client/${id}/?page=1`,
         method: "GET",
       }),
       providesTags: ["Client", "Auth", "Team", "Lead"],
@@ -27,7 +27,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
     }),
     searchClient: builder.query({
       query: ({ team, name }) => ({
-        url: `/api/clients/search_client/${team}/?search=${name}`,
+        url: `/api/clients/search_client/${team}/?search=${name}&page=1`,
         method: "GET",
       }),
       async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {

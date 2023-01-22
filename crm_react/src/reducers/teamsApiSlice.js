@@ -12,7 +12,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
     }),
     getTeams: builder.query({
       query: () => ({
-        url: "/api/teams/",
+        url: "/api/teams/get_teams/?page=1",
         method: "GET",
       }),
       providesTags: ["Team", "Auth"],
@@ -33,7 +33,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
     }),
     searchTeam: builder.query({
       query: ({ name }) => ({
-        url: `api/teams/search_team/?search=${name}`,
+        url: `api/teams/search_team/?search=${name}&page=1`,
         method: "GET",
       }),
       async onQueryStarted({ name }, { dispatch, queryFulfilled }) {

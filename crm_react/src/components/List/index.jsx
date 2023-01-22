@@ -28,15 +28,15 @@ const List = ({
 
   const openModal = (dataId) => {
     setModalIsOpenDetails(true);
-    const dataFindById = data.find(({ id }) => id === dataId);
+    const dataFindById = data?.results?.find(({ id }) => id === dataId);
     setList(dataFindById);
   };
 
-  if (data !== undefined && data?.length !== 0) {
-    let { id, created_by, description, members, ...otherData } = data[0];
+  if (data?.results !== undefined && data?.results?.length !== 0) {
+    let { id, created_by, description, members, ...otherData } =
+      data.results[0];
     objectKey = otherData;
   }
-
   return (
     <Styles.Wrapper>
       <HeaderList
@@ -66,7 +66,7 @@ const List = ({
                 />
               );
             })}
-          {data?.map((props) => {
+          {data?.results?.map((props) => {
             const { id, members, created_by, description, ...otherProps } =
               props;
             return Object.entries(otherProps).map(([key, value], index) => {

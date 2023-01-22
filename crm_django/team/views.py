@@ -1,6 +1,7 @@
 from .models import Team
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
+from django.core.paginator import Paginator
 from .serializers import TeamSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -8,13 +9,14 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+page_number = 2 
 
 class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     queryset = Team.objects.all()
 
     def get_queryset(self):
-       return self.queryset.filter(members__in=[self.request.user]).order_by('-id')
+      return 
 
     def perform_create(self, serializer):
        object=serializer.save(created_by=self.request.user)
@@ -28,16 +30,28 @@ def delete_team(request, team_id):
 
 @api_view(['GET'])
 def get_team(request):
-    team = Team.objects.filter(members__in=[request.user]).first()
+    team = Team.objects.filter(members__in=[request.user]).order_by('-id').first()
     serializer = TeamSerializer(team)
     return Response(serializer.data)
 
 @api_view(['GET'])
+def get_teams(request):
+    number = request.GET.get('page')
+    team = Team.objects.filter(members__in=[request.user]).order_by('-id')
+    paginator = Paginator(team, page_number)
+    page_team = paginator.get_page(number)
+    serializer = TeamSerializer(page_team, many=True)
+    return Response({"results":serializer.data, "has_next":page_team.has_next()})
+
+@api_view(['GET'])
 def search_team(request):
+    number = request.GET.get('page')
     search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], name__icontains=search).order_by('-id')
-    serializer = TeamSerializer(team, many=True)
-    return Response(serializer.data)
+    paginator = Paginator(team, page_number)
+    page_team = paginator.get_page(number)
+    serializer = TeamSerializer(page_team, many=True)
+    return Response({"results":serializer.data, "has_next":page_team.has_next()})
 
 @api_view(['PATCH'])
 def add_member(request, team_id):

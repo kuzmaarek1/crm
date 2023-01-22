@@ -4,7 +4,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getLeads: builder.query({
       query: (id) => ({
-        url: `/api/leads/get_lead/${id}/`,
+        url: `/api/leads/get_lead/${id}/?page=1`,
         method: "GET",
       }),
       providesTags: ["Lead", "Auth", "Team"],
@@ -27,7 +27,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
     }),
     searchLead: builder.query({
       query: ({ team, name }) => ({
-        url: `/api/leads/search_lead/${team}/?search=${name}`,
+        url: `/api/leads/search_lead/${team}/?search=${name}&page=1`,
         method: "GET",
       }),
       async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {
