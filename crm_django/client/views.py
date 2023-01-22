@@ -34,7 +34,7 @@ def get_client(request,team_id):
     paginator = Paginator(client, page_number)
     page_client = paginator.get_page(number)
     serializer = ClientSerializer(page_client, many=True)
-    return  Response({"results":serializer.data, "has_next":page_client.has_next()})
+    return  Response({"results":serializer.data, "has_next":page_client.has_next(), "page":number})
 
 @api_view(['GET'])
 def search_client(request,team_id):
@@ -49,7 +49,7 @@ def search_client(request,team_id):
     paginator = Paginator(client, page_number)
     page_client = paginator.get_page(number)
     serializer = ClientSerializer(page_client, many=True)
-    return Response({"results":serializer.data, "has_next":page_client.has_next()})
+    return Response({"results":serializer.data, "has_next":page_client.has_next(), "page":number})
 
 @api_view(['POST'])
 def create_client(request,team_id):

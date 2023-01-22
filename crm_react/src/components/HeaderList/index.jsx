@@ -10,22 +10,28 @@ const HeaderList = ({
   setFocus,
   register,
   setModalIsOpenFormAdd,
+  setPage,
 }) => {
   const dispatch = useDispatch();
 
   const handleChangeInput = (e) => {
     const props = header !== "Team" ? teams.currentTeam.id : undefined;
+    setPage(1);
     if (e.target.value === "") {
       dispatch(
-        endpoint.util.prefetch(`get${header}s`, props, {
-          force: true,
-        })
+        endpoint.util.prefetch(
+          `get${header}s`,
+          { id: props, page: 1 },
+          {
+            force: true,
+          }
+        )
       );
     } else {
       dispatch(
         endpoint.util.prefetch(
           `search${header}`,
-          { team: teams.currentTeam.id, name: e.target.value },
+          { team: teams.currentTeam.id, name: e.target.value, page: 1 },
           { force: true }
         )
       );

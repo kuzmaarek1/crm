@@ -2,7 +2,15 @@ import React from "react";
 import { Button } from "components";
 import * as Styles from "./styles";
 
-const ButtonTeamList = ({ id, teams, hook, props, openModal, valueData }) => {
+const ButtonTeamList = ({
+  id,
+  teams,
+  hook,
+  props,
+  openModal,
+  valueData,
+  setPage,
+}) => {
   const isCurrentTeam = String(id) === String(teams.currentTeam?.id);
   return (
     <Styles.ButtonWrapper onClick={openModal}>
@@ -15,6 +23,7 @@ const ButtonTeamList = ({ id, teams, hook, props, openModal, valueData }) => {
         onClick={(e) => {
           if (!isCurrentTeam) {
             e.stopPropagation();
+            setPage(1);
             hook.handleChangeTeams(props);
           }
         }}

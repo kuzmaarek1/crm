@@ -17,6 +17,7 @@ const ModalFrom = ({
   closeDetails,
   list,
   addMember,
+  setPage,
 }) => {
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
   const formData =
@@ -55,6 +56,7 @@ const ModalFrom = ({
       </Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit((register) => {
+          setPage(1);
           list
             ? addMember
               ? hook.handleAddMember(list.id, register)

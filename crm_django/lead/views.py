@@ -33,7 +33,7 @@ def get_lead(request,team_id):
     paginator = Paginator(lead, page_number)
     page_lead = paginator.get_page(number)
     serializer = LeadSerializer(page_lead, many=True)
-    return Response({"results":serializer.data, "has_next":page_lead.has_next()})
+    return Response({"results":serializer.data, "has_next":page_lead.has_next(),"page":number })
 
 @api_view(['GET'])
 def search_lead(request,team_id):
@@ -48,7 +48,7 @@ def search_lead(request,team_id):
     paginator = Paginator(lead, page_number)
     page_lead = paginator.get_page(number)
     serializer = LeadSerializer(page_lead, many=True)
-    return Response({"results":serializer.data, "has_next":page_lead.has_next()})
+    return Response({"results":serializer.data, "has_next":page_lead.has_next(), "page":number})
 
 @api_view(['POST'])
 def create_lead(request,team_id):

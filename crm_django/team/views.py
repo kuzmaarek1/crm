@@ -41,7 +41,7 @@ def get_teams(request):
     paginator = Paginator(team, page_number)
     page_team = paginator.get_page(number)
     serializer = TeamSerializer(page_team, many=True)
-    return Response({"results":serializer.data, "has_next":page_team.has_next()})
+    return Response({"results":serializer.data, "has_next":page_team.has_next(), "page":number})
 
 @api_view(['GET'])
 def search_team(request):
@@ -51,7 +51,7 @@ def search_team(request):
     paginator = Paginator(team, page_number)
     page_team = paginator.get_page(number)
     serializer = TeamSerializer(page_team, many=True)
-    return Response({"results":serializer.data, "has_next":page_team.has_next()})
+    return Response({"results":serializer.data, "has_next":page_team.has_next(), "page":number})
 
 @api_view(['PATCH'])
 def add_member(request, team_id):

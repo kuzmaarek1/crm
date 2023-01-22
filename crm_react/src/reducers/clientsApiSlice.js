@@ -3,10 +3,22 @@ import { apiSlice } from "api/apiSlice";
 export const clientsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getClients: builder.query({
-      query: (id) => ({
-        url: `/api/clients/get_client/${id}/?page=1`,
+      query: ({ id, page }) => ({
+        url: `/api/clients/get_client/${id}/?page=${page}`,
         method: "GET",
       }),
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        if (Number(newItems.page) !== 1)
+          currentCache.results.push(...newItems.results);
+        else currentCache.results = newItems.results;
+        currentCache.has_next = newItems.has_next;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
       providesTags: ["Client", "Auth", "Team", "Lead"],
     }),
     createClient: builder.mutation({
@@ -26,8 +38,8 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Client"],
     }),
     searchClient: builder.query({
-      query: ({ team, name }) => ({
-        url: `/api/clients/search_client/${team}/?search=${name}&page=1`,
+      query: ({ team, name, page }) => ({
+        url: `/api/clients/search_client/${team}/?search=${name}&page=${page}`,
         method: "GET",
       }),
       async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {
@@ -38,7 +50,12 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
               clientsApiSlice.util.updateQueryData(
                 "getClients",
                 team,
-                (draft) => data
+                (draft) => {
+                  if (Number(data.page) !== 1) {
+                    draft.results.push(...data.results);
+                    draft.has_next = data.has_next;
+                  } else return data;
+                }
               )
             );
           }

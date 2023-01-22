@@ -7,26 +7,50 @@ import { List } from "components";
 
 const Clients = () => {
   const client = useClients();
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
   const { watch, register, setFocus } = useForm();
   const [fetchingSearchClients, setFetchingSearchClients] = useState(false);
 
   useEffect(() => {
-    dispatch(
-      endpoint.util.prefetch(`getClients`, teams.currentTeam.id, {
-        force: true,
-      })
-    );
-  }, []);
+    if (watch("client-search") === "" || watch("client-search") === undefined)
+      dispatch(
+        endpoint.util.prefetch(
+          `getClients`,
+          { id: teams.currentTeam.id, page: page },
+          {
+            force: true,
+          }
+        )
+      );
+    else
+      dispatch(
+        endpoint.util.prefetch(
+          `searchClient`,
+          {
+            team: teams.currentTeam.id,
+            name: watch("client-search"),
+            page: page,
+          },
+          {
+            force: true,
+          }
+        )
+      );
+  }, [page]);
 
   const { data: clients, isFetching: fetchingClients } =
-    clientsApiSlice.endpoints.getClients.useQueryState(teams.currentTeam.id);
+    clientsApiSlice.endpoints.getClients.useQueryState({
+      id: teams.currentTeam.id,
+      page: page,
+    });
 
   const { data: clientsBySearch, isFetching: fetchingSearch } =
     clientsApiSlice.endpoints.searchClient.useQueryState({
       team: teams.currentTeam.id,
       name: watch("client-search"),
+      page: page,
     });
 
   const endpoint = clientsApiSlice;
@@ -41,18 +65,26 @@ const Clients = () => {
       setFetchingSearchClients(false);
     }
   }, [clients, fetchingSearch]);
+  const handleClickButton = () => {
+    if (clients.has_next) setPage((prevState) => prevState + 1);
+  };
 
   return (
-    <List
-      header="Client"
-      hook={client}
-      data={clients}
-      fetchingData={fetchingClients}
-      fetchingSearchData={fetchingSearchClients}
-      endpoint={endpoint}
-      register={register}
-      setFocus={setFocus}
-    />
+    <>
+      <button onClick={handleClickButton}>Więcej</button>
+      <List
+        header="Client"
+        hook={client}
+        data={clients}
+        fetchingData={fetchingClients}
+        fetchingSearchData={fetchingSearchClients}
+        endpoint={endpoint}
+        register={register}
+        setFocus={setFocus}
+        page={page}
+        setPage={setPage}
+      />
+    </>
   );
 };
 

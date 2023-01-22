@@ -15,6 +15,7 @@ const ModalDetails = ({
   list,
   hook,
   teams,
+  setPage,
 }) => {
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
@@ -26,6 +27,7 @@ const ModalDetails = ({
     switch (name) {
       case "handleConvert":
         hook.handleConvertToClient(list, teams.currentTeam.id);
+        setPage(1);
         closeModal();
         break;
       case "handleEdit":
@@ -36,6 +38,7 @@ const ModalDetails = ({
         break;
       default:
         hook.handleDelete(list, teams.currentTeam.id);
+        setPage(1);
         closeModal();
         break;
     }
@@ -109,6 +112,7 @@ const ModalDetails = ({
         }}
         closeDetails={closeModal}
         hook={hook}
+        setPage={setPage}
         teams={teams}
         list={list}
         addMember={false}
@@ -125,6 +129,7 @@ const ModalDetails = ({
           teams={teams}
           list={list}
           addMember={true}
+          setPage={setPage}
         />
       )}
     </>

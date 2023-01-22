@@ -19,6 +19,8 @@ const List = ({
   endpoint,
   register,
   setFocus,
+  page,
+  setPage,
 }) => {
   const teams = useSelector((state) => state.teams);
   const [modalIsOpenDetails, setModalIsOpenDetails] = useState(false);
@@ -46,8 +48,9 @@ const List = ({
         register={register}
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}
+        setPage={setPage}
       />
-      {fetchingData || fetchingSearchData ? (
+      {(fetchingData || fetchingSearchData) && page === 1 ? (
         <TableLoader />
       ) : (
         <Styles.ListWrapper team={header === "Team"}>
@@ -92,6 +95,7 @@ const List = ({
                       props={props}
                       openModal={() => openModal(id)}
                       valueData={valueData}
+                      setPage={setPage}
                     />
                   )}
                 </React.Fragment>
@@ -107,6 +111,7 @@ const List = ({
         list={list}
         hook={hook}
         teams={teams}
+        setPage={setPage}
       />
       <ModalForm
         header={header}
@@ -114,6 +119,7 @@ const List = ({
         closeModal={() => setModalIsOpenFormAdd(false)}
         hook={hook}
         teams={teams}
+        setPage={setPage}
       />
     </Styles.Wrapper>
   );
