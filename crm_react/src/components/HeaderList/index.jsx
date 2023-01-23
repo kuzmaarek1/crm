@@ -13,29 +13,7 @@ const HeaderList = ({
   setPage,
 }) => {
   const dispatch = useDispatch();
-  const handleChangeInput = (e) => {
-    const props = header !== "Team" ? teams.currentTeam.id : undefined;
-    setPage(1);
-    if (e.target.value === "") {
-      dispatch(
-        endpoint.util.prefetch(
-          `get${header}s`,
-          { id: props, page: 1 },
-          {
-            force: true,
-          }
-        )
-      );
-    } else {
-      dispatch(
-        endpoint.util.prefetch(
-          `search${header}`,
-          { team: teams.currentTeam.id, name: e.target.value, page: 1 },
-          { force: true }
-        )
-      );
-    }
-  };
+
   return (
     <Styles.HeaderListWrapper>
       <Styles.Header>{header}s</Styles.Header>
@@ -45,7 +23,7 @@ const HeaderList = ({
           placeholder="Search"
           {...register(`${header.toLowerCase()}-search`, {
             required: true,
-            onChange: (e) => handleChangeInput(e),
+            onChange: (e) => setPage(0),
           })}
           name={`${header.toLowerCase()}-search`}
           id={`${header.toLowerCase()}-search`}

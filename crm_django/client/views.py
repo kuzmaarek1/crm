@@ -11,7 +11,7 @@ from lead.models import Lead
 from team.models import Team
 
 User = get_user_model()
-page_number = 2 
+page_number = 17
 
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer

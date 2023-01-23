@@ -10,7 +10,7 @@ const Leads = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
-  const { register, watch, setFocus } = useForm();
+  const { register, watch, setFocus, resetField } = useForm();
   const [fetchingSearchLeads, setFetchingSearchLeads] = useState(false);
 
   useEffect(() => {
@@ -18,6 +18,10 @@ const Leads = () => {
   }, []);
 
   useEffect(() => {
+    if (page === 0) {
+      setPage(1);
+      return;
+    }
     if (watch("lead-search") === "" || watch("lead-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -28,7 +32,7 @@ const Leads = () => {
           }
         )
       );
-    else
+    else {
       dispatch(
         endpoint.util.prefetch(
           `searchLead`,
@@ -42,6 +46,7 @@ const Leads = () => {
           }
         )
       );
+    }
   }, [page]);
 
   const { data: leads, isFetching: fetchingLeads } =
@@ -82,6 +87,7 @@ const Leads = () => {
       setFocus={setFocus}
       page={page}
       setPage={setPage}
+      resetSearch={resetField}
     />
   );
 };

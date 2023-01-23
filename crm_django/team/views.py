@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-page_number = 2 
+page_number = 17
 
 class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer

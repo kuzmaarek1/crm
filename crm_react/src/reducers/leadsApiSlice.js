@@ -42,7 +42,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
-      async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ team, name, page }, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           if (name !== "") {

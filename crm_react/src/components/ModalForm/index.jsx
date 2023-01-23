@@ -20,6 +20,7 @@ const ModalFrom = ({
   addMember,
   setPage,
   endpoint,
+  resetSearch,
 }) => {
   const dispatch = useDispatch();
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
@@ -65,7 +66,8 @@ const ModalFrom = ({
               : await hook.handleEdit(list.id, teams?.currentTeam?.id, register)
             : await hook.handleAdd(teams?.currentTeam?.id, register);
           dispatch(endpoint.util.resetApiState());
-          setPage(1);
+          resetSearch(`${header.toLowerCase()}-search`);
+          setPage(0);
           closeModal();
           list && closeDetails();
           reset();

@@ -18,6 +18,7 @@ const ModalDetails = ({
   teams,
   setPage,
   endpoint,
+  resetSearch,
 }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authData);
@@ -31,7 +32,8 @@ const ModalDetails = ({
       case "handleConvert":
         hook.handleConvertToClient(list, teams.currentTeam.id);
         dispatch(endpoint.util.resetApiState());
-        setPage(1);
+        resetSearch(`${header.toLowerCase()}-search`);
+        setPage(0);
         closeModal();
         break;
       case "handleEdit":
@@ -43,7 +45,8 @@ const ModalDetails = ({
       default:
         hook.handleDelete(list, teams.currentTeam.id);
         dispatch(endpoint.util.resetApiState());
-        setPage(1);
+        resetSearch(`${header.toLowerCase()}-search`);
+        setPage(0);
         closeModal();
         break;
     }
@@ -122,6 +125,7 @@ const ModalDetails = ({
         list={list}
         addMember={false}
         endpoint={endpoint}
+        resetSearch={resetSearch}
       />
       {header === "Team" && (
         <ModalForm
@@ -137,6 +141,7 @@ const ModalDetails = ({
           addMember={true}
           setPage={setPage}
           endpoint={endpoint}
+          resetSearch={resetSearch}
         />
       )}
     </>

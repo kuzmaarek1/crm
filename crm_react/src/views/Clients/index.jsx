@@ -10,7 +10,7 @@ const Clients = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
-  const { watch, register, setFocus } = useForm();
+  const { watch, register, setFocus, resetField } = useForm();
   const [fetchingSearchClients, setFetchingSearchClients] = useState(false);
 
   useEffect(() => {
@@ -18,6 +18,10 @@ const Clients = () => {
   }, []);
 
   useEffect(() => {
+    if (page === 0) {
+      setPage(1);
+      return;
+    }
     if (watch("client-search") === "" || watch("client-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -82,6 +86,7 @@ const Clients = () => {
       setFocus={setFocus}
       page={page}
       setPage={setPage}
+      resetSearch={resetField}
     />
   );
 };

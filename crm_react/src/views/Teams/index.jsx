@@ -10,7 +10,7 @@ const Teams = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const teamsState = useSelector((state) => state.teams);
-  const { register, watch, setFocus } = useForm();
+  const { register, watch, setFocus, resetField } = useForm();
   const [fetchingSearchTeams, setFetchingSearchTeams] = useState(false);
 
   useEffect(() => {
@@ -18,6 +18,10 @@ const Teams = () => {
   }, []);
 
   useEffect(() => {
+    if (page === 0) {
+      setPage(1);
+      return;
+    }
     if (watch("team-search") === "" || watch("team-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -79,6 +83,7 @@ const Teams = () => {
       register={register}
       page={page}
       setPage={setPage}
+      resetSearch={resetField}
     />
   );
 };

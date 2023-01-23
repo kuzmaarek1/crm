@@ -21,6 +21,7 @@ const List = ({
   setFocus,
   page,
   setPage,
+  resetSearch,
 }) => {
   const intObserver = useRef();
 
@@ -146,6 +147,7 @@ const List = ({
         teams={teams}
         setPage={setPage}
         endpoint={endpoint}
+        resetSearch={resetSearch}
       />
       <ModalForm
         header={header}
@@ -155,6 +157,7 @@ const List = ({
         teams={teams}
         setPage={setPage}
         endpoint={endpoint}
+        resetSearch={resetSearch}
       />
     </Styles.Wrapper>
   );
