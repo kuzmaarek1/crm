@@ -7,6 +7,7 @@ import {
   HeaderList,
   TableRow,
   ButtonTeamList,
+  Loader,
 } from "components";
 import * as Styles from "./styles";
 
@@ -135,9 +136,7 @@ const List = ({
           })}
         </Styles.ListWrapper>
       )}
-      {(fetchingData || fetchingSearchData) && page !== 1 && (
-        <div>Loading More</div>
-      )}
+      {(fetchingData || fetchingSearchData) && page !== 1 && <Loader />}
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}

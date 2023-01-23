@@ -53,21 +53,22 @@ export const ButtonDowshift = styled.button`
 
 export const Ul = styled.ul`
   display: block;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: none;
-  min-height: 4vh;
-  max-height: calc(16vh - 3.5px);
+  max-height: calc(16vh - 4px);
   position: absolute;
   z-index: 100;
-  top: calc(100% - 1px);
+  top: 100%;
   margin: auto;
+  left: 0;
   right: 0;
-  width: 100%;
+  width: 95%;
   list-style: none;
   padding: 0;
 `;
 
 export const Li = styled.li`
+  overflow: visible;
   padding: 8px 12px;
   cursor: pointer;
   display: flex;
@@ -77,11 +78,14 @@ export const Li = styled.li`
   background-color: white;
   box-shadow: -2px 4px 10px rgba(115, 124, 142, 0.09);
   border: 1px solid #737c8e;
+  margin-top: -1px;
+  :last-child {
+    margin-bottom: 1px;
+  }
   border-radius: 25px;
   font-family: "Montserrat", sans-serif;
   height: 4vh;
   font-size: 0.9rem;
-  margin-bottom: -1px;
   ${({ highlighted, selectedItem }) =>
     (highlighted || selectedItem) &&
     css`
