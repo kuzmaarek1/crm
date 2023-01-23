@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
   TableLoader,
@@ -22,6 +22,25 @@ const List = ({
   page,
   setPage,
 }) => {
+  const intObserver = useRef();
+
+  const lastRef = useCallback(
+    (node) => {
+      if (fetchingData || fetchingSearchData) return;
+
+      if (intObserver.current) intObserver.current.disconnect();
+
+      intObserver.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && data?.has_next) {
+          setPage((prev) => prev + 1);
+        }
+      });
+
+      if (node) intObserver.current.observe(node);
+    },
+    [fetchingData, fetchingSearchData, data?.has_next]
+  );
+
   const teams = useSelector((state) => state.teams);
   const [modalIsOpenDetails, setModalIsOpenDetails] = useState(false);
   const [modalIsOpenFormAdd, setModalIsOpenFormAdd] = useState(false);
@@ -39,6 +58,7 @@ const List = ({
       data.results[0];
     objectKey = otherData;
   }
+
   return (
     <Styles.Wrapper>
       <HeaderList
@@ -69,7 +89,7 @@ const List = ({
                 />
               );
             })}
-          {data?.results?.map((props) => {
+          {data?.results?.map((props, indexData) => {
             const { id, members, created_by, description, ...otherProps } =
               props;
             return Object.entries(otherProps).map(([key, value], index) => {
@@ -81,12 +101,22 @@ const List = ({
                   : "None";
               return (
                 <React.Fragment key={`${key}-${id}`}>
-                  <TableRow
-                    header={header}
-                    description={valueData}
-                    onClick={() => openModal(id)}
-                    index={index}
-                  />
+                  {data?.results?.length === indexData + 1 && index === 0 ? (
+                    <TableRow
+                      header={header}
+                      description={valueData}
+                      onClick={() => openModal(id)}
+                      index={index}
+                      ref={lastRef}
+                    />
+                  ) : (
+                    <TableRow
+                      header={header}
+                      description={valueData}
+                      onClick={() => openModal(id)}
+                      index={index}
+                    />
+                  )}
                   {header === "Team" && (
                     <ButtonTeamList
                       id={id}
@@ -104,6 +134,9 @@ const List = ({
           })}
         </Styles.ListWrapper>
       )}
+      {(fetchingData || fetchingSearchData) && page !== 1 && (
+        <div>Loading More</div>
+      )}
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}
@@ -112,6 +145,7 @@ const List = ({
         hook={hook}
         teams={teams}
         setPage={setPage}
+        endpoint={endpoint}
       />
       <ModalForm
         header={header}
@@ -120,6 +154,7 @@ const List = ({
         hook={hook}
         teams={teams}
         setPage={setPage}
+        endpoint={endpoint}
       />
     </Styles.Wrapper>
   );

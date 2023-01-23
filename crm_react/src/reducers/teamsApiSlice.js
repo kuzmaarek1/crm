@@ -24,9 +24,6 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         else currentCache.results = newItems.results;
         currentCache.has_next = newItems.has_next;
       },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
-      },
       providesTags: ["Team", "Auth"],
     }),
     editTeam: builder.mutation({

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Button, ModalForm, Modal } from "components";
 import {
@@ -16,7 +17,9 @@ const ModalDetails = ({
   hook,
   teams,
   setPage,
+  endpoint,
 }) => {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
   const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
@@ -27,6 +30,7 @@ const ModalDetails = ({
     switch (name) {
       case "handleConvert":
         hook.handleConvertToClient(list, teams.currentTeam.id);
+        dispatch(endpoint.util.resetApiState());
         setPage(1);
         closeModal();
         break;
@@ -38,6 +42,7 @@ const ModalDetails = ({
         break;
       default:
         hook.handleDelete(list, teams.currentTeam.id);
+        dispatch(endpoint.util.resetApiState());
         setPage(1);
         closeModal();
         break;
@@ -116,6 +121,7 @@ const ModalDetails = ({
         teams={teams}
         list={list}
         addMember={false}
+        endpoint={endpoint}
       />
       {header === "Team" && (
         <ModalForm
@@ -130,6 +136,7 @@ const ModalDetails = ({
           list={list}
           addMember={true}
           setPage={setPage}
+          endpoint={endpoint}
         />
       )}
     </>

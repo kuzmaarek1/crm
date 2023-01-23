@@ -14,6 +14,10 @@ const Leads = () => {
   const [fetchingSearchLeads, setFetchingSearchLeads] = useState(false);
 
   useEffect(() => {
+    dispatch(leadsApiSlice.util.resetApiState());
+  }, []);
+
+  useEffect(() => {
     if (watch("lead-search") === "" || watch("lead-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -66,26 +70,19 @@ const Leads = () => {
     }
   }, [leads, fetchingSearch]);
 
-  const handleClickButton = () => {
-    if (leads.has_next) setPage((prevState) => prevState + 1);
-  };
-
   return (
-    <>
-      <button onClick={handleClickButton}>Więcej</button>
-      <List
-        header="Lead"
-        hook={lead}
-        data={leads}
-        fetchingData={fetchingLeads}
-        fetchingSearchData={fetchingSearchLeads}
-        endpoint={endpoint}
-        register={register}
-        setFocus={setFocus}
-        page={page}
-        setPage={setPage}
-      />
-    </>
+    <List
+      header="Lead"
+      hook={lead}
+      data={leads}
+      fetchingData={fetchingLeads}
+      fetchingSearchData={fetchingSearchLeads}
+      endpoint={endpoint}
+      register={register}
+      setFocus={setFocus}
+      page={page}
+      setPage={setPage}
+    />
   );
 };
 

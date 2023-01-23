@@ -14,6 +14,10 @@ const Teams = () => {
   const [fetchingSearchTeams, setFetchingSearchTeams] = useState(false);
 
   useEffect(() => {
+    dispatch(teamsApiSlice.util.resetApiState());
+  }, []);
+
+  useEffect(() => {
     if (watch("team-search") === "" || watch("team-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -63,26 +67,19 @@ const Teams = () => {
     }
   }, [teams, fetchingSearch]);
 
-  const handleClickButton = () => {
-    if (teams.has_next) setPage((prevState) => prevState + 1);
-  };
-
   return (
-    <>
-      <button onClick={handleClickButton}>Więcej</button>
-      <List
-        header="Team"
-        hook={team}
-        data={teams}
-        fetchingData={fetchingTeams}
-        fetchingSearchData={fetchingSearchTeams}
-        setFocus={setFocus}
-        endpoint={endpoint}
-        register={register}
-        page={page}
-        setPage={setPage}
-      />
-    </>
+    <List
+      header="Team"
+      hook={team}
+      data={teams}
+      fetchingData={fetchingTeams}
+      fetchingSearchData={fetchingSearchTeams}
+      setFocus={setFocus}
+      endpoint={endpoint}
+      register={register}
+      page={page}
+      setPage={setPage}
+    />
   );
 };
 

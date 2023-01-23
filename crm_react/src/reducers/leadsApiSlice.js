@@ -16,9 +16,6 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
         else currentCache.results = newItems.results;
         currentCache.has_next = newItems.has_next;
       },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
-      },
       providesTags: ["Lead", "Auth", "Team"],
     }),
     createLead: builder.mutation({
@@ -44,9 +41,6 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       }),
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
       },
       async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {
         try {

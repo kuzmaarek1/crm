@@ -17,8 +17,8 @@ export const useTeams = () => {
   const [deleteTeam] = useDeleteTeamMutation();
   const [editTeam] = useEditTeamMutation();
 
-  const handleAdd = (team, data) => {
-    toastHook.handleDisplayBanner(
+  const handleAdd = async (team, data) => {
+    return await toastHook.handleDisplayBanner(
       addTeam(data),
       `Adding team ${data.name}`,
       `Added team ${data.name}`
@@ -33,9 +33,9 @@ export const useTeams = () => {
     );
   };
 
-  const handleAddMember = (id, request) => {
+  const handleAddMember = async (id, request) => {
     const { username } = request;
-    toastHook.handleDisplayBanner(
+    return await toastHook.handleDisplayBanner(
       addMember({ id, username }),
       `Adding member ${username}`,
       `Added member ${username}`
@@ -47,8 +47,8 @@ export const useTeams = () => {
     toast.success(`Changed team ${team.name}`);
   };
 
-  const handleEdit = (id, team, data) => {
-    toastHook.handleDisplayBanner(
+  const handleEdit = async (id, team, data) => {
+    return await toastHook.handleDisplayBanner(
       editTeam({ id, data }),
       `Updating team ${data.name}`,
       `Updated team ${data.name}`

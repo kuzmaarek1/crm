@@ -13,13 +13,12 @@ export const useClients = () => {
   const [editClient] = useEditClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  const handleAdd = (id, data) => {
-    toast.handleDisplayBanner(
+  const handleAdd = async (id, data) => {
+    return await toast.handleDisplayBanner(
       createClient({ id, data }),
       `Adding client ${data.first_name} ${data.last_name}`,
       `Added client ${data.first_name} ${data.last_name}`
     );
-    navigate("/clients");
   };
 
   const handleDelete = (client, team) => {
@@ -30,13 +29,12 @@ export const useClients = () => {
     );
   };
 
-  const handleEdit = (client, team, data) => {
-    toast.handleDisplayBanner(
+  const handleEdit = async (client, team, data) => {
+    return await toast.handleDisplayBanner(
       editClient({ client, team, data }),
       `Updating client ${data.first_name} ${data.last_name}`,
       `Updated client ${data.first_name} ${data.last_name}`
     );
-    navigate("/clients");
   };
 
   return {

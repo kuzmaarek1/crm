@@ -13,7 +13,6 @@ const HeaderList = ({
   setPage,
 }) => {
   const dispatch = useDispatch();
-
   const handleChangeInput = (e) => {
     const props = header !== "Team" ? teams.currentTeam.id : undefined;
     setPage(1);

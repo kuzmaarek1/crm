@@ -14,6 +14,10 @@ const Clients = () => {
   const [fetchingSearchClients, setFetchingSearchClients] = useState(false);
 
   useEffect(() => {
+    dispatch(clientsApiSlice.util.resetApiState());
+  }, []);
+
+  useEffect(() => {
     if (watch("client-search") === "" || watch("client-search") === undefined)
       dispatch(
         endpoint.util.prefetch(
@@ -65,26 +69,20 @@ const Clients = () => {
       setFetchingSearchClients(false);
     }
   }, [clients, fetchingSearch]);
-  const handleClickButton = () => {
-    if (clients.has_next) setPage((prevState) => prevState + 1);
-  };
 
   return (
-    <>
-      <button onClick={handleClickButton}>Więcej</button>
-      <List
-        header="Client"
-        hook={client}
-        data={clients}
-        fetchingData={fetchingClients}
-        fetchingSearchData={fetchingSearchClients}
-        endpoint={endpoint}
-        register={register}
-        setFocus={setFocus}
-        page={page}
-        setPage={setPage}
-      />
-    </>
+    <List
+      header="Client"
+      hook={client}
+      data={clients}
+      fetchingData={fetchingClients}
+      fetchingSearchData={fetchingSearchClients}
+      endpoint={endpoint}
+      register={register}
+      setFocus={setFocus}
+      page={page}
+      setPage={setPage}
+    />
   );
 };
 
