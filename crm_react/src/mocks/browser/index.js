@@ -25,7 +25,7 @@ const database = () => {
     description: faker.lorem.words(100),
     members: [firstUser, secondUser],
   });
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 100; i++) {
     db.lead.create({
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),
@@ -37,7 +37,7 @@ const database = () => {
       assigned_to: firstUser,
     });
   }
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 100; i++) {
     db.client.create({
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),

@@ -7,6 +7,7 @@ import {
   sanitizeData,
   sanitizeTeams,
   curriedSanitizeTeams,
+  paginate,
 } from "mocks/helpers";
 
 export const team = [
@@ -19,6 +20,9 @@ export const team = [
             id: { equals: user.id },
           },
         },
+        orderBy: {
+          id: "desc",
+        },
       });
       const data = sanitizeTeams(team);
       return data;
@@ -27,6 +31,7 @@ export const team = [
   }),
   rest.get("http://localhost:8000/api/teams/get_teams/", (req, res, ctx) => {
     const getTeams = () => {
+      const page_number = req.url.searchParams.get("page");
       const user = getUser();
       const teams = db.team.findMany({
         where: {
@@ -34,9 +39,12 @@ export const team = [
             id: { equals: user.id },
           },
         },
+        orderBy: {
+          id: "desc",
+        },
       });
       const data = teams.map(curriedSanitizeTeams());
-      return { results: data, has_next: false, page: 1 };
+      return paginate(data, 17, page_number);
     };
     return responseData(req, res, ctx, true, getTeams, null);
   }),
@@ -75,6 +83,7 @@ export const team = [
   ),
   rest.get("http://localhost:8000/api/teams/search_team/", (req, res, ctx) => {
     const searchTeam = () => {
+      const page_number = req.url.searchParams.get("page");
       const user = getUser();
       const search = req.url.searchParams.get("search");
       const teams = db.team.findMany({
@@ -83,12 +92,15 @@ export const team = [
             id: { equals: user.id },
           },
         },
+        orderBy: {
+          id: "desc",
+        },
       });
       const teamsByFilter = teams.filter(({ name }) =>
         name.toLowerCase().includes(search.toLowerCase())
       );
       const data = teamsByFilter.map(curriedSanitizeTeams());
-      return { results: data, has_next: false, page: 1 };
+      return paginate(data, 17, page_number);
     };
     return responseData(req, res, ctx, true, searchTeam, null);
   }),

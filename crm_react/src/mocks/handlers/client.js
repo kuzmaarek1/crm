@@ -10,6 +10,7 @@ import {
   searchLeadsOrClients,
   updateLeadOrClient,
   deleteLeadOrClient,
+  paginate,
 } from "mocks/helpers";
 
 export const client = [
@@ -18,9 +19,10 @@ export const client = [
     (req, res, ctx) => {
       const getClient = () => {
         const team = getTeam(req.params.id);
+        const page_number = req.url.searchParams.get("page");
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         const data = sanitizeLeadsAndClients(clientData);
-        return { results: data, has_next: false, page: 1 };
+        return paginate(data, 17, page_number);
       };
 
       return responseData(req, res, ctx, req.params.id, getClient, null);
@@ -54,6 +56,7 @@ export const client = [
     (req, res, ctx) => {
       const searchClient = () => {
         const team = getTeam(req.params.id);
+        const page_number = req.url.searchParams.get("page");
         const searchParm = req.url.searchParams.get("search").split(" ");
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         let clientBySearch = [];
@@ -65,7 +68,7 @@ export const client = [
           }
         });
         const data = sanitizeLeadsAndClients(clientBySearch);
-        return { results: data, has_next: false, page: 1 };
+        return paginate(data, 17, page_number);
       };
       return responseData(req, res, ctx, req.params.id, searchClient, null);
     }

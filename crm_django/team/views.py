@@ -56,7 +56,6 @@ def search_team(request):
 @api_view(['PATCH'])
 def add_member(request, team_id):
     team = Team.objects.filter(id=team_id, members__in=[request.user]).first()
-
     username = request.data['username']
     if not User.objects.filter(username=username).exists():
         return HttpResponse(status=500)
