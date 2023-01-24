@@ -1,12 +1,12 @@
-import { setupServer } from "msw/node";
+import { setupWorker } from "msw";
 import { handlers } from "mocks/handlers";
 import { db } from "mocks/db";
 import { faker } from "@faker-js/faker";
 
 faker.seed(123);
-const server = setupServer(...handlers);
+export const worker = setupWorker(...handlers);
 
-beforeAll(() => {
+const database = () => {
   const firstUser = db.user.create({
     username: "akuzma555@gmail.com",
     first_name: "Dawid",
@@ -49,7 +49,9 @@ beforeAll(() => {
       assigned_to: firstUser,
     });
   }
-  server.listen();
-});
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+};
+
+database();
+window.mocks = {
+  database,
+};

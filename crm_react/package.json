@@ -71,5 +71,8 @@
     "cypress": "^12.3.0",
     "intersection-observer": "^0.12.2",
     "webpack": "^5.75.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
