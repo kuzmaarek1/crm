@@ -37,7 +37,7 @@ const Teams = () => {
         endpoint.util.prefetch(
           `searchTeam`,
           {
-            team: teams?.currentTeam?.id,
+            team: teamsState?.currentTeam?.id,
             name: watch("team-search"),
             page: page,
           },
@@ -64,7 +64,7 @@ const Teams = () => {
     if (fetchingSearch === true) {
       setFetchingSearchTeams(true);
     } else if (
-      teams?.length === teamsBySearch?.length &&
+      teams?.results?.length === teamsBySearch?.results?.length &&
       fetchingSearchTeams === true
     ) {
       setFetchingSearchTeams(false);

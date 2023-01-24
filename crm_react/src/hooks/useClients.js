@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useToast } from "hooks/useToast";
 import {
   useCreateClientMutation,
@@ -7,7 +6,6 @@ import {
 } from "reducers/clientsApiSlice";
 
 export const useClients = () => {
-  const navigate = useNavigate();
   const toast = useToast();
   const [createClient] = useCreateClientMutation();
   const [editClient] = useEditClientMutation();
@@ -21,8 +19,8 @@ export const useClients = () => {
     );
   };
 
-  const handleDelete = (client, team) => {
-    toast.handleDisplayBanner(
+  const handleDelete = async (client, team) => {
+    return await toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,
       `Deleted client ${client.first_name} ${client.last_name}`

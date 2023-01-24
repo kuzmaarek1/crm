@@ -23,8 +23,8 @@ export const useLeads = () => {
     );
   };
 
-  const handleDelete = (lead, team) => {
-    toast.handleDisplayBanner(
+  const handleDelete = async (lead, team) => {
+    return await toast.handleDisplayBanner(
       deleteLead({ lead: lead.id, team }),
       `Deleting lead ${lead.first_name} ${lead.last_name}`,
       `Deleted lead ${lead.first_name} ${lead.last_name}`
@@ -32,15 +32,15 @@ export const useLeads = () => {
   };
 
   const handleEdit = async (lead, team, data) => {
-    return toast.handleDisplayBanner(
+    return await toast.handleDisplayBanner(
       editLead({ lead, team, data }),
       `Updating lead ${data.first_name} ${data.last_name}`,
       `Updated lead ${data.first_name} ${data.last_name}`
     );
   };
 
-  const handleConvertToClient = (lead, team) => {
-    toast.handleDisplayBanner(
+  const handleConvertToClient = async (lead, team) => {
+    await toast.handleDisplayBanner(
       convertLeadToClient({
         lead: lead.id,
         team,

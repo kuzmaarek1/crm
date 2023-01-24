@@ -68,7 +68,7 @@ const Leads = () => {
     if (fetchingSearch === true) {
       setFetchingSearchLeads(true);
     } else if (
-      leads?.length === leadsBySearch?.length &&
+      leads?.results?.length === leadsBySearch?.results?.length &&
       fetchingSearchLeads === true
     ) {
       setFetchingSearchLeads(false);

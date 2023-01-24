@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 5px;
 `;
 
 export const LoadingContainer = styled(motion.div)`
@@ -16,7 +17,7 @@ export const LoadingContainer = styled(motion.div)`
   justify-content: space-around;
 `;
 
-export const LoadingCircle = styled(motion.spam)`
+export const LoadingCircle = styled(motion.span)`
   display: block;
   width: 13px;
   height: 13px;

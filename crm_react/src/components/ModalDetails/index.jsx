@@ -27,10 +27,10 @@ const ModalDetails = ({
   const [modalIsOpenFormAddMembers, setModalIsOpenFormAddMembers] =
     useState(false);
 
-  const handleButtonClick = (name) => {
+  const handleButtonClick = async (name) => {
     switch (name) {
       case "handleConvert":
-        hook.handleConvertToClient(list, teams.currentTeam.id);
+        await hook.handleConvertToClient(list, teams.currentTeam.id);
         dispatch(endpoint.util.resetApiState());
         resetSearch(`${header.toLowerCase()}-search`);
         setPage(0);
@@ -43,7 +43,7 @@ const ModalDetails = ({
         setModalIsOpenFormAddMembers(true);
         break;
       default:
-        hook.handleDelete(list, teams.currentTeam.id);
+        await hook.handleDelete(list, teams.currentTeam.id);
         dispatch(endpoint.util.resetApiState());
         resetSearch(`${header.toLowerCase()}-search`);
         setPage(0);

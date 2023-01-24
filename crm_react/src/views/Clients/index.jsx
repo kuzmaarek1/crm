@@ -67,7 +67,7 @@ const Clients = () => {
     if (fetchingSearch === true) {
       setFetchingSearchClients(true);
     } else if (
-      clients?.length === clientsBySearch?.length &&
+      clients?.results?.length === clientsBySearch?.results?.length &&
       fetchingSearchClients === true
     ) {
       setFetchingSearchClients(false);

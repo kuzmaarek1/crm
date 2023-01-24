@@ -25,8 +25,8 @@ export const useTeams = () => {
     );
   };
 
-  const handleDelete = (team, teams) => {
-    toastHook.handleDisplayBanner(
+  const handleDelete = async (team, teams) => {
+    return await toastHook.handleDisplayBanner(
       deleteTeam({ id: team.id, teams }),
       `Deleting Team ${team.name}`,
       `Deleted Team ${team.name}`

@@ -20,7 +20,7 @@ export const client = [
         const team = getTeam(req.params.id);
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         const data = sanitizeLeadsAndClients(clientData);
-        return data;
+        return { results: data, has_next: false, page: 1 };
       };
 
       return responseData(req, res, ctx, req.params.id, getClient, null);
@@ -65,7 +65,7 @@ export const client = [
           }
         });
         const data = sanitizeLeadsAndClients(clientBySearch);
-        return data;
+        return { results: data, has_next: false, page: 1 };
       };
       return responseData(req, res, ctx, req.params.id, searchClient, null);
     }

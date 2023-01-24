@@ -136,7 +136,7 @@ const List = ({
           })}
         </Styles.ListWrapper>
       )}
-      {(fetchingData || fetchingSearchData) && page !== 1 && <Loader />}
+      {(fetchingData || fetchingSearchData) && page > 1 && <Loader />}
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}

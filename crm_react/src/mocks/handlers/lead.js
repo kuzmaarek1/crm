@@ -18,7 +18,7 @@ export const lead = [
       const team = getTeam(req.params.id);
       const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
       const data = sanitizeLeadsAndClients(leadData);
-      return data;
+      return { results: data, has_next: false, page: 1 };
     };
 
     return responseData(req, res, ctx, req.params.id, getLead, null);
@@ -62,7 +62,7 @@ export const lead = [
           }
         });
         const data = sanitizeLeadsAndClients(leadBySearch);
-        return data;
+        return { results: data, has_next: false, page: 1 };
       };
       return responseData(req, res, ctx, req.params.id, searchLead, null);
     }
