@@ -49,6 +49,15 @@ const database = () => {
       assigned_to: firstUser,
     });
   }
+
+  for (let i = 0; i < 99; i++) {
+    db.team.create({
+      name: `Zespół - ${i}`,
+      created_by: firstUser,
+      description: faker.lorem.words(100),
+      members: [firstUser, secondUser],
+    });
+  }
 };
 
 database();

@@ -3,8 +3,7 @@ import styled, { css } from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   height: 92.5vh;
-  overflow-x: auto;
-  overflow-y: none;
+  overflow: auto;
   color: #303030;
   background-color: #f7f8fc;
 `;

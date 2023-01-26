@@ -69,6 +69,7 @@
     "@testing-library/cypress": "^9.0.0",
     "babel-loader": "^9.1.2",
     "cypress": "^12.3.0",
+    "cypress-recurse": "^1.27.0",
     "intersection-observer": "^0.12.2",
     "webpack": "^5.75.0"
   },
