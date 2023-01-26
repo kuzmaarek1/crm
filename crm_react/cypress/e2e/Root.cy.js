@@ -1,18 +1,22 @@
 import * as constants from "test/constants";
 
-const handleScrollElements = () => {
-  cy.findByTestId(/loading/i);
+const handleScrollElements = (teams) => {
   for (let i = 1; i < 6; i++) {
-    cy.findAllByTestId(/cell/i).eq(-2).scrollIntoView({
-      duration: 500,
-      easing: "linear",
-    });
+    const number = teams ? 17 * i + 1 : 17 * 5 * i + 5;
+    cy.findAllByTestId(/cell/i)
+      .should("have.length", number)
+      .eq(-2)
+      .scrollIntoView({
+        duration: 500,
+        easing: "linear",
+      });
     cy.get("#list_conatainer").scrollTo("top", {
       duration: 500,
       easing: "linear",
     });
   }
-  cy.findAllByTestId(/cell/i).should("have.length", 505);
+  const number = teams ? 101 : 505;
+  cy.findAllByTestId(/cell/i).should("have.length", number);
 };
 
 const login = () => {
@@ -35,6 +39,7 @@ beforeEach(() => {
 describe("Leads", () => {
   it("Scroll elements on leads page", () => {
     cy.findByTestId("leads").click();
+    cy.findByTestId(/loading/i);
     handleScrollElements();
   });
 });
@@ -42,14 +47,14 @@ describe("Leads", () => {
 describe("Clients", () => {
   it("Scroll elements on clients page", () => {
     cy.findByTestId("clients").click();
+    cy.findByTestId(/loading/i);
     handleScrollElements();
   });
 });
-/*
+
 describe("Teams", () => {
   it("Scroll elements on teams page", () => {
-    cy.findByTestId("teams").click();
-    //    handleScrollElements();
+    cy.findByLabelText(/name/i).clear();
+    handleScrollElements(true);
   });
 });
-*/
