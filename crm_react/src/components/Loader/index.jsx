@@ -31,7 +31,7 @@ const loadingCircleTransition = {
 
 const Loader = () => {
   return (
-    <Styles.Wrapper>
+    <Styles.Wrapper id="loader">
       <Styles.LoadingContainer
         variants={loadingContainerVariants}
         initial="start"

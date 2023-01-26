@@ -10,15 +10,17 @@ import {
   searchLeadsOrClients,
   updateLeadOrClient,
   deleteLeadOrClient,
+  paginate,
 } from "mocks/helpers";
 
 export const lead = [
   rest.get("http://localhost:8000/api/leads/get_lead/:id/", (req, res, ctx) => {
     const getLead = () => {
+      const page_number = req.url.searchParams.get("page");
       const team = getTeam(req.params.id);
       const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
       const data = sanitizeLeadsAndClients(leadData);
-      return { results: data, has_next: false, page: 1 };
+      return paginate(data, 17, page_number);
     };
 
     return responseData(req, res, ctx, req.params.id, getLead, null);
@@ -50,6 +52,7 @@ export const lead = [
     "http://localhost:8000/api/leads/search_lead/:id/",
     (req, res, ctx) => {
       const searchLead = () => {
+        const page_number = req.url.searchParams.get("page");
         const team = getTeam(req.params.id);
         const searchParm = req.url.searchParams.get("search").split(" ");
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
@@ -62,7 +65,7 @@ export const lead = [
           }
         });
         const data = sanitizeLeadsAndClients(leadBySearch);
-        return { results: data, has_next: false, page: 1 };
+        return paginate(data, 17, page_number);
       };
       return responseData(req, res, ctx, req.params.id, searchLead, null);
     }

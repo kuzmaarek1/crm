@@ -63,6 +63,9 @@ export const getTeam = (id) => {
         id: { equals: user.id },
       },
     },
+    orderBy: {
+      id: "desc",
+    },
   });
   return sanitizeTeams(team);
 };
@@ -136,4 +139,23 @@ export const responseData = (req, res, ctx, conditional, func, data) => {
       error: "Error",
     })
   );
+};
+
+export const paginate = (array, page_size, page_number) => {
+  const condition =
+    page_number > 0
+      ? array.length >= page_number * page_size ||
+        array.length + 1 >= page_number * page_size
+      : false;
+
+  const startSlice = condition
+    ? (page_number - 1) * page_size
+    : array.length % page_size === 0
+    ? array.length - page_size
+    : array.length - (array.length % page_size);
+  const endSlice = condition ? page_number * page_size : array.length;
+
+  const paginator = array.slice(startSlice, endSlice);
+  const hasNext = condition ? array.at(-1).id !== paginator.at(-1).id : false;
+  return { results: paginator, has_next: hasNext, page: page_number };
 };
