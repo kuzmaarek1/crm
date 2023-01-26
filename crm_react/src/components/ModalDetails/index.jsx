@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Button, ModalForm, Modal } from "components";
 import {
@@ -15,17 +16,24 @@ const ModalDetails = ({
   list,
   hook,
   teams,
+  setPage,
+  endpoint,
+  resetSearch,
 }) => {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authData);
   const { id, created_by, ...otherData } = list;
   const [modalIsOpenFormEdit, setModalIsOpenFormEdit] = useState(false);
   const [modalIsOpenFormAddMembers, setModalIsOpenFormAddMembers] =
     useState(false);
 
-  const handleButtonClick = (name) => {
+  const handleButtonClick = async (name) => {
     switch (name) {
       case "handleConvert":
-        hook.handleConvertToClient(list, teams.currentTeam.id);
+        await hook.handleConvertToClient(list, teams.currentTeam.id);
+        dispatch(endpoint.util.resetApiState());
+        resetSearch(`${header.toLowerCase()}-search`);
+        setPage(0);
         closeModal();
         break;
       case "handleEdit":
@@ -35,7 +43,10 @@ const ModalDetails = ({
         setModalIsOpenFormAddMembers(true);
         break;
       default:
-        hook.handleDelete(list, teams.currentTeam.id);
+        await hook.handleDelete(list, teams.currentTeam.id);
+        dispatch(endpoint.util.resetApiState());
+        resetSearch(`${header.toLowerCase()}-search`);
+        setPage(0);
         closeModal();
         break;
     }
@@ -109,9 +120,12 @@ const ModalDetails = ({
         }}
         closeDetails={closeModal}
         hook={hook}
+        setPage={setPage}
         teams={teams}
         list={list}
         addMember={false}
+        endpoint={endpoint}
+        resetSearch={resetSearch}
       />
       {header === "Team" && (
         <ModalForm
@@ -125,6 +139,9 @@ const ModalDetails = ({
           teams={teams}
           list={list}
           addMember={true}
+          setPage={setPage}
+          endpoint={endpoint}
+          resetSearch={resetSearch}
         />
       )}
     </>

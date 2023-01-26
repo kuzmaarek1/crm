@@ -1,4 +1,5 @@
 import React from "react";
+import "intersection-observer";
 import {
   render,
   screen,
@@ -199,6 +200,7 @@ describe("Team", () => {
     const currentElement = await screen.findByText(/current/i);
     expect(currentElement).toBeInTheDocument();
   });
+
   test("AddMember", async () => {
     render(<Root />);
     await actions.displayList(2);

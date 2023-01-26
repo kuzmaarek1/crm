@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
   TableLoader,
@@ -7,6 +7,7 @@ import {
   HeaderList,
   TableRow,
   ButtonTeamList,
+  Loader,
 } from "components";
 import * as Styles from "./styles";
 
@@ -19,7 +20,29 @@ const List = ({
   endpoint,
   register,
   setFocus,
+  page,
+  setPage,
+  resetSearch,
 }) => {
+  const intObserver = useRef();
+
+  const lastRef = useCallback(
+    (node) => {
+      if (fetchingData || fetchingSearchData) return;
+
+      if (intObserver.current) intObserver.current.disconnect();
+
+      intObserver.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && data?.has_next) {
+          setPage((prev) => prev + 1);
+        }
+      });
+
+      if (node) intObserver.current.observe(node);
+    },
+    [fetchingData, fetchingSearchData, data?.has_next]
+  );
+
   const teams = useSelector((state) => state.teams);
   const [modalIsOpenDetails, setModalIsOpenDetails] = useState(false);
   const [modalIsOpenFormAdd, setModalIsOpenFormAdd] = useState(false);
@@ -28,12 +51,13 @@ const List = ({
 
   const openModal = (dataId) => {
     setModalIsOpenDetails(true);
-    const dataFindById = data.find(({ id }) => id === dataId);
+    const dataFindById = data?.results?.find(({ id }) => id === dataId);
     setList(dataFindById);
   };
 
-  if (data !== undefined && data?.length !== 0) {
-    let { id, created_by, description, members, ...otherData } = data[0];
+  if (data?.results !== undefined && data?.results?.length !== 0) {
+    let { id, created_by, description, members, ...otherData } =
+      data.results[0];
     objectKey = otherData;
   }
 
@@ -46,8 +70,9 @@ const List = ({
         register={register}
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}
+        setPage={setPage}
       />
-      {fetchingData || fetchingSearchData ? (
+      {(fetchingData || fetchingSearchData) && page === 1 ? (
         <TableLoader />
       ) : (
         <Styles.ListWrapper team={header === "Team"}>
@@ -66,7 +91,7 @@ const List = ({
                 />
               );
             })}
-          {data?.map((props) => {
+          {data?.results?.map((props, indexData) => {
             const { id, members, created_by, description, ...otherProps } =
               props;
             return Object.entries(otherProps).map(([key, value], index) => {
@@ -78,12 +103,22 @@ const List = ({
                   : "None";
               return (
                 <React.Fragment key={`${key}-${id}`}>
-                  <TableRow
-                    header={header}
-                    description={valueData}
-                    onClick={() => openModal(id)}
-                    index={index}
-                  />
+                  {data?.results?.length === indexData + 1 && index === 0 ? (
+                    <TableRow
+                      header={header}
+                      description={valueData}
+                      onClick={() => openModal(id)}
+                      index={index}
+                      ref={lastRef}
+                    />
+                  ) : (
+                    <TableRow
+                      header={header}
+                      description={valueData}
+                      onClick={() => openModal(id)}
+                      index={index}
+                    />
+                  )}
                   {header === "Team" && (
                     <ButtonTeamList
                       id={id}
@@ -92,6 +127,7 @@ const List = ({
                       props={props}
                       openModal={() => openModal(id)}
                       valueData={valueData}
+                      setPage={setPage}
                     />
                   )}
                 </React.Fragment>
@@ -100,6 +136,7 @@ const List = ({
           })}
         </Styles.ListWrapper>
       )}
+      {(fetchingData || fetchingSearchData) && page > 1 && <Loader />}
       <ModalDetails
         header={header}
         modalIsOpen={modalIsOpenDetails}
@@ -107,6 +144,9 @@ const List = ({
         list={list}
         hook={hook}
         teams={teams}
+        setPage={setPage}
+        endpoint={endpoint}
+        resetSearch={resetSearch}
       />
       <ModalForm
         header={header}
@@ -114,6 +154,9 @@ const List = ({
         closeModal={() => setModalIsOpenFormAdd(false)}
         hook={hook}
         teams={teams}
+        setPage={setPage}
+        endpoint={endpoint}
+        resetSearch={resetSearch}
       />
     </Styles.Wrapper>
   );

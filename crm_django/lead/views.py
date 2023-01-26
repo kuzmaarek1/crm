@@ -1,6 +1,7 @@
 from operator import itemgetter
 from django.db.models import Q
 from rest_framework import viewsets
+from django.core.paginator import Paginator
 from .serializers import LeadSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from team.models import Team
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+page_number = 17
 
 class LeadViewSet(viewsets.ModelViewSet):
     serializer_class = LeadSerializer
@@ -24,14 +26,18 @@ class LeadViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def get_lead(request,team_id):
+    number = request.GET.get('page')
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     lead = Lead.objects.filter(team=team).order_by('-id')
-    serializer = LeadSerializer(lead, many=True)
-    data = serializer.data
-    return Response(data)
+
+    paginator = Paginator(lead, page_number)
+    page_lead = paginator.get_page(number)
+    serializer = LeadSerializer(page_lead, many=True)
+    return Response({"results":serializer.data, "has_next":page_lead.has_next(),"page":number })
 
 @api_view(['GET'])
 def search_lead(request,team_id):
+    number = request.GET.get('page')
     search = request.GET.get('search')
     team = Team.objects.filter(members__in=[request.user], id=team_id).first()
     for idx, key in enumerate(search.split()):
@@ -39,8 +45,10 @@ def search_lead(request,team_id):
             lead = Lead.objects.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
         else:
             lead = lead.filter(Q(first_name__icontains=key, team=team) | Q(last_name__icontains=key, team=team)).order_by('-id')
-        serializer = LeadSerializer(lead, many=True)
-    return Response(serializer.data)
+    paginator = Paginator(lead, page_number)
+    page_lead = paginator.get_page(number)
+    serializer = LeadSerializer(page_lead, many=True)
+    return Response({"results":serializer.data, "has_next":page_lead.has_next(), "page":number})
 
 @api_view(['POST'])
 def create_lead(request,team_id):

@@ -15,34 +15,32 @@ export const useLeads = () => {
   const [convertLeadToClient] = useConvertLeadToClientMutation();
   const [deleteLead] = useDeleteLeadMutation();
 
-  const handleAdd = (id, data) => {
-    toast.handleDisplayBanner(
+  const handleAdd = async (id, data) => {
+    return await toast.handleDisplayBanner(
       createLead({ id, data }),
       `Adding lead ${data.first_name} ${data.last_name}`,
       `Added lead ${data.first_name} ${data.last_name}`
     );
-    navigate("/leads");
   };
 
-  const handleDelete = (lead, team) => {
-    toast.handleDisplayBanner(
+  const handleDelete = async (lead, team) => {
+    return await toast.handleDisplayBanner(
       deleteLead({ lead: lead.id, team }),
       `Deleting lead ${lead.first_name} ${lead.last_name}`,
       `Deleted lead ${lead.first_name} ${lead.last_name}`
     );
   };
 
-  const handleEdit = (lead, team, data) => {
-    toast.handleDisplayBanner(
+  const handleEdit = async (lead, team, data) => {
+    return await toast.handleDisplayBanner(
       editLead({ lead, team, data }),
       `Updating lead ${data.first_name} ${data.last_name}`,
       `Updated lead ${data.first_name} ${data.last_name}`
     );
-    navigate("/leads");
   };
 
-  const handleConvertToClient = (lead, team) => {
-    toast.handleDisplayBanner(
+  const handleConvertToClient = async (lead, team) => {
+    await toast.handleDisplayBanner(
       convertLeadToClient({
         lead: lead.id,
         team,

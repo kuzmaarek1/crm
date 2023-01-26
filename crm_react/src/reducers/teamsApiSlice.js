@@ -11,10 +11,19 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Auth"],
     }),
     getTeams: builder.query({
-      query: () => ({
-        url: "/api/teams/",
+      query: ({ page }) => ({
+        url: `/api/teams/get_teams/?page=${page}`,
         method: "GET",
       }),
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        if (Number(newItems.page) !== 1)
+          currentCache.results.push(...newItems.results);
+        else currentCache.results = newItems.results;
+        currentCache.has_next = newItems.has_next;
+      },
       providesTags: ["Team", "Auth"],
     }),
     editTeam: builder.mutation({
@@ -32,8 +41,8 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Team"],
     }),
     searchTeam: builder.query({
-      query: ({ name }) => ({
-        url: `api/teams/search_team/?search=${name}`,
+      query: ({ name, page }) => ({
+        url: `api/teams/search_team/?search=${name}&page=${page}`,
         method: "GET",
       }),
       async onQueryStarted({ name }, { dispatch, queryFulfilled }) {
@@ -44,7 +53,12 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
               teamsApiSlice.util.updateQueryData(
                 "getTeams",
                 undefined,
-                (draft) => data
+                (draft) => {
+                  if (Number(data.page) !== 1) {
+                    draft.results.push(...data.results);
+                    draft.has_next = data.has_next;
+                  } else return data;
+                }
               )
             );
           }

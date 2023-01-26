@@ -25,7 +25,7 @@ export const team = [
     };
     return responseData(req, res, ctx, true, getTeam, null);
   }),
-  rest.get("http://localhost:8000/api/teams/", (req, res, ctx) => {
+  rest.get("http://localhost:8000/api/teams/get_teams/", (req, res, ctx) => {
     const getTeams = () => {
       const user = getUser();
       const teams = db.team.findMany({
@@ -36,7 +36,7 @@ export const team = [
         },
       });
       const data = teams.map(curriedSanitizeTeams());
-      return data;
+      return { results: data, has_next: false, page: 1 };
     };
     return responseData(req, res, ctx, true, getTeams, null);
   }),
@@ -88,7 +88,7 @@ export const team = [
         name.toLowerCase().includes(search.toLowerCase())
       );
       const data = teamsByFilter.map(curriedSanitizeTeams());
-      return data;
+      return { results: data, has_next: false, page: 1 };
     };
     return responseData(req, res, ctx, true, searchTeam, null);
   }),

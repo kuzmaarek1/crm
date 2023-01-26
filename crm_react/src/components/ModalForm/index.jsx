@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Button, DownshiftList, Field, Modal } from "components";
 import {
@@ -17,7 +18,11 @@ const ModalFrom = ({
   closeDetails,
   list,
   addMember,
+  setPage,
+  endpoint,
+  resetSearch,
 }) => {
+  const dispatch = useDispatch();
   const defaultValue = header === "Team" ? "" : { assigned_to: "" };
   const formData =
     header !== "Team"
@@ -54,12 +59,15 @@ const ModalFrom = ({
         {list && !addMember ? "Edit" : "Add"} {headerData}
       </Styles.Header>
       <Styles.Form
-        onSubmit={handleSubmit((register) => {
+        onSubmit={handleSubmit(async (register) => {
           list
             ? addMember
-              ? hook.handleAddMember(list.id, register)
-              : hook.handleEdit(list.id, teams?.currentTeam?.id, register)
-            : hook.handleAdd(teams?.currentTeam?.id, register);
+              ? await hook.handleAddMember(list.id, register)
+              : await hook.handleEdit(list.id, teams?.currentTeam?.id, register)
+            : await hook.handleAdd(teams?.currentTeam?.id, register);
+          dispatch(endpoint.util.resetApiState());
+          resetSearch(`${header.toLowerCase()}-search`);
+          setPage(0);
           closeModal();
           list && closeDetails();
           reset();
