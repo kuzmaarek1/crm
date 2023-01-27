@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "components";
 
 export default {
-  title: "Button",
+  title: "Buttons/Button",
   component: Button,
   argTypes: {
     team: { control: "boolean" },

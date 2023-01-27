@@ -6,6 +6,9 @@ import GlobalStyle from "theme/GlobalStyle";
 export default {
   title: "Field",
   component: Field,
+  argTypes: {
+    textarea: { control: "boolean" },
+  },
 };
 
 const Template = (args) => {

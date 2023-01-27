@@ -41,7 +41,7 @@ export const Input = styled.input`
 
 export const Textarea = styled(Input)`
   height: 70px;
-  padding-top: 2vh;
+  padding-top: 10px;
 `;
 
 export const Label = styled.label`
@@ -88,7 +88,7 @@ export const Label = styled.label`
 
 export const Span = styled.span`
   position: absolute;
-  bottom: ${(props) => (props.textarea ? "-8vh" : "-2vh")};
+  bottom: ${(props) => (props.textarea ? "-35px" : "-15px")};
   display: flex;
   font-size: 11px;
   width: 100%;

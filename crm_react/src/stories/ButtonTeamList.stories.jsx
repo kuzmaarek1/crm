@@ -2,7 +2,7 @@ import React from "react";
 import { ButtonTeamList } from "components";
 
 export default {
-  title: "ButtonTeamList ",
+  title: "Buttons/ButtonList ",
   component: ButtonTeamList,
   argTypes: {
     setPage: { action: "handleChangeTeam" },
