@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
+
 export const Button = styled.button`
   position: relative;
   width: ${(props) => (props.width ? props.width : "100%")};
   height: ${(props) => (props.height ? props.height : "7vh")};
-  border: none;
   background: ${(props) =>
     props.red ? "#fcd0cf" : "rgba(197, 220, 250, 0.5)"};
   color: ${(props) => (props.red ? "#a90e46" : "#0f56b3")};
@@ -27,9 +27,7 @@ export const Button = styled.button`
     props.team &&
     css`
       background: ${(props) =>
-        props.red ? "#fcd0cf" : "rgba(197, 220, 250, 0.7)"};
-      border: ${(props) =>
-        props.red ? "1px solid #a90e46" : "1px solid#0f56b3"};
+        props.red ? "#fcd0cf" : "rgba(202, 225, 255, 1)"};
       font-size: 0.9em;
     `}
   &:before, &:after {

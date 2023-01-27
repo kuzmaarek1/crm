@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { Button } from "components";
 import * as Styles from "./styles";
 
@@ -12,8 +11,6 @@ const HeaderList = ({
   setModalIsOpenFormAdd,
   setPage,
 }) => {
-  const dispatch = useDispatch();
-
   return (
     <Styles.HeaderListWrapper>
       <Styles.Header>{header}s</Styles.Header>

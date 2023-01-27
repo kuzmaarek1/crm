@@ -42,12 +42,24 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -66,11 +78,24 @@
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
     "@faker-js/faker": "^7.6.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/node-logger": "^6.5.16",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/cypress": "^9.0.0",
+    "ajv": "^7.2.4",
     "babel-loader": "^9.1.2",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "cypress": "^12.3.0",
     "cypress-recurse": "^1.27.0",
     "intersection-observer": "^0.12.2",
+    "prop-types": "^15.8.1",
     "webpack": "^5.75.0"
   },
   "msw": {
