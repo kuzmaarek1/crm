@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Field } from "components";
-import GlobalStyle from "theme/GlobalStyle";
 
 export default {
   title: "Field",
@@ -14,17 +13,14 @@ export default {
 const Template = (args) => {
   const { register, watch } = useForm();
   return (
-    <>
-      <GlobalStyle />
-      <Field
-        watch={watch}
-        register={register}
-        required
-        type="email"
-        name="username"
-        {...args}
-      />
-    </>
+    <Field
+      watch={watch}
+      register={register}
+      required
+      type="email"
+      name="username"
+      {...args}
+    />
   );
 };
 
