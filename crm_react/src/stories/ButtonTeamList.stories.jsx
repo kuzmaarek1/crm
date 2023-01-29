@@ -3,7 +3,7 @@ import { ButtonTeamList } from "components";
 import { useArgs } from "@storybook/client-api";
 
 export default {
-  title: "Buttons/ButtonList ",
+  title: "Buttons/Button List ",
   component: ButtonTeamList,
   argTypes: {
     setPage: { action: "handleChangeTeam" },

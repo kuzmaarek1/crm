@@ -1,5 +1,7 @@
 import GlobalStyle from "theme/GlobalStyle";
 import { ThemeProvider } from "styled-components";
+import { Provider } from "react-redux";
+import { store } from "store";
 import { theme } from "assets/styles/theme";
 
 export const parameters = {
@@ -23,9 +25,11 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    </Provider>
   ),
 ];

@@ -80,6 +80,7 @@ export const Details = styled.div`
   height: 5vh;
   width: 100%;
   text-align: center;
+  overflow: auto;
   ${(props) => {
     if (props.description)
       return css`

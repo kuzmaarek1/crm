@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { HeaderList } from "components";
 
 export default {
-  title: "HeaderList",
+  title: "List Page/ Header List",
   component: HeaderList,
   argTypes: {
     setPage: { action: "setPage" },

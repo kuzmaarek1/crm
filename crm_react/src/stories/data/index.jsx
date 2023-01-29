@@ -17,6 +17,7 @@ for (let i = 0; i < 5; i++) {
   teams.push({
     id: i + 1,
     name: `Zespół - ${i}`,
+    description: `To jest zespol - ${i}`,
   });
 }
 

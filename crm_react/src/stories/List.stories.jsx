@@ -5,7 +5,7 @@ import { persons, teams } from "./data";
 import * as Styles from "components/List/styles.jsx";
 
 export default {
-  title: "TableRow",
+  title: "List Page/Table",
   component: TableRow,
   argTypes: {
     onClick: { action: "OpenModal" },

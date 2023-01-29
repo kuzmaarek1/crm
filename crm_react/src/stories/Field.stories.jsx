@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Field } from "components";
 
 export default {
-  title: "Field",
+  title: "Input/ Field",
   component: Field,
   argTypes: {
     textarea: { control: "boolean" },

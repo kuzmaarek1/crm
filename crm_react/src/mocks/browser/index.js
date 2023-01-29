@@ -54,7 +54,7 @@ const database = () => {
     db.team.create({
       name: `Zespół - ${i}`,
       created_by: firstUser,
-      description: faker.lorem.words(100),
+      description: faker.lorem.words(500),
       members: [firstUser, secondUser],
     });
   }
