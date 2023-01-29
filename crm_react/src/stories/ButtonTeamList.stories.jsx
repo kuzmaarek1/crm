@@ -1,5 +1,6 @@
 import React from "react";
 import { ButtonTeamList } from "components";
+import { useArgs } from "@storybook/client-api";
 
 export default {
   title: "Buttons/ButtonList ",
@@ -9,15 +10,20 @@ export default {
   },
 };
 
-const Template = (args) => (
-  <ButtonTeamList
-    {...args}
-    hook={{
-      handleChangeTeams: () => {},
-    }}
-    teams={{ currentTeam: { id: 1 } }}
-  />
-);
+const Template = (args) => {
+  const [_, updateArgs] = useArgs();
+  return (
+    <ButtonTeamList
+      {...args}
+      hook={{
+        handleChangeTeams: () => {
+          updateArgs({ ...args, id: 1 });
+        },
+      }}
+      teams={{ currentTeam: { id: 1 } }}
+    />
+  );
+};
 
 export const Current = Template.bind({});
 Current.args = { id: 1 };
