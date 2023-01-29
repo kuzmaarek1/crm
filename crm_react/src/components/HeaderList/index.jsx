@@ -4,8 +4,6 @@ import * as Styles from "./styles";
 
 const HeaderList = ({
   header,
-  endpoint,
-  teams,
   setFocus,
   register,
   setModalIsOpenFormAdd,
