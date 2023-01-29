@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const Header = styled.h1`
-  color: #616161;
+  color: ${({ theme }) => theme.colors.darkGrey};
   text-align: center;
   padding-top: 0px;
   margin: 10px;
@@ -28,7 +28,7 @@ export const Span = styled.span`
   display: flex;
   font-size: 10px;
   width: 100%;
-  color: #a90e46;
+  color: ${({ theme }) => theme.colors.red};
   justify-content: flex-end;
 `;
 
@@ -90,8 +90,8 @@ export const Li = styled.li`
     (highlighted || selectedItem) &&
     css`
       background-color: rgba(197, 220, 250, 1);
-      color: #0f56b3;
-      border: 1px solid #0f56b3;
+      color: ${({ theme }) => theme.colors.blue};
+      border: 1px solid ${({ theme }) => theme.colors.blue};
       font-weight: ${({ selectedItem }) => (selectedItem ? "600" : "400")};
     `}
 `;

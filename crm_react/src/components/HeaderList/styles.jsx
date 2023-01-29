@@ -36,7 +36,7 @@ export const Input = styled.input`
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #737c8e;
-  color: #616161;
+  color: ${({ theme }) => theme.colors.darkGrey};
   background-color: rgba(112, 112, 112, 0.1);
   font-family: "Montserrat", sans-serif;
   font-size: 1rem;
@@ -45,18 +45,18 @@ export const Input = styled.input`
   transition-timing-function: ease-in;
   transition-duration: 200ms;
   &::placeholder {
-    color: #616161;
+    color: ${({ theme }) => theme.colors.darkGrey};
     font-family: "Montserrat", sans-serif;
   }
   &:focus {
-    border: 1px solid #0f56b3;
-    background-color: rgba(197, 220, 250, 0.5);
-    box-shadow: 0 0 6px#0f56b3;
-    color: #0f56b3;
+    border: 1px solid ${({ theme }) => theme.colors.blue};
+    background-color: ${({ theme }) => theme.colors.lightBlue};
+    box-shadow: 0 0 6px ${({ theme }) => theme.colors.blue};
+    color: ${({ theme }) => theme.colors.blue};
     outline: none;
     font-size: 1rem;
     &::placeholder {
-      color: #0f56b3;
+      color: ${({ theme }) => theme.colors.blue};
       font-family: "Montserrat", sans-serif;
     }
   }
@@ -71,7 +71,7 @@ export const SearchIcon = styled(BiSearch)`
   transition-duration: 200ms;
   input:focus ~ && {
     background-color: transparent;
-    color: #0f56b3;
+    color: ${({ theme }) => theme.colors.blue};
     outline: none;
   }
 `;
@@ -80,7 +80,7 @@ export const Label = styled.label`
   width: 90%;
   font-size: 10px;
   color: white;
-  background-color: #616161;
+  background-color: ${({ theme }) => theme.colors.darkGrey};
   position: absolute;
   top: -7px;
   left: 0;
@@ -95,7 +95,7 @@ export const Label = styled.label`
   transition-timing-function: ease-in;
   transition-duration: 200ms;
   input:focus ~ && {
-    background-color: #0f56b3;
+    background-color: ${({ theme }) => theme.colors.blue};
     color: white;
   }
 `;

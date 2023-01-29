@@ -13,7 +13,7 @@ export const Input = styled.input`
   height: 100%;
   box-sizing: border-box;
   background-color: rgba(112, 112, 112, 0.1);
-  color: #616161;
+  color: ${({ theme }) => theme.colors.darkGrey};
   font-family: "Montserrat", sans-serif;
   font-size: 1rem;
   border-radius: 25px;
@@ -22,20 +22,24 @@ export const Input = styled.input`
   transition-timing-function: ease-in;
   transition-duration: 200ms;
   border: ${(props) =>
-    props.error ? "1px solid #a90e46" : "1px solid #616161"};
+    props.error
+      ? `1px solid ${props.theme.colors.red}`
+      : `1px solid ${props.theme.colors.darkGrey}`};
   &:focus {
     outline: none;
-    font-size: 1rem;
     box-shadow: ${(props) =>
-      props.error ? "0 0 2px #a90e46" : "0 0 2px #616161"};
+      props.error
+        ? `0 0 2px ${props.theme.colors.red}`
+        : `0 0 2px ${props.theme.colors.darkGrey}`};
   }
   ${(props) =>
     props.empty &&
     css`
       outline: none;
-      font-size: 1rem;
       box-shadow: ${(props) =>
-        props.error ? "0 0 2px #a90e46" : "0 0 2px #616161"};
+        props.error
+          ? `0 0 2px ${props.theme.colors.red}`
+          : `0 0 2px ${props.theme.colors.darkGrey}`};
     `}
 `;
 
@@ -62,7 +66,8 @@ export const Label = styled.label`
     text-align: start;
     font-size: 12px;
     color: white;
-    background-color: ${(props) => (props.error ? "#a90e46" : "#616161")};
+    background-color: ${(props) =>
+      props.error ? props.theme.colors.red : props.theme.colors.darkGrey};
     border-radius: 10px;
     padding: 5px;
     padding-left: 6px;
@@ -70,7 +75,9 @@ export const Label = styled.label`
   }
 
   ${(props) => {
-    let backgroundColor = props.error ? "#a90e46" : "#616161";
+    let backgroundColor = props.error
+      ? props.theme.colors.red
+      : props.theme.colors.darkGrey;
     if (props.empty === false)
       return css`
         transform: translate(-30%, -40px) scale(0.9);
@@ -93,6 +100,6 @@ export const Span = styled.span`
   font-size: 11px;
   width: 100%;
   font-weight: 600;
-  color: #a90e46;
+  color: ${({ theme }) => theme.colors.red};
   justify-content: flex-end;
 `;

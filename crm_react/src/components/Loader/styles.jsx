@@ -22,6 +22,6 @@ export const LoadingCircle = styled(motion.span)`
   width: 13px;
   height: 13px;
   background-color: rgba(112, 112, 112, 0.1);
-  border: 1px solid #616161;
+  border: 1px solid ${({ theme }) => theme.colors.darkGrey};
   border-radius: 0.5rem;
 `;

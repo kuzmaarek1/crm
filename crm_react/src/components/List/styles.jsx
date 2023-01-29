@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   height: 92.5vh;
   overflow: auto;
   color: #303030;
-  background-color: #f7f8fc;
+  background-color: ${({ theme }) => theme.colors.lightGrey};
 `;
 
 const backgroundRow = (props) => {
@@ -13,12 +13,12 @@ const backgroundRow = (props) => {
   if (!props.team) {
     for (let i = 6; i < 11; i++) {
       styles += `div:nth-child(10n+${i}) {
-        background-color: #e0e0e0;
+        background-color: ${props.theme.colors.grey};
       }`;
     }
   } else {
     styles += `div:nth-child(4n-1), div:nth-child(4n-2) {
-        background-color: #e0e0e0;
+        background-color: ${props.theme.colors.grey};
       }`;
   }
   return css`
@@ -29,7 +29,7 @@ const backgroundRow = (props) => {
 export const ListWrapper = styled.div`
   width: 100%;
   display: grid;
-  background-color: #f7f8fc;
+  background-color: ${({ theme }) => theme.colors.lightGrey};
   grid-template-columns: ${(props) =>
     props.team
       ? "minmax(0, 0.85fr) minmax(0, 0.15fr)"
