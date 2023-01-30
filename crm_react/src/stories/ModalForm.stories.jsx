@@ -7,12 +7,26 @@ import { teamsApiSlice } from "reducers/teamsApiSlice";
 import { clientsApiSlice } from "reducers/clientsApiSlice";
 import { leadsApiSlice } from "reducers/leadsApiSlice";
 
+const endpointTeams = teamsApiSlice;
+const endpointClients = clientsApiSlice;
+const endpointLeads = leadsApiSlice;
+
 export default {
   title: "Modals/Modal From",
   component: ModalForm,
   argTypes: {
-    modalIsOpen: { control: "boolean" },
+    modalIsOpen: {
+      control: "boolean",
+      defaultValue: true,
+      table: { type: { summary: "boolean" }, defaultValue: { summary: true } },
+    },
     setPage: { action: "subimt" },
+  },
+  parameters: {
+    docs: {
+      inlineStories: false,
+      iframeHeight: 600,
+    },
   },
 };
 
@@ -28,10 +42,6 @@ const Template = (args) => {
     />
   );
 };
-
-const endpointTeams = teamsApiSlice;
-const endpointClients = clientsApiSlice;
-const endpointLeads = leadsApiSlice;
 
 export const AddLead = Template.bind({});
 AddLead.args = {
