@@ -6,8 +6,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #616161;
-  background-color: #f7f8fc;
+  color: ${({ theme }) => theme.colors.darkGrey};
+  background-color: ${({ theme }) => theme.colors.lightGrey};
   height: 92.5vh;
   ${(props) =>
     props.isLogin
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.h1`
-  color: #616161;
+  color: ${({ theme }) => theme.colors.darkGrey};
   margin-bottom: 5vh;
   margin-top: -10vh;
 `;

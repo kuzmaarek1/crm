@@ -5,7 +5,7 @@ export const Wrapper = styled.nav`
   position: relative;
   width: 100vw;
   height: 7.5vh;
-  background-color: #616161;
+  background-color: ${({ theme }) => theme.colors.darkGrey};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,7 +141,7 @@ export const MobileUl = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #616161;
+    background-color: ${({ theme }) => theme.colors.darkGrey};
     transition: transform 0.5s ease-in-out;
     ${(props) =>
       props.showNavbar

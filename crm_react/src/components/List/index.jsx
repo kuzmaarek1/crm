@@ -65,8 +65,6 @@ const List = ({
     <Styles.Wrapper id="list_conatainer">
       <HeaderList
         header={header}
-        endpoint={endpoint}
-        teams={teams}
         register={register}
         setFocus={setFocus}
         setModalIsOpenFormAdd={setModalIsOpenFormAdd}

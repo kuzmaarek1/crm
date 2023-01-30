@@ -7,7 +7,6 @@ export const CellWrapper = styled.div`
   justify-content: ${(props) => (props.button ? "flex-end" : "center")};
   margin-right: ${(props) => (props.button ? "15px" : "0px")};
   align-items: center;
-
   ${(props) =>
     props.title &&
     css`

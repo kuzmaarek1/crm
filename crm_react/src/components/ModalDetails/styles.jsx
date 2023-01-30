@@ -46,7 +46,7 @@ export const DetailsWrapper = styled.div`
         @media (min-width: 640px) {
           div:nth-child(4n),
           div:nth-child(4n + 3) {
-            background-color: #e0e0e0;
+            background-color: ${props.theme.colors.grey};
           }
         }
       `;
@@ -55,20 +55,20 @@ export const DetailsWrapper = styled.div`
         @media (min-width: 640px) {
           div:nth-child(4n + 1):nth-child(-n + 5),
           div:nth-child(4n + 2):nth-child(-n + 5) {
-            background-color: #e0e0e0;
+            background-color: ${props.theme.colors.grey};
           }
           div:nth-child(n + 5):nth-child(2n + 1) {
-            background-color: #e0e0e0;
+            background-color: ${props.theme.colors.grey};
           }
         }
       `;
   }}
   @media (max-width: 640px) {
     div:nth-child(2n) {
-      background-color: #e0e0e0;
+      background-color: ${({ theme }) => theme.colors.grey};
     }
     div:nth-child(2n + 1) {
-      background-color: #f7f8fc;
+      background-color: ${({ theme }) => theme.colors.lightGrey};
     }
   }
 `;
@@ -80,6 +80,8 @@ export const Details = styled.div`
   height: 5vh;
   width: 100%;
   text-align: center;
+  flex-wrap: wrap-reverse;
+  overflow: auto;
   ${(props) => {
     if (props.description)
       return css`

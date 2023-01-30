@@ -5,8 +5,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #616161;
-  background-color: #f7f8fc;
+  color: ${({ theme }) => theme.colors.darkGrey};
+  background-color: ${({ theme }) => theme.colors.lightGrey};
   height: 92.5vh;
   width: 100%;
   @media (max-width: 640px) {
@@ -37,7 +37,7 @@ export const DetailsWrapper = styled.div`
   margin-bottom: 3vh;
   div:nth-child(4n),
   div:nth-child(4n + 3) {
-    background-color: #e0e0e0;
+    background-color: ${({ theme }) => theme.colors.grey};
   }
   @media (max-width: 640px) {
     width: 90%;

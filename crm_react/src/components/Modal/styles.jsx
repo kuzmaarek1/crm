@@ -11,9 +11,9 @@ export const ModalWrapper = styled(Modal)`
   transform: translate(-50%, -50%);
   width: 80%;
   padding: 20px;
-  background-color: #f7f8fc;
-  border: 3px solid #e0e0e0;
-  box-shadow: 0 0 30000px #e0e0e0c0;
+  background-color: ${({ theme }) => theme.colors.lightGrey};
+  border: 3px solid ${({ theme }) => theme.colors.grey};
+  box-shadow: 0 0 30000px ${({ theme }) => theme.colors.grey};
   color: #303030;
   outline: none;
   @media (max-width: 640px) {
@@ -38,7 +38,7 @@ export const ModalWrapper = styled(Modal)`
 export const CloseButton = styled(IoCloseSharp)`
   position: absolute;
   cursor: pointer;
-  color: #a90e46;
+  color: ${({ theme }) => theme.colors.red};
   right: 10px;
   top: 5px;
 `;

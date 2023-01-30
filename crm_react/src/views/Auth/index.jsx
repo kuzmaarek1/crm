@@ -57,7 +57,6 @@ const Auth = () => {
         <Button
           fontSmall={true}
           red
-          width="100%"
           height="40px"
           onClick={switchMode}
           aria-label="switch-button"
