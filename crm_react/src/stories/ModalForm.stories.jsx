@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useArgs } from "@storybook/client-api";
+import { action } from "@storybook/addon-actions";
 import { ModalForm } from "components/ModalForm";
 import { persons, teams } from "./data";
 import { teamsApiSlice } from "reducers/teamsApiSlice";
@@ -21,7 +22,7 @@ export default {
       defaultValue: true,
       table: { type: { summary: "boolean" }, defaultValue: { summary: true } },
     },
-    setPage: { action: "subimt" },
+    setPage: { action: "setPage" },
   },
 };
 
@@ -32,7 +33,10 @@ const Template = (args) => {
   return (
     <ModalFormWithModal
       {...args}
-      closeModal={() => updateArgs({ ...args, modalIsOpen: false })}
+      closeModal={(e) => {
+        action("closeModal")(e);
+        updateArgs({ ...args, modalIsOpen: false });
+      }}
       teams={{
         currentTeam: { members: [{ username: "akuzma2@gmail.com" }] },
       }}
@@ -45,7 +49,7 @@ export const AddLead = Template.bind({});
 AddLead.args = {
   header: "Lead",
   hook: {
-    handleAdd: () => {},
+    handleAdd: action("handleAdd"),
   },
   endpoint: endpointLeads,
 };
@@ -54,7 +58,7 @@ export const AddTeam = Template.bind({});
 AddTeam.args = {
   header: "Team",
   hook: {
-    handleAdd: () => {},
+    handleAdd: action("handleAdd"),
   },
   endpoint: endpointTeams,
 };
@@ -63,7 +67,7 @@ export const AddClient = Template.bind({});
 AddClient.args = {
   header: "Client",
   hook: {
-    handleAdd: () => {},
+    handleAdd: action("handleAdd"),
   },
   endpoint: endpointClients,
 };
@@ -72,12 +76,12 @@ export const AddMember = Template.bind({});
 AddMember.args = {
   header: "Team",
   hook: {
-    handleAddMember: () => {},
+    handleAddMember: action("handleAddMember"),
   },
   list: teams[0],
   endpoint: endpointTeams,
   addMember: true,
-  closeDetails: () => {},
+  closeDetails: action("closeDetails"),
 };
 
 export const EditLead = Template.bind({});
@@ -85,10 +89,10 @@ EditLead.args = {
   header: "Lead",
   list: persons[0],
   hook: {
-    handleEdit: () => {},
+    handleEdit: action("handleEdit"),
   },
   endpoint: endpointLeads,
-  closeDetails: () => {},
+  closeDetails: action("closeDetails"),
 };
 
 export const EditTeam = Template.bind({});
@@ -96,10 +100,10 @@ EditTeam.args = {
   header: "Team",
   list: teams[0],
   hook: {
-    handleEdit: () => {},
+    handleEdit: action("handleEdit"),
   },
   endpoint: endpointTeams,
-  closeDetails: () => {},
+  closeDetails: action("closeDetails"),
 };
 
 export const EditClient = Template.bind({});
@@ -107,8 +111,8 @@ EditClient.args = {
   header: "Client",
   list: persons[0],
   hook: {
-    handleEdit: () => {},
+    handleEdit: action("handleEdit"),
   },
   endpoint: endpointClients,
-  closeDetails: () => {},
+  closeDetails: action("closeDetails"),
 };

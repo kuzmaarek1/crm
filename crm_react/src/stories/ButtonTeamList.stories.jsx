@@ -1,12 +1,13 @@
 import React from "react";
 import { ButtonTeamList } from "components";
 import { useArgs } from "@storybook/client-api";
+import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Buttons/Button List ",
   component: ButtonTeamList,
   argTypes: {
-    setPage: { action: "handleChangeTeam" },
+    setPage: { action: "setPage" },
   },
 };
 
@@ -16,7 +17,8 @@ const Template = (args) => {
     <ButtonTeamList
       {...args}
       hook={{
-        handleChangeTeams: () => {
+        handleChangeTeams: (e) => {
+          action("handleChangeTeam")(e);
           updateArgs({ ...args, id: 1 });
         },
       }}
