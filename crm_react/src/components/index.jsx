@@ -12,3 +12,4 @@ export { default as DownshiftList } from "components/ModalForm/DownshiftList";
 export { default as Field } from "components/Field";
 export { default as TableRow } from "components/TableRow";
 export { default as ButtonTeamList } from "components/ButtonTeamList";
+export { default as Data } from "components/Data";
