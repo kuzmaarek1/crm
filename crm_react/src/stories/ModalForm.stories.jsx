@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useArgs } from "@storybook/client-api";
-import { ModalForm } from "components";
+import { ModalForm } from "components/ModalForm";
 import { persons, teams } from "./data";
 import { teamsApiSlice } from "reducers/teamsApiSlice";
 import { clientsApiSlice } from "reducers/clientsApiSlice";
 import { leadsApiSlice } from "reducers/leadsApiSlice";
+import Modal from "stories/Modal";
 
 const endpointTeams = teamsApiSlice;
 const endpointClients = clientsApiSlice;
@@ -22,22 +23,19 @@ export default {
     },
     setPage: { action: "subimt" },
   },
-  parameters: {
-    docs: {
-      inlineStories: false,
-      iframeHeight: 600,
-    },
-  },
 };
 
 const Template = (args) => {
   const [_, updateArgs] = useArgs();
   const { resetField } = useForm();
+  const ModalFormWithModal = Modal(ModalForm);
   return (
-    <ModalForm
+    <ModalFormWithModal
       {...args}
       closeModal={() => updateArgs({ ...args, modalIsOpen: false })}
-      teams={{ currentTeam: { members: [{ username: "akuzma2@gmail.com" }] } }}
+      teams={{
+        currentTeam: { members: [{ username: "akuzma2@gmail.com" }] },
+      }}
       resetSearch={resetField}
     />
   );

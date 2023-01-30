@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useArgs } from "@storybook/client-api";
-import { ModalDetails } from "components";
+import { ModalDetails } from "components/ModalDetails";
 import { persons, teams } from "./data";
 import { teamsApiSlice } from "reducers/teamsApiSlice";
 import { clientsApiSlice } from "reducers/clientsApiSlice";
 import { leadsApiSlice } from "reducers/leadsApiSlice";
+import Modal from "stories/Modal";
 
 const endpointTeams = teamsApiSlice;
 const endpointClients = clientsApiSlice;
@@ -22,19 +23,14 @@ export default {
     },
     setPage: { action: "action" },
   },
-  parameters: {
-    docs: {
-      inlineStories: false,
-      iframeHeight: 500,
-    },
-  },
 };
 
 const Template = (args) => {
   const [_, updateArgs] = useArgs();
   const { resetField } = useForm();
+  const ModalDetailsWithModal = Modal(ModalDetails);
   return (
-    <ModalDetails
+    <ModalDetailsWithModal
       {...args}
       closeModal={() => updateArgs({ ...args, modalIsOpen: false })}
       teams={{ currentTeam: { members: [{ username: "akuzma2@gmail.com" }] } }}

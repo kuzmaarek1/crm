@@ -9,7 +9,7 @@ import {
 } from "constans";
 import * as Styles from "./styles";
 
-const ModalForm = ({
+export const ModalForm = ({
   hook,
   header,
   teams,
