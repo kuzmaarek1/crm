@@ -27,7 +27,7 @@ const Template = ({ ...args }) => {
             .replace("_", " ")}`;
           return (
             <TableRow
-              title="true"
+              boldText={true}
               key={`${args.header}s-${key}`}
               description={description}
               index={index}
