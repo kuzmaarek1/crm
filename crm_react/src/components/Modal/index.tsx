@@ -5,11 +5,13 @@ import type { ModalDetailsProps } from "components/ModalDetails";
 import type { ModalFormProps } from "components/ModalForm";
 
 const Modal =
-  <H, TFieldValues extends FieldValues>(
-    Components: (props: any) => JSX.Element
+  <H, TFieldValues extends FieldValues, T>(
+    Components: React.ComponentType<T>
   ) =>
   (
-    props: ModalDetailsProps<H, TFieldValues> | ModalFormProps<H, TFieldValues>
+    props:
+      | (T & ModalDetailsProps<H, TFieldValues>)
+      | (T & ModalFormProps<H, TFieldValues>)
   ) => {
     return (
       <Styles.ModalWrapper
