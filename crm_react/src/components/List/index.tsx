@@ -1,11 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useAppSelector } from "types/hooks";
-import {
-  FieldValues,
-  UseFormRegister,
-  UseFormSetFocus,
-  UseFormResetField,
-} from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import {
   TableLoader,
   ModalDetails,
@@ -15,37 +10,9 @@ import {
   ButtonTeamList,
   Loader,
 } from "components";
-import type {
-  HookTeam,
-  HookLead,
-  HookClient,
-  TeamData,
-  LeadAndClientData,
-  Team,
-  LeadAndClient,
-} from "types";
 import * as Styles from "./styles";
-
-type ListProps<H, TFieldValues extends FieldValues> = {
-  header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
-  hook: H extends "C" ? HookClient : H extends "L" ? HookLead : HookTeam;
-  data?: H extends "T" ? TeamData : LeadAndClientData;
-  fetchingData: boolean;
-  fetchingSearchData: boolean;
-  endpoint: {
-    endpoints: H extends "C"
-      ? { getClients: any } & { searchClient: any }
-      : H extends "L"
-      ? { getLeads: any } & { searchLead: any }
-      : { getTeams: any } & { searchTeam: any };
-    util: any;
-  };
-  register: UseFormRegister<TFieldValues>;
-  setFocus: UseFormSetFocus<TFieldValues>;
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  resetSearch: UseFormResetField<TFieldValues>;
-};
+import type { Team, LeadAndClient } from "types";
+import type { ListProps } from "types/components/List";
 
 const List = <H, TFieldValues extends FieldValues>({
   header,

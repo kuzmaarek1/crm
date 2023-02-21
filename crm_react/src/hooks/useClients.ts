@@ -21,7 +21,6 @@ export const useClients = () => {
   };
 
   const handleDelete = async (client: LeadAndClient, team: number) => {
-    console.log(client);
     return await toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,

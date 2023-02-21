@@ -1,17 +1,9 @@
 import styled, { css } from "styled-components";
-
-type TypeTextarea = {
-  readonly textarea?: boolean;
-};
-
-type CheckFieldProps = {
-  readonly error?: boolean;
-  readonly empty: boolean;
-};
-
-type TextareaProps = {
-  as: React.ElementType;
-};
+import type {
+  TypeTextarea,
+  CheckFieldProps,
+  TextareaProps,
+} from "types/components/Field";
 
 export const FieldWrapper = styled.div<TypeTextarea>`
   position: relative;

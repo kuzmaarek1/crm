@@ -1,13 +1,6 @@
 import React, { Ref } from "react";
 import * as Styles from "./styles";
-
-type TableRowProps<H> = {
-  header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
-  boldText: boolean;
-  description: string | number;
-  onClick?: () => void;
-  index: number;
-};
+import type { TableRowProps } from "types/components/TableRow";
 
 const TableRow = React.forwardRef(
   <H,>(

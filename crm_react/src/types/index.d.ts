@@ -40,35 +40,6 @@ export type LeadAndClientData = {
   results: LeadAndClient[];
 } & Page;
 
-export type HookTeam = {
-  handleAdd: (team: number, data: TeamValues) => Promise<void>;
-  handleChangeTeams: (team: Team) => void;
-  handleDelete: (team: Team, teams: number) => Promise<void>;
-  handleEdit: (id: number, team: number, data: TeamValues) => Promise<void>;
-  handleAddMember: (id: number, request: MemberValues) => Promise<void>;
-};
-
-export type HookLead = {
-  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
-  handleDelete: (lead: LeadAndClient, team: number) => Promise<void>;
-  handleEdit: (
-    lead: number,
-    team: number,
-    data: LeadAndClientValues
-  ) => Promise<void>;
-  handleConvertToClient: (lead: LeadAndClient, team: number) => Promise<void>;
-};
-
-export type HookClient = {
-  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
-  handleDelete: (client: LeadAndClient, team: number) => Promise<void>;
-  handleEdit: (
-    client: number,
-    team: number,
-    data: LeadAndClientValues
-  ) => Promise<void>;
-};
-
 export type TeamExtend = {
   id: null;
   name: null;
@@ -171,3 +142,32 @@ export type InputNameSearch =
   | TeamSearchValues
   | LeadSearchValues
   | ClientSearchValues;
+
+export type HookTeam = {
+  handleAdd: (team: number, data: TeamValues) => Promise<void>;
+  handleChangeTeams: (team: Team) => void;
+  handleDelete: (team: Team, teams: number) => Promise<void>;
+  handleEdit: (id: number, team: number, data: TeamValues) => Promise<void>;
+  handleAddMember: (id: number, request: MemberValues) => Promise<void>;
+};
+
+export type HookLead = {
+  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
+  handleDelete: (lead: LeadAndClient, team: number) => Promise<void>;
+  handleEdit: (
+    lead: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => Promise<void>;
+  handleConvertToClient: (lead: LeadAndClient, team: number) => Promise<void>;
+};
+
+export type HookClient = {
+  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
+  handleDelete: (client: LeadAndClient, team: number) => Promise<void>;
+  handleEdit: (
+    client: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => Promise<void>;
+};

@@ -1,9 +1,5 @@
 import styled, { css } from "styled-components";
-
-type LiProps = {
-  readonly highlighted: boolean;
-  readonly selectedItem: boolean;
-};
+import type { LiProps } from "types/components/ModalForm";
 
 export const Header = styled.h1`
   color: ${({ theme }) => theme.colors.darkGrey};

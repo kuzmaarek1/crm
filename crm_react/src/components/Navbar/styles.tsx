@@ -1,9 +1,6 @@
 import styled, { css } from "styled-components";
 import { NavLink } from "react-router-dom";
-
-type TypeShowNavbar = {
-  readonly showNavbar?: boolean;
-};
+import type { TypeShowNavbar } from "types/components/Navbar";
 
 export const Wrapper = styled.nav`
   position: relative;

@@ -1,20 +1,8 @@
 import React from "react";
-import {
-  FieldValues,
-  UseFormRegister,
-  UseFormSetFocus,
-  Path,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { Button } from "components";
 import * as Styles from "./styles";
-
-type HeaderListProps<H, TFieldValues extends FieldValues> = {
-  header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
-  setFocus: UseFormSetFocus<TFieldValues>;
-  register: UseFormRegister<TFieldValues>;
-  setModalIsOpenFormAdd: React.Dispatch<React.SetStateAction<boolean>>;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-};
+import type { HeaderListProps } from "types/components/HeaderList";
 
 const HeaderList = <H, TFieldValues extends FieldValues>({
   header,

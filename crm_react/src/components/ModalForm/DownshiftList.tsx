@@ -1,24 +1,10 @@
 import React, { useState } from "react";
-import {
-  UseFormWatch,
-  UseFormRegister,
-  UseFormSetValue,
-  FieldValues,
-  Path,
-  PathValue,
-} from "react-hook-form";
+import { FieldValues, Path, PathValue } from "react-hook-form";
 import { useCombobox } from "downshift";
 import * as Styles from "./styles";
 import * as StylesField from "components/Field/styles";
-import type { CurrentTeamState, User } from "types";
-
-type DownshiftListProps<TFieldValues extends FieldValues> = {
-  teams: CurrentTeamState;
-  name: Path<TFieldValues>;
-  register: UseFormRegister<TFieldValues>;
-  setValue: UseFormSetValue<TFieldValues>;
-  watch: UseFormWatch<TFieldValues>;
-};
+import type { User } from "types";
+import type { DownshiftListProps } from "types/components/ModalForm";
 
 const DownshiftList = <TFieldValues extends FieldValues>({
   teams,

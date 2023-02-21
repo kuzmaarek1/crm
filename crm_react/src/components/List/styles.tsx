@@ -1,12 +1,5 @@
 import styled, { css } from "styled-components";
-
-type TeamProps = {
-  readonly team?: boolean;
-};
-
-type ThemeProps = {
-  readonly theme: any;
-};
+import type { TeamProps, ThemeProps } from "types/components/List";
 
 export const Wrapper = styled.div`
   width: 100%;

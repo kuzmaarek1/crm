@@ -1,14 +1,8 @@
 import styled, { css } from "styled-components";
-
-type DetailsWrapperProps = {
-  readonly team: boolean;
-};
-
-type DetailsProps = {
-  readonly member?: boolean;
-  readonly description?: boolean;
-  readonly boldText?: boolean;
-};
+import type {
+  DetailsWrapperProps,
+  DetailsProps,
+} from "types/components/ModalDetails";
 
 export const HeaderDetails = styled.header`
   display: flex;

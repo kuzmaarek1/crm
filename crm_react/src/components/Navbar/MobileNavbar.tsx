@@ -1,12 +1,6 @@
 import React from "react";
-import { CurrentTeamState } from "types";
 import * as Styles from "./styles";
-
-type MobileNavbarProps = {
-  teams: CurrentTeamState;
-  setShowNabar: React.Dispatch<React.SetStateAction<boolean>>;
-  showNavbar: boolean;
-};
+import type { MobileNavbarProps } from "types/components/Navbar";
 
 const MobileNavbar = ({
   teams,

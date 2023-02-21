@@ -1,12 +1,5 @@
 import styled, { css } from "styled-components";
-
-type ButtonProps = {
-  readonly width?: string;
-  readonly height?: string;
-  readonly red?: boolean;
-  readonly fontSmall?: boolean;
-  readonly team?: boolean;
-};
+import type { ButtonProps } from "types/components/Button";
 
 export const Button = styled.button<ButtonProps>`
   position: relative;

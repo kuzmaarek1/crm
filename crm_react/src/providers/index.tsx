@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";

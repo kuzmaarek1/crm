@@ -1,17 +1,7 @@
 import React from "react";
 import { Button } from "components";
 import * as Styles from "./styles";
-import type { Team, HookTeam, CurrentTeamState } from "types";
-
-type ButtonTeamListProps = {
-  id: number;
-  teams: CurrentTeamState;
-  hook: HookTeam;
-  props: Team;
-  openModal: () => void;
-  valueData: string;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-};
+import type { ButtonTeamListProps } from "types/components/ButtonTeamList";
 
 const ButtonTeamList = ({
   id,

@@ -1,21 +1,7 @@
 import React from "react";
-import {
-  UseFormWatch,
-  UseFormRegister,
-  FieldValues,
-  Path,
-} from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import * as Styles from "./styles";
-
-type FieldProps<TFieldValues extends FieldValues> = {
-  type: string;
-  name: Path<TFieldValues>;
-  watch: UseFormWatch<TFieldValues>;
-  errors: boolean;
-  register: UseFormRegister<TFieldValues>;
-  required: boolean;
-  validate?: string | false;
-};
+import type { FieldProps } from "types/components/Field";
 
 const Field = <TFieldValues extends FieldValues>({
   type,

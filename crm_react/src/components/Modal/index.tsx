@@ -1,8 +1,8 @@
 import React from "react";
 import { FieldValues } from "react-hook-form";
 import * as Styles from "./styles";
-import type { ModalDetailsProps } from "components/ModalDetails";
-import type { ModalFormProps } from "components/ModalForm";
+import type { ModalDetailsProps } from "types/components/ModalDetails";
+import type { ModalFormProps } from "types/components/ModalForm";
 
 const Modal =
   <H, TFieldValues extends FieldValues, T>(

@@ -2,59 +2,24 @@ import React, { useEffect } from "react";
 import {
   useForm,
   FieldValues,
-  UseFormResetField,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
   Path,
 } from "react-hook-form";
-import { useAppDispatch } from "types/hooks";
-import { Button, DownshiftList, Field, Modal } from "components";
 import {
   defaultValuesTeam,
   defaultValueMember,
   defaultValuesLeadAndClient,
-} from "constans";
-import {
   modalLeadAndClientField,
   modalTeamField,
   modalTeamAddMemberField,
 } from "constans";
-import type {
-  HookTeam,
-  HookLead,
-  HookClient,
-  LeadAndClient,
-  Team,
-  LeadAndClientValues,
-  TeamValues,
-  MemberValues,
-  CurrentTeamState,
-} from "types";
+import { Button, DownshiftList, Field, Modal } from "components";
 import * as Styles from "./styles";
-
-type RegisterProps<H> = H extends HookTeam ? TeamValues : LeadAndClientValues;
-
-export type ModalFormProps<H, TFieldValues extends FieldValues> = {
-  hook: H extends "C" ? HookClient : H extends "L" ? HookLead : HookTeam;
-  header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
-  teams?: CurrentTeamState;
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  closeDetails?: () => void;
-  list?: H extends "T" ? Team : LeadAndClient;
-  addMember?: boolean;
-  setPage?: React.Dispatch<React.SetStateAction<number>>;
-  endpoint?: {
-    endpoints: H extends "C"
-      ? { getClients: any } & { searchClient: any }
-      : H extends "L"
-      ? { getLeads: any } & { searchLead: any }
-      : { getTeams: any } & { searchTeam: any };
-    util: any;
-  };
-  resetSearch?: UseFormResetField<TFieldValues>;
-};
+import { useAppDispatch } from "types/hooks";
+import type { LeadAndClientValues, TeamValues, MemberValues } from "types";
+import type { ModalFormProps } from "types/components/ModalForm";
 
 export const ModalForm = <H, TFieldValues extends FieldValues>({
   hook,

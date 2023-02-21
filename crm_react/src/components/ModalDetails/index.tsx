@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import { FieldValues, UseFormResetField, Path } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "types/hooks";
-import {
-  HookClient,
-  HookLead,
-  HookTeam,
-  Team,
-  LeadAndClient,
-  CurrentTeamState,
-  User,
-} from "types";
 import { Button, ModalForm, Modal } from "components";
 import {
   LeadDetailsButton,
@@ -17,27 +8,8 @@ import {
   ClientDetailsButton,
 } from "constans";
 import * as Styles from "./styles";
-
-type ListProps<H> = H extends HookTeam ? Team : LeadAndClient;
-
-export type ModalDetailsProps<H, TFieldValues extends FieldValues> = {
-  header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  list: H extends "T" ? Team : LeadAndClient;
-  hook: H extends "C" ? HookClient : H extends "L" ? HookLead : HookTeam;
-  teams: CurrentTeamState;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  endpoint: {
-    endpoints: H extends "C"
-      ? { getClients: any } & { searchClient: any }
-      : H extends "L"
-      ? { getLeads: any } & { searchLead: any }
-      : { getTeams: any } & { searchTeam: any };
-    util: any;
-  };
-  resetSearch: UseFormResetField<TFieldValues>;
-};
+import { Team, LeadAndClient, User } from "types";
+import type { ModalDetailsProps } from "types/components/ModalDetails";
 
 export const ModalDetails = <H, TFieldValues extends FieldValues>({
   header,
