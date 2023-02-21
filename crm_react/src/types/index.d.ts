@@ -41,18 +41,22 @@ export type LeadAndClientData = {
 } & Page;
 
 export type HookTeam = {
-  handleAdd: (team: any, data: any) => Promise<void>;
-  handleChangeTeams: (team: any) => void;
-  handleDelete: (team: any, teams: any) => Promise<void>;
-  handleEdit: (id: any, team: any, data: any) => Promise<void>;
-  handleAddMember: (id: any, request: any) => Promise<void>;
+  handleAdd: (team: number, data: TeamValues) => Promise<void>;
+  handleChangeTeams: (team: Team) => void;
+  handleDelete: (team: Team, teams: number) => Promise<void>;
+  handleEdit: (id: number, team: number, data: TeamValues) => Promise<void>;
+  handleAddMember: (id: number, request: MemberValues) => Promise<void>;
 };
 
 export type HookLead = {
-  handleAdd: (id: any, data: any) => Promise<void>;
-  handleDelete: (lead: any, team: any) => Promise<void>;
-  handleEdit: (lead: any, team: any, data: any) => Promise<void>;
-  handleConvertToClient: (lead: any, team: any) => Promise<void>;
+  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
+  handleDelete: (lead: LeadAndClient, team: number) => Promise<void>;
+  handleEdit: (
+    lead: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => Promise<void>;
+  handleConvertToClient: (lead: LeadAndClient, team: number) => Promise<void>;
 };
 
 export type HookClient = {

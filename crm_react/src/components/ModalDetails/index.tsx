@@ -18,7 +18,7 @@ import {
 } from "constans";
 import * as Styles from "./styles";
 
-type ListProps<H> = H extends HookClient ? LeadAndClient : Team;
+type ListProps<H> = H extends HookTeam ? Team : LeadAndClient;
 
 export type ModalDetailsProps<H, TFieldValues extends FieldValues> = {
   header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
@@ -61,6 +61,7 @@ export const ModalDetails = <H, TFieldValues extends FieldValues>({
     switch (name) {
       case "handleConvert":
         "handleConvertToClient" in hook &&
+          "first_name" in list &&
           teams?.currentTeam?.id &&
           (await hook.handleConvertToClient(list, teams.currentTeam.id));
         dispatch(endpoint.util.resetApiState());
@@ -77,7 +78,7 @@ export const ModalDetails = <H, TFieldValues extends FieldValues>({
       default:
         teams?.currentTeam?.id &&
           (await hook.handleDelete(
-            list as ListProps<typeof hook>,
+            list as Team & LeadAndClient,
             teams.currentTeam.id
           ));
         dispatch(endpoint.util.resetApiState());

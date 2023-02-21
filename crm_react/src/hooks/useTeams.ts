@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useToast } from "hooks/useToast";
@@ -9,6 +8,7 @@ import {
   useDeleteTeamMutation,
   useEditTeamMutation,
 } from "reducers/teamsApiSlice";
+import type { TeamValues, Team, MemberValues } from "types";
 
 export const useTeams = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export const useTeams = () => {
   const [deleteTeam] = useDeleteTeamMutation();
   const [editTeam] = useEditTeamMutation();
 
-  const handleAdd = async (team, data) => {
+  const handleAdd = async (team: number, data: TeamValues) => {
     return await toastHook.handleDisplayBanner(
       addTeam(data),
       `Adding team ${data.name}`,
@@ -26,7 +26,7 @@ export const useTeams = () => {
     );
   };
 
-  const handleDelete = async (team, teams) => {
+  const handleDelete = async (team: Team, teams: number) => {
     return await toastHook.handleDisplayBanner(
       deleteTeam({ id: team.id, teams }),
       `Deleting Team ${team.name}`,
@@ -34,7 +34,7 @@ export const useTeams = () => {
     );
   };
 
-  const handleAddMember = async (id, request) => {
+  const handleAddMember = async (id: number, request: MemberValues) => {
     const { username } = request;
     return await toastHook.handleDisplayBanner(
       addMember({ id, username }),
@@ -43,12 +43,12 @@ export const useTeams = () => {
     );
   };
 
-  const handleChangeTeams = (team) => {
+  const handleChangeTeams = (team: Team) => {
     dispatch(setCurrentTeam({ data: team }));
     toast.success(`Changed team ${team.name}`);
   };
 
-  const handleEdit = async (id, team, data) => {
+  const handleEdit = async (id: number, team: number, data: TeamValues) => {
     return await toastHook.handleDisplayBanner(
       editTeam({ id, data }),
       `Updating team ${data.name}`,

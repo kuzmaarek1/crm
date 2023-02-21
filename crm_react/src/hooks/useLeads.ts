@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useNavigate } from "react-router-dom";
 import { useToast } from "hooks/useToast";
 import {
@@ -7,6 +6,7 @@ import {
   useConvertLeadToClientMutation,
   useDeleteLeadMutation,
 } from "reducers/leadsApiSlice";
+import type { LeadAndClientValues, LeadAndClient } from "types";
 
 export const useLeads = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const useLeads = () => {
   const [convertLeadToClient] = useConvertLeadToClientMutation();
   const [deleteLead] = useDeleteLeadMutation();
 
-  const handleAdd = async (id, data) => {
+  const handleAdd = async (id: number, data: LeadAndClientValues) => {
     return await toast.handleDisplayBanner(
       createLead({ id, data }),
       `Adding lead ${data.first_name} ${data.last_name}`,
@@ -24,7 +24,7 @@ export const useLeads = () => {
     );
   };
 
-  const handleDelete = async (lead, team) => {
+  const handleDelete = async (lead: LeadAndClient, team: number) => {
     return await toast.handleDisplayBanner(
       deleteLead({ lead: lead.id, team }),
       `Deleting lead ${lead.first_name} ${lead.last_name}`,
@@ -32,7 +32,11 @@ export const useLeads = () => {
     );
   };
 
-  const handleEdit = async (lead, team, data) => {
+  const handleEdit = async (
+    lead: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => {
     return await toast.handleDisplayBanner(
       editLead({ lead, team, data }),
       `Updating lead ${data.first_name} ${data.last_name}`,
@@ -40,7 +44,7 @@ export const useLeads = () => {
     );
   };
 
-  const handleConvertToClient = async (lead, team) => {
+  const handleConvertToClient = async (lead: LeadAndClient, team: number) => {
     await toast.handleDisplayBanner(
       convertLeadToClient({
         lead: lead.id,
