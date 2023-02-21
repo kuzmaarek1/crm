@@ -18,6 +18,8 @@ import {
 } from "constans";
 import * as Styles from "./styles";
 
+type ListProps<H> = H extends HookClient ? LeadAndClient : Team;
+
 export type ModalDetailsProps<H, TFieldValues extends FieldValues> = {
   header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
   modalIsOpen: boolean;
@@ -59,6 +61,7 @@ export const ModalDetails = <H, TFieldValues extends FieldValues>({
     switch (name) {
       case "handleConvert":
         "handleConvertToClient" in hook &&
+          teams?.currentTeam?.id &&
           (await hook.handleConvertToClient(list, teams.currentTeam.id));
         dispatch(endpoint.util.resetApiState());
         resetSearch(`${header.toLowerCase()}-search` as Path<TFieldValues>);
@@ -72,7 +75,11 @@ export const ModalDetails = <H, TFieldValues extends FieldValues>({
         setModalIsOpenFormAddMembers(true);
         break;
       default:
-        await hook.handleDelete(list, teams.currentTeam.id);
+        teams?.currentTeam?.id &&
+          (await hook.handleDelete(
+            list as ListProps<typeof hook>,
+            teams.currentTeam.id
+          ));
         dispatch(endpoint.util.resetApiState());
         resetSearch(`${header.toLowerCase()}-search` as Path<TFieldValues>);
         setPage(0);

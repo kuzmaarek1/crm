@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { apiSlice } from "api/apiSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
@@ -8,6 +7,7 @@ import {
   useSignUpMutation,
   useLogOutMutation,
 } from "reducers/authApiSlice";
+import { LoginValues, RegisterValues } from "types";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -16,17 +16,18 @@ export const useAuth = () => {
   const [signUp] = useSignUpMutation();
   const [logOut] = useLogOutMutation();
 
-  const handleSiginIn = async (formData) => {
+  const handleSiginIn = async (formData: LoginValues) => {
     try {
       const data = await signIn(formData);
-      if (data.error) throw new Error(data.error.status);
+      if ("error" in data)
+        if ("status" in data.error) throw new Error(String(data.error.status));
     } catch (e) {
       toast.error("Login Failed:\n Your username or password is incorrect");
       console.log(e);
     }
   };
 
-  const handleSignUp = async (formData) => {
+  const handleSignUp = async (formData: RegisterValues) => {
     return await toastHook.handleDisplayBanner(
       signUp(formData),
       `Creating new user ${formData.username}`,

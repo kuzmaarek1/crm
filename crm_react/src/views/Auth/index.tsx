@@ -43,7 +43,7 @@ const Auth = () => {
           isLogin
             ? handleSubmit(auth.handleSiginIn)
             : handleSubmit(async (register) => {
-                await auth.handleSignUp(register);
+                if ("first_name" in register) await auth.handleSignUp(register);
                 reset();
                 setIsLogin(true);
               })

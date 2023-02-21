@@ -56,9 +56,13 @@ export type HookLead = {
 };
 
 export type HookClient = {
-  handleAdd: (id: any, data: any) => Promise<void>;
-  handleDelete: (client: any, team: any) => Promise<void>;
-  handleEdit: (client: any, team: any, data: any) => Promise<void>;
+  handleAdd: (id: number, data: LeadAndClientValues) => Promise<void>;
+  handleDelete: (client: LeadAndClient, team: number) => Promise<void>;
+  handleEdit: (
+    client: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => Promise<void>;
 };
 
 export type TeamExtend = {

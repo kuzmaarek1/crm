@@ -1,10 +1,10 @@
-// @ts-nocheck
 import { useToast } from "hooks/useToast";
 import {
   useCreateClientMutation,
   useEditClientMutation,
   useDeleteClientMutation,
 } from "reducers/clientsApiSlice";
+import type { LeadAndClientValues, LeadAndClient } from "types";
 
 export const useClients = () => {
   const toast = useToast();
@@ -12,7 +12,7 @@ export const useClients = () => {
   const [editClient] = useEditClientMutation();
   const [deleteClient] = useDeleteClientMutation();
 
-  const handleAdd = async (id, data) => {
+  const handleAdd = async (id: number, data: LeadAndClientValues) => {
     return await toast.handleDisplayBanner(
       createClient({ id, data }),
       `Adding client ${data.first_name} ${data.last_name}`,
@@ -20,7 +20,8 @@ export const useClients = () => {
     );
   };
 
-  const handleDelete = async (client, team) => {
+  const handleDelete = async (client: LeadAndClient, team: number) => {
+    console.log(client);
     return await toast.handleDisplayBanner(
       deleteClient({ client: client.id, team }),
       `Deleting client ${client.first_name} ${client.last_name}`,
@@ -28,7 +29,11 @@ export const useClients = () => {
     );
   };
 
-  const handleEdit = async (client, team, data) => {
+  const handleEdit = async (
+    client: number,
+    team: number,
+    data: LeadAndClientValues
+  ) => {
     return await toast.handleDisplayBanner(
       editClient({ client, team, data }),
       `Updating client ${data.first_name} ${data.last_name}`,

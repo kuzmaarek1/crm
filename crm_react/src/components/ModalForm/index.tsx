@@ -33,6 +33,8 @@ import type {
 } from "types";
 import * as Styles from "./styles";
 
+type RegisterProps<H> = H extends HookClient ? LeadAndClientValues : TeamValues;
+
 export type ModalFormProps<H, TFieldValues extends FieldValues> = {
   hook: H extends "C" ? HookClient : H extends "L" ? HookLead : HookTeam;
   header: H extends "C" ? "Client" : H extends "L" ? "Lead" : "Team";
@@ -115,12 +117,20 @@ export const ModalForm = <H, TFieldValues extends FieldValues>({
       </Styles.Header>
       <Styles.Form
         onSubmit={handleSubmit(async (register) => {
-          console.log(register);
-          list
-            ? addMember && "handleAddMember" in hook
-              ? await hook.handleAddMember(list.id, register)
-              : await hook.handleEdit(list.id, teams?.currentTeam?.id, register)
-            : await hook.handleAdd(teams?.currentTeam?.id, register);
+          if (teams?.currentTeam?.id) {
+            list
+              ? addMember && "handleAddMember" in hook
+                ? await hook.handleAddMember(list.id, register)
+                : await hook.handleEdit(
+                    list.id,
+                    teams.currentTeam.id,
+                    register as RegisterProps<typeof hook>
+                  )
+              : await hook.handleAdd(
+                  teams.currentTeam.id,
+                  register as RegisterProps<typeof hook>
+                );
+          }
           endpoint && dispatch(endpoint.util.resetApiState());
           resetSearch &&
             resetSearch(`${header.toLowerCase()}-search` as Path<TFieldValues>);
