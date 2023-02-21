@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from "react";
 import { useAppSelector } from "types/hooks";
 import { useAuth } from "hooks/useAuth";
@@ -20,16 +19,17 @@ const MyAccount = () => {
         <MyAccountLoader />
       ) : (
         <Styles.DetailsWrapper>
-          {Object.entries(auth).map(([key, index]) => (
-            <React.Fragment key={key}>
-              <Styles.Details boldText={true}>
-                {" "}
-                {key[0].toUpperCase()}
-                {key.slice(1).replace("_", " ")}
-              </Styles.Details>
-              <Styles.Details>{index}</Styles.Details>
-            </React.Fragment>
-          ))}
+          {auth &&
+            Object.entries(auth).map(([key, index]) => (
+              <React.Fragment key={key}>
+                <Styles.Details boldText={true}>
+                  {" "}
+                  {key[0].toUpperCase()}
+                  {key.slice(1).replace("_", " ")}
+                </Styles.Details>
+                <Styles.Details>{index}</Styles.Details>
+              </React.Fragment>
+            ))}
         </Styles.DetailsWrapper>
       )}
       <Styles.ButtonWrapper

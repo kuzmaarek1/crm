@@ -1,4 +1,5 @@
 import { apiSlice } from "api/apiSlice";
+import type { User } from "types";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +11,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Auth"],
     }),
-    getUser: builder.query<any, void>({
+    getUser: builder.query<User, void>({
       query: () => ({
         url: "/api/users/me/",
         method: "GET",

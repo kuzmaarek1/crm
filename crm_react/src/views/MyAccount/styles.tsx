@@ -5,7 +5,7 @@ type ButtonWrapperProps = {
 };
 
 type DetailsProps = {
-  readonly boldText: boolean;
+  readonly boldText?: boolean;
 };
 
 export const Wrapper = styled.div`
