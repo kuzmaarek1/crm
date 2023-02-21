@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { isAnyOf } from "@reduxjs/toolkit";
 import { authApiSlice } from "reducers/authApiSlice";
-import { User, UserState } from "types";
+import { UserState } from "types";
 
 const initialAuthUser: UserState = { user: null, auth_token: null };
 
@@ -13,12 +13,12 @@ const authReducer = createSlice({
     builder.addMatcher(
       authApiSlice.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        state.authData = payload;
+        state.authData.auth_token = payload.auth_token;
       }
     );
     builder.addMatcher(
       authApiSlice.endpoints.getUser.matchFulfilled,
-      (state, { payload }: PayloadAction<User>) => {
+      (state, { payload }) => {
         state.authData.user = payload;
       }
     );

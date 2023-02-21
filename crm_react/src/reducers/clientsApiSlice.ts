@@ -1,8 +1,16 @@
 import { apiSlice } from "api/apiSlice";
+import type { LeadAndClientData } from "types";
+import type {
+  getProps,
+  createLeadAndClientProps,
+  editClientProps,
+  searchProps,
+  deleteClientProps,
+} from "types/reducers";
 
 export const clientsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getClients: builder.query({
+    getClients: builder.query<LeadAndClientData, getProps>({
       query: ({ id, page }) => ({
         url: `/api/clients/get_client/${id}/?page=${page}`,
         method: "GET",
@@ -18,7 +26,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Client", "Auth", "Team", "Lead"],
     }),
-    createClient: builder.mutation({
+    createClient: builder.mutation<any, createLeadAndClientProps>({
       query: ({ id, data }) => ({
         url: `api/clients/create_client/${id}/`,
         method: "POST",
@@ -26,7 +34,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    editClient: builder.mutation({
+    editClient: builder.mutation<any, editClientProps>({
       query: ({ client, team, data }) => ({
         url: `/api/clients/update_client/${client}/${team}/`,
         method: "PUT",
@@ -34,19 +42,19 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    searchClient: builder.query({
+    searchClient: builder.query<LeadAndClientData, searchProps>({
       query: ({ team, name, page }) => ({
         url: `/api/clients/search_client/${team}/?search=${name}&page=${page}`,
         method: "GET",
       }),
-      async onQueryStarted({ team, name }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ team, name, page }, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           if (name !== "") {
             dispatch(
               clientsApiSlice.util.updateQueryData(
                 "getClients",
-                team,
+                { id: team, page: page },
                 (draft) => {
                   if (Number(data.page) !== 1) {
                     draft.results.push(...data.results);
@@ -59,7 +67,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    deleteClient: builder.mutation({
+    deleteClient: builder.mutation<any, deleteClientProps>({
       query: ({ client, team }) => ({
         url: `/api/clients/delete_client/${client}/${team}/`,
         method: "PUT",

@@ -46,14 +46,14 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         url: `api/teams/search_team/?search=${name}&page=${page}`,
         method: "GET",
       }),
-      async onQueryStarted({ name }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ name, page }, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           if (name !== "") {
             dispatch(
               teamsApiSlice.util.updateQueryData(
                 "getTeams",
-                undefined,
+                { page: page },
                 (draft) => {
                   if (Number(data.page) !== 1) {
                     draft.results.push(...data.results);

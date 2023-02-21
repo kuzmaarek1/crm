@@ -1,8 +1,16 @@
 import { apiSlice } from "api/apiSlice";
+import type { LeadAndClientData } from "types";
+import type {
+  getProps,
+  searchProps,
+  createLeadAndClientProps,
+  editLeadProps,
+  deleteAndCovertLeadProps,
+} from "types/reducers";
 
 export const leadsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getLeads: builder.query({
+    getLeads: builder.query<LeadAndClientData, getProps>({
       query: ({ id, page }) => ({
         url: `/api/leads/get_lead/${id}/?page=${page}`,
         method: "GET",
@@ -18,7 +26,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Lead", "Auth", "Team"],
     }),
-    createLead: builder.mutation({
+    createLead: builder.mutation<any, createLeadAndClientProps>({
       query: ({ id, data }) => ({
         url: `/api/leads/create_lead/${id}/`,
         method: "POST",
@@ -26,7 +34,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Lead"],
     }),
-    editLead: builder.mutation({
+    editLead: builder.mutation<any, editLeadProps>({
       query: ({ lead, team, data }) => ({
         url: `/api/leads/update_lead/${lead}/${team}/`,
         method: "PUT",
@@ -34,7 +42,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Lead"],
     }),
-    searchLead: builder.query({
+    searchLead: builder.query<LeadAndClientData, searchProps>({
       query: ({ team, name, page }) => ({
         url: `/api/leads/search_lead/${team}/?search=${name}&page=${page}`,
         method: "GET",
@@ -47,25 +55,29 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           if (name !== "") {
             dispatch(
-              leadsApiSlice.util.updateQueryData("getLeads", team, (draft) => {
-                if (Number(data.page) !== 1) {
-                  draft.results.push(...data.results);
-                  draft.has_next = data.has_next;
-                } else return data;
-              })
+              leadsApiSlice.util.updateQueryData(
+                "getLeads",
+                { id: team, page: page },
+                (draft) => {
+                  if (Number(data.page) !== 1) {
+                    draft.results.push(...data.results);
+                    draft.has_next = data.has_next;
+                  } else return data;
+                }
+              )
             );
           }
         } catch {}
       },
     }),
-    deleteLead: builder.mutation({
+    deleteLead: builder.mutation<any, deleteAndCovertLeadProps>({
       query: ({ lead, team }) => ({
         url: `api/leads/delete_lead/${lead}/${team}/`,
         method: "PUT",
       }),
       invalidatesTags: ["Lead", "Client"],
     }),
-    convertLeadToClient: builder.mutation({
+    convertLeadToClient: builder.mutation<any, deleteAndCovertLeadProps>({
       query: ({ lead, team }) => ({
         url: `/api/convert_lead_to_client/${lead}/${team}/`,
         method: "POST",

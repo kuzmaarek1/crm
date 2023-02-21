@@ -1,9 +1,9 @@
 import { apiSlice } from "api/apiSlice";
-import type { User } from "types";
+import type { User, RegisterValues, LoginValues } from "types";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    signIn: builder.mutation({
+    signIn: builder.mutation<{ auth_token: string }, LoginValues>({
       query: (credentials) => ({
         url: "/api/token/login/",
         method: "POST",
@@ -18,7 +18,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Auth"],
     }),
-    signUp: builder.mutation({
+    signUp: builder.mutation<any, RegisterValues>({
       query: (credentials) => ({
         url: "/api/users/",
         method: "POST",
