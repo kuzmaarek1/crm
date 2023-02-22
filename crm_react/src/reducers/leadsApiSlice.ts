@@ -2,7 +2,7 @@ import { apiSlice } from "api/apiSlice";
 import type { LeadAndClientData } from "types";
 import type {
   getProps,
-  searchProps,
+  searchLeadAndClientProps,
   createLeadAndClientProps,
   editLeadProps,
   deleteAndCovertLeadProps,
@@ -42,7 +42,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Lead"],
     }),
-    searchLead: builder.query<LeadAndClientData, searchProps>({
+    searchLead: builder.query<LeadAndClientData, searchLeadAndClientProps>({
       query: ({ team, name, page }) => ({
         url: `/api/leads/search_lead/${team}/?search=${name}&page=${page}`,
         method: "GET",

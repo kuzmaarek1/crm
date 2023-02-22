@@ -4,7 +4,7 @@ import type {
   getProps,
   createLeadAndClientProps,
   editClientProps,
-  searchProps,
+  searchLeadAndClientProps,
   deleteClientProps,
 } from "types/reducers";
 
@@ -42,7 +42,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    searchClient: builder.query<LeadAndClientData, searchProps>({
+    searchClient: builder.query<LeadAndClientData, searchLeadAndClientProps>({
       query: ({ team, name, page }) => ({
         url: `/api/clients/search_client/${team}/?search=${name}&page=${page}`,
         method: "GET",

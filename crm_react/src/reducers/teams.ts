@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { teamsApiSlice } from "reducers/teamsApiSlice";
 import { authApiSlice } from "reducers/authApiSlice";
 import { isAnyOf } from "@reduxjs/toolkit";
-import { Member, CurrentTeamState } from "types";
+import { Member, CurrentTeamState, Team, TeamValues } from "types";
 
 const CurrentTeamIsNull = {
   id: null,
@@ -20,10 +20,13 @@ const teamReducer = createSlice({
   name: "teams",
   initialState,
   reducers: {
-    setCurrentTeam(state, action) {
+    setCurrentTeam(state, action: PayloadAction<{ data: Team }>) {
       state.currentTeam = action.payload.data;
     },
-    editTeamSuccess(state, action) {
+    editTeamSuccess(
+      state,
+      action: PayloadAction<{ data: { data: TeamValues; id: number } }>
+    ) {
       if (state.currentTeam.id === action.payload.data.id) {
         state.currentTeam.name = action.payload.data.data.name;
       }

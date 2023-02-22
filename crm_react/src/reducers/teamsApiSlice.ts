@@ -1,17 +1,25 @@
 import { apiSlice } from "api/apiSlice";
 import { editTeamSuccess, addMemberSuccess } from "reducers/teams";
 import type { RootState } from "store";
+import type { TeamData, TeamValues, Team, User } from "types";
+import type {
+  Page,
+  editTeamProps,
+  searchTeamProps,
+  deleteTeamProps,
+  addMemberProps,
+} from "types/reducers";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getTeam: builder.query({
+    getTeam: builder.query<Team, void>({
       query: () => ({
         url: "/api/teams/get_team/",
         method: "GET",
       }),
       providesTags: ["Auth"],
     }),
-    getTeams: builder.query({
+    getTeams: builder.query<TeamData, Page>({
       query: ({ page }) => ({
         url: `/api/teams/get_teams/?page=${page}`,
         method: "GET",
@@ -27,7 +35,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Team", "Auth"],
     }),
-    editTeam: builder.mutation({
+    editTeam: builder.mutation<any, editTeamProps>({
       query: ({ id, data }) => ({
         url: `/api/teams/update_team/${id}/`,
         method: "PUT",
@@ -41,7 +49,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Team"],
     }),
-    searchTeam: builder.query({
+    searchTeam: builder.query<TeamData, searchTeamProps>({
       query: ({ name, page }) => ({
         url: `api/teams/search_team/?search=${name}&page=${page}`,
         method: "GET",
@@ -66,7 +74,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    addMember: builder.mutation({
+    addMember: builder.mutation<User, addMemberProps>({
       query: ({ id, username }) => ({
         url: `/api/teams/add_member/${id}/`,
         method: "PATCH",
@@ -80,7 +88,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Team"],
     }),
-    addTeam: builder.mutation({
+    addTeam: builder.mutation<Team, TeamValues>({
       query: (data) => ({
         url: `/api/teams/`,
         method: "POST",
@@ -88,7 +96,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Team"],
     }),
-    deleteTeam: builder.mutation({
+    deleteTeam: builder.mutation<any, deleteTeamProps>({
       query: ({ id, teams }) => ({
         url: `/api/teams/delete_team/${id}/`,
         method: "PUT",
@@ -103,11 +111,6 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
             String((getState() as RootState).teams.currentTeam.id) ===
             String(id)
           ) {
-            dispatch(
-              teamsApiSlice.util.prefetch("getTeams", undefined, {
-                force: true,
-              })
-            );
             dispatch(
               teamsApiSlice.util.prefetch("getTeam", undefined, {
                 force: true,

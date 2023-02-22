@@ -1,4 +1,4 @@
-import type { LeadAndClientValues } from "types";
+import type { LeadAndClientValues, TeamValues } from "types";
 
 type Id = {
   id: number;
@@ -14,10 +14,14 @@ type Page = {
 
 export type getProps = Page & Id;
 
-export type searchProps = {
+export type searchLeadAndClientProps = {
   name: string;
 } & Page &
   Team;
+
+export type searchTeamProps = {
+  name: string;
+} & Page;
 
 export type createLeadAndClientProps = {
   data: LeadAndClientValues;
@@ -35,6 +39,10 @@ export type editLeadProps = {
   lead: number;
 } & editLeadAndClientProps;
 
+export type editTeamProps = {
+  data: TeamValues;
+} & Id;
+
 export type deleteClientProps = {
   client: number;
 } & Team;
@@ -42,3 +50,11 @@ export type deleteClientProps = {
 export type deleteAndCovertLeadProps = {
   lead: number;
 } & Team;
+
+export type deleteTeamProps = {
+  teams: number;
+} & Id;
+
+export type addMemberProps = {
+  username: string;
+} & Id;
