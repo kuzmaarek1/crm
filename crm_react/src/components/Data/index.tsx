@@ -56,11 +56,11 @@ const Data = <H, T extends { useQueryState: any }>({
   }, [page]);
 
   const { data, isFetching: fetchingData } = getEndpoint.useQueryState({
-    id: teamsState.currentTeam.id,
+    id: teamsState?.currentTeam?.id,
     page: page,
   });
 
-  const { data: dataBySearch, isFetching: fetchingSearch } =
+  const { data: dataSearch, isFetching: fetchingSearch } =
     searchEndpoint.useQueryState({
       team: teamsState?.currentTeam?.id,
       name: watch(`${header.toLowerCase()}-search` as Path<InputNameSearch>),
@@ -71,7 +71,7 @@ const Data = <H, T extends { useQueryState: any }>({
     if (fetchingSearch === true) {
       setFetchingSearchData(true);
     } else if (
-      data?.results?.length === dataBySearch?.results?.length &&
+      dataSearch?.results?.at(-1)?.id === data?.results?.at(-1)?.id &&
       fetchingSearchData === true
     ) {
       setFetchingSearchData(false);
