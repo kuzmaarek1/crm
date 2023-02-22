@@ -58,3 +58,19 @@ export type deleteTeamProps = {
 export type addMemberProps = {
   username: string;
 } & Id;
+
+export type createMessage = {
+  message: "Create";
+};
+
+export type editMessage = {
+  message: "Update";
+};
+
+export type deleteMessage = {
+  message: "Deleted";
+};
+
+export type convertMessage = {
+  message: "Convert";
+};

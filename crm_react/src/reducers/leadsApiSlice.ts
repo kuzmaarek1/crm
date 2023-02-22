@@ -6,6 +6,10 @@ import type {
   createLeadAndClientProps,
   editLeadProps,
   deleteAndCovertLeadProps,
+  createMessage,
+  editMessage,
+  deleteMessage,
+  convertMessage,
 } from "types/reducers";
 
 export const leadsApiSlice = apiSlice.injectEndpoints({
@@ -26,7 +30,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Lead", "Auth", "Team"],
     }),
-    createLead: builder.mutation<any, createLeadAndClientProps>({
+    createLead: builder.mutation<createMessage, createLeadAndClientProps>({
       query: ({ id, data }) => ({
         url: `/api/leads/create_lead/${id}/`,
         method: "POST",
@@ -34,7 +38,7 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Lead"],
     }),
-    editLead: builder.mutation<any, editLeadProps>({
+    editLead: builder.mutation<editMessage, editLeadProps>({
       query: ({ lead, team, data }) => ({
         url: `/api/leads/update_lead/${lead}/${team}/`,
         method: "PUT",
@@ -70,14 +74,17 @@ export const leadsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    deleteLead: builder.mutation<any, deleteAndCovertLeadProps>({
+    deleteLead: builder.mutation<deleteMessage, deleteAndCovertLeadProps>({
       query: ({ lead, team }) => ({
         url: `api/leads/delete_lead/${lead}/${team}/`,
         method: "PUT",
       }),
       invalidatesTags: ["Lead", "Client"],
     }),
-    convertLeadToClient: builder.mutation<any, deleteAndCovertLeadProps>({
+    convertLeadToClient: builder.mutation<
+      convertMessage,
+      deleteAndCovertLeadProps
+    >({
       query: ({ lead, team }) => ({
         url: `/api/convert_lead_to_client/${lead}/${team}/`,
         method: "POST",

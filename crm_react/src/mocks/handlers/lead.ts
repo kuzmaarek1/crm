@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { rest } from "msw";
 import { db } from "mocks/db";
 import {
@@ -15,22 +14,25 @@ import {
 } from "mocks/helpers";
 
 export const lead = [
-  rest.get("http://localhost:8000/api/leads/get_lead/:id/", (req, res, ctx) => {
-    const getLead = () => {
-      const page_number = req.url.searchParams.get("page");
-      const team = getTeam(req.params.id);
-      const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
-      const data = sanitizeLeadsAndClients(leadData);
-      return paginate(data, 17, page_number);
-    };
+  rest.get<any, any, any>(
+    "http://localhost:8000/api/leads/get_lead/:id/",
+    (req, res, ctx) => {
+      const getLead = () => {
+        const page_number = req.url.searchParams.get("page");
+        const team = getTeam(req.params.id);
+        const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
+        const data = sanitizeLeadsAndClients(leadData);
+        return paginate(data, 17, page_number);
+      };
 
-    return responseData(req, res, ctx, req.params.id, getLead, null);
-  }),
-  rest.post(
+      return responseData(req, res, ctx, req.params.id, getLead, null);
+    }
+  ),
+  rest.post<any, any, any>(
     "http://localhost:8000/api/leads/create_lead/:id/",
     (req, res, ctx) => {
       const createLead = () => {
-        const user = getUser();
+        const user = getUser(undefined);
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
         const lead = {
@@ -49,16 +51,16 @@ export const lead = [
       });
     }
   ),
-  rest.get(
+  rest.get<any, any, any>(
     "http://localhost:8000/api/leads/search_lead/:id/",
     (req, res, ctx) => {
       const searchLead = () => {
         const page_number = req.url.searchParams.get("page");
         const team = getTeam(req.params.id);
-        const searchParm = req.url.searchParams.get("search").split(" ");
+        const searchParm = req.url.searchParams.get("search")?.split(" ");
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
-        let leadBySearch = [];
-        searchParm.forEach((search, index) => {
+        let leadBySearch: any[] = [];
+        searchParm?.forEach((search, index) => {
           if (index === 0) {
             leadBySearch = searchLeadsOrClients(leadData, search);
           } else {
@@ -71,7 +73,7 @@ export const lead = [
       return responseData(req, res, ctx, req.params.id, searchLead, null);
     }
   ),
-  rest.put(
+  rest.put<any, any, any>(
     "http://localhost:8000/api/leads/update_lead/:id_lead/:id_team/",
     (req, res, ctx) => {
       const updateLead = () => {
@@ -93,7 +95,7 @@ export const lead = [
       );
     }
   ),
-  rest.put(
+  rest.put<any, any, any>(
     "http://localhost:8000/api/leads/delete_lead/:id_lead/:id_team",
     (req, res, ctx) => {
       const deleteLead = () => {
@@ -110,7 +112,7 @@ export const lead = [
       );
     }
   ),
-  rest.post(
+  rest.post<any, any, any>(
     "http://localhost:8000/api/convert_lead_to_client/:id_lead/:id_team/",
     (req, res, ctx) => {
       const convertLeadToClient = () => {
@@ -123,7 +125,7 @@ export const lead = [
             },
           },
         });
-        const { id, ...otherData } = lead;
+        const { id, ...otherData } = lead as any;
         create(db.client, otherData);
         deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
       };

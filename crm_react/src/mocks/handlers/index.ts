@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { auth } from "mocks/handlers/auth";
 import { team } from "mocks/handlers/team";
 import { lead } from "mocks/handlers/lead";

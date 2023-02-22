@@ -8,6 +8,8 @@ import type {
   searchTeamProps,
   deleteTeamProps,
   addMemberProps,
+  editMessage,
+  deleteMessage,
 } from "types/reducers";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
@@ -35,7 +37,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Team", "Auth"],
     }),
-    editTeam: builder.mutation<any, editTeamProps>({
+    editTeam: builder.mutation<editMessage, editTeamProps>({
       query: ({ id, data }) => ({
         url: `/api/teams/update_team/${id}/`,
         method: "PUT",
@@ -96,7 +98,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Team"],
     }),
-    deleteTeam: builder.mutation<any, deleteTeamProps>({
+    deleteTeam: builder.mutation<deleteMessage, deleteTeamProps>({
       query: ({ id, teams }) => ({
         url: `/api/teams/delete_team/${id}/`,
         method: "PUT",

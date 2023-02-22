@@ -6,6 +6,9 @@ import type {
   editClientProps,
   searchLeadAndClientProps,
   deleteClientProps,
+  createMessage,
+  editMessage,
+  deleteMessage,
 } from "types/reducers";
 
 export const clientsApiSlice = apiSlice.injectEndpoints({
@@ -26,7 +29,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Client", "Auth", "Team", "Lead"],
     }),
-    createClient: builder.mutation<any, createLeadAndClientProps>({
+    createClient: builder.mutation<createMessage, createLeadAndClientProps>({
       query: ({ id, data }) => ({
         url: `api/clients/create_client/${id}/`,
         method: "POST",
@@ -34,7 +37,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    editClient: builder.mutation<any, editClientProps>({
+    editClient: builder.mutation<editMessage, editClientProps>({
       query: ({ client, team, data }) => ({
         url: `/api/clients/update_client/${client}/${team}/`,
         method: "PUT",
@@ -67,7 +70,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    deleteClient: builder.mutation<any, deleteClientProps>({
+    deleteClient: builder.mutation<deleteMessage, deleteClientProps>({
       query: ({ client, team }) => ({
         url: `/api/clients/delete_client/${client}/${team}/`,
         method: "PUT",
