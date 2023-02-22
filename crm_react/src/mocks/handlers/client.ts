@@ -12,9 +12,14 @@ import {
   deleteLeadOrClient,
   paginate,
 } from "mocks/helpers";
+import type { LeadAndClientValues } from "types";
+import type { LeadAndClientWithoutSanitize } from "mocks/helpers";
+
+type IdRequest = { id: string };
+type UpdateAndDeleteRequest = { id_client: string; id_team: string };
 
 export const client = [
-  rest.get<any, any, any>(
+  rest.get<any, IdRequest, any>(
     "http://localhost:8000/api/clients/get_client/:id/",
     (req, res, ctx) => {
       const getClient = () => {
@@ -24,11 +29,10 @@ export const client = [
         const data = sanitizeLeadsAndClients(clientData);
         return paginate(data, 17, page_number);
       };
-
       return responseData(req, res, ctx, req.params.id, getClient, null);
     }
   ),
-  rest.post<any, any, any>(
+  rest.post<LeadAndClientValues, IdRequest, any>(
     "http://localhost:8000/api/clients/create_client/:id/",
     (req, res, ctx) => {
       const createClient = () => {
@@ -51,7 +55,7 @@ export const client = [
       });
     }
   ),
-  rest.get<any, any, any>(
+  rest.get<any, IdRequest, any>(
     "http://localhost:8000/api/clients/search_client/:id/",
     (req, res, ctx) => {
       const searchClient = () => {
@@ -59,7 +63,7 @@ export const client = [
         const page_number = req.url.searchParams.get("page");
         const searchParm = req.url.searchParams.get("search")?.split(" ");
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
-        let clientBySearch: any[] = [];
+        let clientBySearch: LeadAndClientWithoutSanitize[] = [];
         searchParm?.forEach((search, index) => {
           if (index === 0) {
             clientBySearch = searchLeadsOrClients(clientData, search);
@@ -73,7 +77,7 @@ export const client = [
       return responseData(req, res, ctx, req.params.id, searchClient, null);
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<LeadAndClientValues, UpdateAndDeleteRequest, any>(
     "http://localhost:8000/api/clients/update_client/:id_client/:id_team/",
     (req, res, ctx) => {
       const updateClient = () => {
@@ -95,7 +99,7 @@ export const client = [
       );
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<any, UpdateAndDeleteRequest, any>(
     "http://localhost:8000/api/clients/delete_client/:id_client/:id_team",
     (req, res, ctx) => {
       const deleteClient = () => {

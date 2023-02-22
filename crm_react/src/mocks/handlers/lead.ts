@@ -12,6 +12,7 @@ import {
   deleteLeadOrClient,
   paginate,
 } from "mocks/helpers";
+import type { LeadAndClientWithoutSanitize } from "mocks/helpers";
 
 export const lead = [
   rest.get<any, any, any>(
@@ -59,7 +60,7 @@ export const lead = [
         const team = getTeam(req.params.id);
         const searchParm = req.url.searchParams.get("search")?.split(" ");
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
-        let leadBySearch: any[] = [];
+        let leadBySearch: LeadAndClientWithoutSanitize[] = [];
         searchParm?.forEach((search, index) => {
           if (index === 0) {
             leadBySearch = searchLeadsOrClients(leadData, search);

@@ -1,10 +1,14 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
 import { getUser, sanitizeData, responseData, create } from "mocks/helpers";
-import type { LoginValues, RegisterValues, User } from "types";
+import type { LoginValues, RegisterValues } from "types";
+
+type LoginResponse = { auth_token: string } | { error: string };
+type RegisterResponse = { message: "Create" } | { error: string };
+type LogoutResponse = { message: "Logout" };
 
 export const auth = [
-  rest.post<LoginValues, { auth_token: string } & { error: string }, any>(
+  rest.post<LoginValues, any, LoginResponse>(
     "http://localhost:8000/api/token/login/",
     (req, res, ctx) => {
       const user = db.user.findFirst({
@@ -32,13 +36,13 @@ export const auth = [
     (req, res, ctx) => {
       const getDetailsUser = () => {
         const user = getUser(undefined);
-        const data = sanitizeData(user);
+        const data = user.id ? sanitizeData(user) : { message: "Don't user" };
         return data;
       };
       return responseData(req, res, ctx, true, getDetailsUser, null);
     }
   ),
-  rest.post<RegisterValues, { message: string } & { error: string }, any>(
+  rest.post<RegisterValues, any, RegisterResponse>(
     "http://localhost:8000/api/users/",
     (req, res, ctx) => {
       const password = req.body.password;
@@ -48,12 +52,12 @@ export const auth = [
         return res(
           ctx.status(400),
           ctx.json({
-            message:
+            error:
               "Password must contain at least 8 characters special character",
           })
         );
       }
-      if (user !== false) {
+      if (user.id) {
         return res(
           ctx.status(409),
           ctx.json({
@@ -71,7 +75,7 @@ export const auth = [
     }
   ),
 
-  rest.post<any, { message: "Logout" }, any>(
+  rest.post<any, any, LogoutResponse>(
     "http://localhost:8000/api/token/logout/",
     (req, res, ctx) => {
       const logout = () => {

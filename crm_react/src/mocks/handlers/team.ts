@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { rest } from "msw";
 import { db } from "mocks/db";
 import {
@@ -10,6 +9,7 @@ import {
   curriedSanitizeTeams,
   paginate,
 } from "mocks/helpers";
+import type { TeamWithoutSanitize } from "mocks/helpers";
 
 export const team = [
   rest.get<any, any, any>(
@@ -23,10 +23,7 @@ export const team = [
               id: { equals: user.id },
             },
           },
-          orderBy: {
-            id: "desc",
-          },
-        });
+        }) as TeamWithoutSanitize;
         const data = sanitizeTeams(team);
         return data;
       };
@@ -48,8 +45,8 @@ export const team = [
           orderBy: {
             id: "desc",
           },
-        });
-        const data = teams.map(curriedSanitizeTeams());
+        }) as TeamWithoutSanitize[];
+        const data = teams.map(curriedSanitizeTeams);
         return paginate(data, 17, page_number);
       };
       return responseData(req, res, ctx, true, getTeams, null);
@@ -107,11 +104,13 @@ export const team = [
           orderBy: {
             id: "desc",
           },
-        });
-        const teamsByFilter = teams.filter(({ name }) =>
-          name.toLowerCase().includes(search.toLowerCase())
-        );
-        const data = teamsByFilter.map(curriedSanitizeTeams());
+        }) as TeamWithoutSanitize[];
+        const teamsByFilter = search
+          ? teams.filter(({ name }) =>
+              name.toLowerCase().includes(search.toLowerCase())
+            )
+          : [];
+        const data = teamsByFilter.map(curriedSanitizeTeams);
         return paginate(data, 17, page_number);
       };
       return responseData(req, res, ctx, true, searchTeam, null);
@@ -139,9 +138,9 @@ export const team = [
   rest.patch<any, any, any>(
     "http://localhost:8000/api/teams/add_member/:id/",
     (req, res, ctx) => {
+      const userMember = getUser(req.body.username);
       const addMember = () => {
         const userCreated = getUser(undefined);
-        const userMember = getUser(req.body.username);
         const editTeam = db.team.findFirst({
           where: {
             id: { equals: Number(req.params.id) },
@@ -149,11 +148,12 @@ export const team = [
               id: { equals: userCreated.id },
             },
           },
-        });
+        }) as TeamWithoutSanitize;
         const isMemberExist = editTeam.members.filter(
-          ({ username }) => username === userMember.username
+          ({ username }) =>
+            "username" in userMember && username === userMember.username
         );
-        if (isMemberExist.length === 0) {
+        if (isMemberExist.length === 0 && "username" in userMember) {
           db.team.update({
             where: {
               id: { equals: Number(req.params.id) },
@@ -166,9 +166,18 @@ export const team = [
             },
           });
         }
-        return sanitizeData(userMember);
+        return "username" in userMember
+          ? sanitizeData(userMember)
+          : { id: undefined };
       };
-      return responseData(req, res, ctx, req.params.id, addMember, null);
+      if ("username" in userMember)
+        return responseData(req, res, ctx, req.params.id, addMember, null);
+      return (
+        ctx.status(500),
+        ctx.json({
+          error: "Error",
+        })
+      );
     }
   ),
 ];
