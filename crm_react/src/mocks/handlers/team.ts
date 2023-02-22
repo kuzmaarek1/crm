@@ -9,7 +9,7 @@ import {
   curriedSanitizeTeams,
   paginate,
 } from "mocks/helpers";
-import type { TeamWithoutSanitize } from "mocks/helpers";
+import type { TeamWithoutSanitize } from "types/mocks";
 
 export const team = [
   rest.get<any, any, any>(

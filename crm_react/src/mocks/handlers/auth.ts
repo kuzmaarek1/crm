@@ -2,10 +2,11 @@ import { rest } from "msw";
 import { db } from "mocks/db";
 import { getUser, sanitizeData, responseData, create } from "mocks/helpers";
 import type { LoginValues, RegisterValues } from "types";
-
-type LoginResponse = { auth_token: string } | { error: string };
-type RegisterResponse = { message: "Create" } | { error: string };
-type LogoutResponse = { message: "Logout" };
+import type {
+  LoginResponse,
+  RegisterResponse,
+  LogoutResponse,
+} from "types/mocks";
 
 export const auth = [
   rest.post<LoginValues, any, LoginResponse>(

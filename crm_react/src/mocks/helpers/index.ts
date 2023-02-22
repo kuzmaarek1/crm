@@ -1,48 +1,13 @@
 import { db } from "mocks/db";
 import { curry } from "ramda";
-import type { LoginValues, TeamValues } from "types";
-
-interface RegisterValues extends LoginValues {
-  first_name: string;
-  last_name: string;
-}
-
-type LeadAndClientValuesWithNull = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  description: string;
-  assigned_to: UserWithoutSanitize | { id: undefined } | null;
-};
-
-type UserWithoutSanitize = {
-  id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-  password: string;
-};
-
-export type TeamWithoutSanitize = {
-  id: number;
-  name: string;
-  description: string;
-  created_by: UserWithoutSanitize;
-  members: UserWithoutSanitize[];
-};
-
-export type LeadAndClientWithoutSanitize = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  phone: number;
-  email: string;
-  description: string;
-  created_by: UserWithoutSanitize;
-  assigned_to: UserWithoutSanitize | null;
-  team: TeamWithoutSanitize;
-};
+import type { TeamValues } from "types";
+import type {
+  RegisterValues,
+  LeadAndClientValuesWithNull,
+  UserWithoutSanitize,
+  TeamWithoutSanitize,
+  LeadAndClientWithoutSanitize,
+} from "types/mocks";
 
 export const authenticateRequest = <T extends { headers: any }>(req: T) => {
   const token = localStorage.getItem("__be_token__") || null;

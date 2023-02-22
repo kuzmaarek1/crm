@@ -13,7 +13,7 @@ import {
   paginate,
 } from "mocks/helpers";
 import type { LeadAndClientValues } from "types";
-import type { LeadAndClientWithoutSanitize } from "mocks/helpers";
+import type { LeadAndClientWithoutSanitize } from "types/mocks";
 
 type IdRequest = { id: string };
 type UpdateAndDeleteRequest = { id_client: string; id_team: string };

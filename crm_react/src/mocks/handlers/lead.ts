@@ -12,7 +12,7 @@ import {
   deleteLeadOrClient,
   paginate,
 } from "mocks/helpers";
-import type { LeadAndClientWithoutSanitize } from "mocks/helpers";
+import type { LeadAndClientWithoutSanitize } from "types/mocks";
 
 export const lead = [
   rest.get<any, any, any>(
