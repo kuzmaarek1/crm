@@ -5,7 +5,9 @@ import type { LoginValues, RegisterValues } from "types";
 import type {
   LoginResponse,
   RegisterResponse,
+  UserResponse,
   LogoutResponse,
+  LogoutMessage,
 } from "types/mocks";
 
 export const auth = [
@@ -32,15 +34,15 @@ export const auth = [
       );
     }
   ),
-  rest.get<any, any, any>(
+  rest.get<any, any, UserResponse>(
     "http://localhost:8000/api/users/me/",
     (req, res, ctx) => {
       const getDetailsUser = () => {
         const user = getUser(undefined);
-        const data = user.id ? sanitizeData(user) : { message: "Don't user" };
+        const data = user.id ? sanitizeData(user) : null;
         return data;
       };
-      return responseData(req, res, ctx, true, getDetailsUser, null);
+      return responseData<"User">(req, res, ctx, true, getDetailsUser);
     }
   ),
   rest.post<RegisterValues, any, RegisterResponse>(
@@ -79,10 +81,11 @@ export const auth = [
   rest.post<any, any, LogoutResponse>(
     "http://localhost:8000/api/token/logout/",
     (req, res, ctx) => {
-      const logout = () => {
+      const logout = (): LogoutMessage => {
         localStorage.removeItem("__be_token__");
+        return { message: "Logout" };
       };
-      return responseData(req, res, ctx, true, logout, { message: "Logout" });
+      return responseData<"LogoutResponse">(req, res, ctx, true, logout);
     }
   ),
 ];

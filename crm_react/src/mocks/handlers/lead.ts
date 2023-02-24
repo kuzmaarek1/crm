@@ -12,10 +12,26 @@ import {
   deleteLeadOrClient,
   paginate,
 } from "mocks/helpers";
-import type { LeadAndClientWithoutSanitize } from "types/mocks";
+import type {
+  LeadAndClientWithoutSanitize,
+  IdRequest,
+  UpdateConverAndDeleteLeadRequest,
+  LeadAndClientDataResponse,
+  CreateResponse,
+  EditResponse,
+  DeleteResponse,
+  ConvertResponse,
+} from "types/mocks";
+import type { LeadAndClientValues } from "types";
+import type {
+  createMessage,
+  editMessage,
+  deleteMessage,
+  convertMessage,
+} from "types/reducers";
 
 export const lead = [
-  rest.get<any, any, any>(
+  rest.get<any, IdRequest, LeadAndClientDataResponse>(
     "http://localhost:8000/api/leads/get_lead/:id/",
     (req, res, ctx) => {
       const getLead = () => {
@@ -26,13 +42,13 @@ export const lead = [
         return paginate(data, 17, page_number);
       };
 
-      return responseData(req, res, ctx, req.params.id, getLead, null);
+      return responseData<"Data">(req, res, ctx, req.params.id, getLead);
     }
   ),
-  rest.post<any, any, any>(
+  rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
     "http://localhost:8000/api/leads/create_lead/:id/",
     (req, res, ctx) => {
-      const createLead = () => {
+      const createLead = (): createMessage => {
         const user = getUser(undefined);
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
@@ -46,13 +62,12 @@ export const lead = [
           ...lead,
           assigned_to: assignedToUser,
         });
+        return { message: "Create" };
       };
-      return responseData(req, res, ctx, req.params.id, createLead, {
-        message: "Create",
-      });
+      return responseData<"Create">(req, res, ctx, req.params.id, createLead);
     }
   ),
-  rest.get<any, any, any>(
+  rest.get<any, IdRequest, LeadAndClientDataResponse>(
     "http://localhost:8000/api/leads/search_lead/:id/",
     (req, res, ctx) => {
       const searchLead = () => {
@@ -71,13 +86,13 @@ export const lead = [
         const data = sanitizeLeadsAndClients(leadBySearch);
         return paginate(data, 17, page_number);
       };
-      return responseData(req, res, ctx, req.params.id, searchLead, null);
+      return responseData<"Data">(req, res, ctx, req.params.id, searchLead);
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<LeadAndClientValues, UpdateConverAndDeleteLeadRequest, EditResponse>(
     "http://localhost:8000/api/leads/update_lead/:id_lead/:id_team/",
     (req, res, ctx) => {
-      const updateLead = () => {
+      const updateLead = (): editMessage => {
         const team = getTeam(req.params.id_team);
         const { assigned_to, ...otherData } = req.body;
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
@@ -85,38 +100,38 @@ export const lead = [
           ...otherData,
           assigned_to: assignedToUser,
         });
+        return { message: "Update" };
       };
-      return responseData(
+      return responseData<"Edit">(
         req,
         res,
         ctx,
         req.params.id_team && req.params.id_lead,
-        updateLead,
-        { message: "Update" }
+        updateLead
       );
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<any, UpdateConverAndDeleteLeadRequest, DeleteResponse>(
     "http://localhost:8000/api/leads/delete_lead/:id_lead/:id_team",
     (req, res, ctx) => {
-      const deleteLead = () => {
+      const deleteLead = (): deleteMessage => {
         const team = getTeam(req.params.id_team);
         deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
+        return { message: "Deleted" };
       };
-      return responseData(
+      return responseData<"Delete">(
         req,
         res,
         ctx,
         req.params.id_team && req.params.id_lead,
-        deleteLead,
-        { message: "Deleted" }
+        deleteLead
       );
     }
   ),
-  rest.post<any, any, any>(
+  rest.post<any, UpdateConverAndDeleteLeadRequest, ConvertResponse>(
     "http://localhost:8000/api/convert_lead_to_client/:id_lead/:id_team/",
     (req, res, ctx) => {
-      const convertLeadToClient = () => {
+      const convertLeadToClient = (): convertMessage => {
         const team = getTeam(req.params.id_team);
         const lead = db.lead.findFirst({
           where: {
@@ -129,14 +144,14 @@ export const lead = [
         const { id, ...otherData } = lead as any;
         create(db.client, otherData);
         deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
+        return { message: "Convert" };
       };
-      return responseData(
+      return responseData<"Convert">(
         req,
         res,
         ctx,
         req.params.id_team && req.params.id_lead,
-        convertLeadToClient,
-        { message: "Convert" }
+        convertLeadToClient
       );
     }
   ),

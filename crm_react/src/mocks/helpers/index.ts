@@ -1,13 +1,35 @@
 import { db } from "mocks/db";
 import { curry } from "ramda";
-import type { TeamValues } from "types";
+import {
+  RestRequest,
+  ResponseComposition,
+  RestContext,
+  DefaultBodyType,
+  PathParams,
+} from "msw";
 import type {
   RegisterValues,
   LeadAndClientValuesWithNull,
   UserWithoutSanitize,
   TeamWithoutSanitize,
   LeadAndClientWithoutSanitize,
+  TeamCreateValue,
+  DataPaginate,
+  Response,
+  IdRequest,
+  UpdateConverAndDeleteLeadRequest,
+  UpdateAndDeleteClientRequest,
+  Error,
 } from "types/mocks";
+import type { LeadAndClient } from "types/mocks";
+import type {
+  Team,
+  User,
+  LoginValues,
+  LeadAndClientValues,
+  TeamValues,
+  MemberValues,
+} from "types";
 
 export const authenticateRequest = <T extends { headers: any }>(req: T) => {
   const token = localStorage.getItem("__be_token__") || null;
@@ -33,14 +55,14 @@ export const getUser = (username?: string) => {
   return user !== null ? user : { id: undefined };
 };
 
-export const sanitizeData = (data: UserWithoutSanitize) => {
+export const sanitizeData = (data: UserWithoutSanitize): User => {
   const { password, ...rest } = data;
   return rest;
 };
 
 export const curriedSanitizeData = curry(sanitizeData);
 
-export const sanitizeTeams = (team: TeamWithoutSanitize) => {
+export const sanitizeTeams = (team: TeamWithoutSanitize): Team => {
   const members = team.members.map(curriedSanitizeData);
   const created_by = sanitizeData(team.created_by);
   const data = { ...team, members: members, created_by: created_by };
@@ -51,7 +73,7 @@ export const curriedSanitizeTeams = curry(sanitizeTeams);
 
 export const sanitizeLeadsAndClients = (
   persons: LeadAndClientWithoutSanitize[]
-) => {
+): LeadAndClient[] => {
   const data = persons.map((person) => {
     const { team, ...otherDataPerson } = person;
     const created_by = sanitizeData(otherDataPerson.created_by);
@@ -93,7 +115,7 @@ export const findLeadsOrClientsByTeam = (db: any, team: number) => {
 
 export const create = (
   db: any,
-  data: LeadAndClientValuesWithNull | TeamValues | RegisterValues
+  data: LeadAndClientValuesWithNull | TeamCreateValue | RegisterValues
 ) => {
   return db.create(data);
 };
@@ -140,26 +162,26 @@ export const searchLeadsOrClients = (
   return dataByFilter;
 };
 
-export const responseData = (
-  req: any,
-  res: any,
-  ctx: any,
+export const responseData = <T>(
+  req: RestRequest<
+    LoginValues | LeadAndClientValues | TeamValues | MemberValues,
+    IdRequest | UpdateAndDeleteClientRequest | UpdateConverAndDeleteLeadRequest
+  >,
+  res: ResponseComposition<Response<T> | Error>,
+  ctx: RestContext,
   conditional: boolean | string,
-  func: () => void,
-  data: { message: string } | null
+  func: () => Response<T> | void | null
 ) => {
-  if (conditional) {
-    if (!authenticateRequest(req)) {
-      return res(
-        ctx.status(401),
-        ctx.json({
-          error: "Unauthorized",
-        })
-      );
-    }
-    const functionValue = func();
-    const responseJson = data ? data : functionValue;
-    return res(ctx.status(200), ctx.json(responseJson));
+  if (!authenticateRequest(req))
+    return res(
+      ctx.status(401),
+      ctx.json({
+        error: "Unauthorized",
+      })
+    );
+  const functionValue = conditional ? func() : null;
+  if (functionValue) {
+    return res(ctx.status(200), ctx.json(functionValue));
   }
   return res(
     ctx.status(500),
@@ -170,10 +192,10 @@ export const responseData = (
 };
 
 export const paginate = (
-  array: any,
+  array: LeadAndClient[] | Team[],
   page_size: number,
   page_number: string | null
-) => {
+): DataPaginate => {
   const page = page_number != null ? Number(page_number) : 1;
   const condition =
     page > 0
@@ -188,6 +210,6 @@ export const paginate = (
   const endSlice = condition ? page * page_size : array.length;
 
   const paginator = array.slice(startSlice, endSlice);
-  const hasNext = condition ? array.at(-1).id !== paginator.at(-1).id : false;
+  const hasNext = condition ? array.at(-1)?.id !== paginator.at(-1)?.id : false;
   return { results: paginator, has_next: hasNext, page: page };
 };

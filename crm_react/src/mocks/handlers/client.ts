@@ -13,13 +13,19 @@ import {
   paginate,
 } from "mocks/helpers";
 import type { LeadAndClientValues } from "types";
-import type { LeadAndClientWithoutSanitize } from "types/mocks";
-
-type IdRequest = { id: string };
-type UpdateAndDeleteRequest = { id_client: string; id_team: string };
+import type {
+  LeadAndClientWithoutSanitize,
+  IdRequest,
+  UpdateAndDeleteClientRequest,
+  LeadAndClientDataResponse,
+  CreateResponse,
+  EditResponse,
+  DeleteResponse,
+} from "types/mocks";
+import type { createMessage, editMessage, deleteMessage } from "types/reducers";
 
 export const client = [
-  rest.get<any, IdRequest, any>(
+  rest.get<any, IdRequest, LeadAndClientDataResponse>(
     "http://localhost:8000/api/clients/get_client/:id/",
     (req, res, ctx) => {
       const getClient = () => {
@@ -29,13 +35,13 @@ export const client = [
         const data = sanitizeLeadsAndClients(clientData);
         return paginate(data, 17, page_number);
       };
-      return responseData(req, res, ctx, req.params.id, getClient, null);
+      return responseData<"Data">(req, res, ctx, req.params.id, getClient);
     }
   ),
-  rest.post<LeadAndClientValues, IdRequest, any>(
+  rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
     "http://localhost:8000/api/clients/create_client/:id/",
     (req, res, ctx) => {
-      const createClient = () => {
+      const createClient = (): createMessage => {
         const user = getUser(undefined);
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
@@ -49,13 +55,12 @@ export const client = [
           ...client,
           assigned_to: assignedToUser,
         });
+        return { message: "Create" };
       };
-      return responseData(req, res, ctx, req.params.id, createClient, {
-        message: "Create",
-      });
+      return responseData<"Create">(req, res, ctx, req.params.id, createClient);
     }
   ),
-  rest.get<any, IdRequest, any>(
+  rest.get<any, IdRequest, LeadAndClientDataResponse>(
     "http://localhost:8000/api/clients/search_client/:id/",
     (req, res, ctx) => {
       const searchClient = () => {
@@ -74,13 +79,13 @@ export const client = [
         const data = sanitizeLeadsAndClients(clientBySearch);
         return paginate(data, 17, page_number);
       };
-      return responseData(req, res, ctx, req.params.id, searchClient, null);
+      return responseData<"Data">(req, res, ctx, req.params.id, searchClient);
     }
   ),
-  rest.put<LeadAndClientValues, UpdateAndDeleteRequest, any>(
+  rest.put<LeadAndClientValues, UpdateAndDeleteClientRequest, EditResponse>(
     "http://localhost:8000/api/clients/update_client/:id_client/:id_team/",
     (req, res, ctx) => {
-      const updateClient = () => {
+      const updateClient = (): editMessage => {
         const team = getTeam(req.params.id_team);
         const { assigned_to, ...otherData } = req.body;
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
@@ -88,31 +93,31 @@ export const client = [
           ...otherData,
           assigned_to: assignedToUser,
         });
+        return { message: "Update" };
       };
-      return responseData(
+      return responseData<"Edit">(
         req,
         res,
         ctx,
         req.params.id_team && req.params.id_client,
-        updateClient,
-        { message: "Update" }
+        updateClient
       );
     }
   ),
-  rest.put<any, UpdateAndDeleteRequest, any>(
+  rest.put<any, UpdateAndDeleteClientRequest, DeleteResponse>(
     "http://localhost:8000/api/clients/delete_client/:id_client/:id_team",
     (req, res, ctx) => {
-      const deleteClient = () => {
+      const deleteClient = (): deleteMessage => {
         const team = getTeam(req.params.id_team);
         deleteLeadOrClient(db.client, req.params.id_client, team.id);
+        return { message: "Deleted" };
       };
-      return responseData(
+      return responseData<"Delete">(
         req,
         res,
         ctx,
         req.params.id_team && req.params.id_client,
-        deleteClient,
-        { message: "Deleted" }
+        deleteClient
       );
     }
   ),

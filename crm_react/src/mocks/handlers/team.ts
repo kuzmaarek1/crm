@@ -9,10 +9,21 @@ import {
   curriedSanitizeTeams,
   paginate,
 } from "mocks/helpers";
-import type { TeamWithoutSanitize } from "types/mocks";
+import type {
+  TeamWithoutSanitize,
+  IdRequest,
+  TeamDataResponse,
+  EditResponse,
+  DeleteResponse,
+  UserResponse,
+  TeamResponse,
+  UnauthorizedError,
+} from "types/mocks";
+import type { TeamValues, MemberValues, Team } from "types";
+import type { editMessage, deleteMessage } from "types/reducers";
 
 export const team = [
-  rest.get<any, any, any>(
+  rest.get<any, any, TeamResponse>(
     "http://localhost:8000/api/teams/get_team/",
     (req, res, ctx) => {
       const getTeam = () => {
@@ -27,10 +38,10 @@ export const team = [
         const data = sanitizeTeams(team);
         return data;
       };
-      return responseData(req, res, ctx, true, getTeam, null);
+      return responseData<"Team">(req, res, ctx, true, getTeam);
     }
   ),
-  rest.get<any, any, any>(
+  rest.get<any, any, TeamDataResponse>(
     "http://localhost:8000/api/teams/get_teams/",
     (req, res, ctx) => {
       const getTeams = () => {
@@ -49,29 +60,32 @@ export const team = [
         const data = teams.map(curriedSanitizeTeams);
         return paginate(data, 17, page_number);
       };
-      return responseData(req, res, ctx, true, getTeams, null);
+      return responseData<"Data">(req, res, ctx, true, getTeams);
     }
   ),
-  rest.post<any, any, any>(
+  rest.post<TeamValues, any, TeamResponse>(
     "http://localhost:8000/api/teams/",
     (req, res, ctx) => {
       const createTeam = () => {
         const user = getUser(undefined);
-        const team = create(db.team, {
-          ...req.body,
-          created_by: user,
-          members: user,
-        });
-        const data = sanitizeTeams(team);
-        return data;
+        if ("last_name" in user) {
+          const team = create(db.team, {
+            ...req.body,
+            created_by: user,
+            members: user,
+          });
+          const data = sanitizeTeams(team);
+          return data;
+        }
+        return null;
       };
-      return responseData(req, res, ctx, true, createTeam, null);
+      return responseData<"Team">(req, res, ctx, true, createTeam);
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<TeamValues, IdRequest, EditResponse>(
     "http://localhost:8000/api/teams/update_team/:id/",
     (req, res, ctx) => {
-      const updateTeam = () => {
+      const updateTeam = (): editMessage => {
         const user = getUser(undefined);
         db.team.update({
           where: {
@@ -82,13 +96,12 @@ export const team = [
           },
           data: { ...req.body },
         });
+        return { message: "Update" };
       };
-      return responseData(req, res, ctx, req.params.id, updateTeam, {
-        message: "Update",
-      });
+      return responseData<"Edit">(req, res, ctx, req.params.id, updateTeam);
     }
   ),
-  rest.get<any, any, any>(
+  rest.get<any, any, TeamDataResponse>(
     "http://localhost:8000/api/teams/search_team/",
     (req, res, ctx) => {
       const searchTeam = () => {
@@ -113,13 +126,13 @@ export const team = [
         const data = teamsByFilter.map(curriedSanitizeTeams);
         return paginate(data, 17, page_number);
       };
-      return responseData(req, res, ctx, true, searchTeam, null);
+      return responseData<"Data">(req, res, ctx, true, searchTeam);
     }
   ),
-  rest.put<any, any, any>(
+  rest.put<any, IdRequest, DeleteResponse>(
     "http://localhost:8000/api/teams/delete_team/:id/",
     (req, res, ctx) => {
-      const deleteTeam = () => {
+      const deleteTeam = (): deleteMessage => {
         const user = getUser(undefined);
         db.team.delete({
           where: {
@@ -129,13 +142,12 @@ export const team = [
             },
           },
         });
+        return { message: "Deleted" };
       };
-      return responseData(req, res, ctx, req.params.id, deleteTeam, {
-        message: "Deleted",
-      });
+      return responseData<"Delete">(req, res, ctx, req.params.id, deleteTeam);
     }
   ),
-  rest.patch<any, any, any>(
+  rest.patch<MemberValues, IdRequest, UserResponse>(
     "http://localhost:8000/api/teams/add_member/:id/",
     (req, res, ctx) => {
       const userMember = getUser(req.body.username);
@@ -166,18 +178,9 @@ export const team = [
             },
           });
         }
-        return "username" in userMember
-          ? sanitizeData(userMember)
-          : { id: undefined };
+        return "username" in userMember ? sanitizeData(userMember) : null;
       };
-      if ("username" in userMember)
-        return responseData(req, res, ctx, req.params.id, addMember, null);
-      return (
-        ctx.status(500),
-        ctx.json({
-          error: "Error",
-        })
-      );
+      return responseData<"User">(req, res, ctx, req.params.id, addMember);
     }
   ),
 ];

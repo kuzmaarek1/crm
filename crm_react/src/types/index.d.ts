@@ -29,7 +29,7 @@ export type LeadAndClient = {
 
 export type Page = {
   has_next: boolean;
-  page: string;
+  page: number;
 };
 
 export type TeamData = {
