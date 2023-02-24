@@ -1,4 +1,4 @@
-import type { LoginValues, User, Team } from "types";
+import type { LoginValues, User, Team, Page } from "types";
 import type {
   createMessage,
   editMessage,
@@ -76,17 +76,9 @@ export type LeadAndClient = {
   assigned_to: User | null;
 };
 
-export type LeadAndClientData = {
-  results: LeadAndClient[];
-  has_next: boolean;
-  page: number;
-};
-
 export type DataPaginate<T> = {
   results: T extends "Team" ? Team[] : LeadAndClient[];
-  has_next: boolean;
-  page: number;
-};
+} & Page;
 
 export type UnauthorizedError = {
   error: "Unauthorized";

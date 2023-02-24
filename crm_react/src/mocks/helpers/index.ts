@@ -208,6 +208,6 @@ export const paginate = <T>(
   return {
     results: paginator,
     has_next: hasNext,
-    page: page,
+    page: String(page),
   } as DataPaginate<T>;
 };
