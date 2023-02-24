@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
 import type { LeadAndClientValues } from "types";
-import type { createMessage, editMessage, deleteMessage } from "types/reducers";
+import type { CreateMessage, EditMessage, DeleteMessage } from "types/reducers";
 import {
   getTeam,
   sanitizeLeadsAndClients,
@@ -48,7 +48,7 @@ export const client = [
   rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
     "http://localhost:8000/api/clients/create_client/:id/",
     (req, res, ctx) => {
-      const createClient = (): createMessage => {
+      const createClient = (): CreateMessage => {
         const user = getUser();
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
@@ -99,7 +99,7 @@ export const client = [
   rest.put<LeadAndClientValues, UpdateAndDeleteClientRequest, EditResponse>(
     "http://localhost:8000/api/clients/update_client/:id_client/:id_team/",
     (req, res, ctx) => {
-      const updateClient = (): editMessage => {
+      const updateClient = (): EditMessage => {
         const team = getTeam(req.params.id_team);
         const { assigned_to, ...otherData } = req.body;
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
@@ -121,7 +121,7 @@ export const client = [
   rest.put<any, UpdateAndDeleteClientRequest, DeleteResponse>(
     "http://localhost:8000/api/clients/delete_client/:id_client/:id_team",
     (req, res, ctx) => {
-      const deleteClient = (): deleteMessage => {
+      const deleteClient = (): DeleteMessage => {
         const team = getTeam(req.params.id_team);
         deleteLeadOrClient(db.client, req.params.id_client, team.id);
         return { message: "Deleted" };

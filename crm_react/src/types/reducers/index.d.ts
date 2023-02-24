@@ -12,65 +12,61 @@ type Page = {
   page: number;
 };
 
-export type getProps = Page & Id;
+export type GetProps = Page & Id;
 
-export type searchLeadAndClientProps = {
+export type SearchLeadAndClientProps = {
   name: string;
 } & Page &
   Team;
 
-export type searchTeamProps = {
+export type SearchTeamProps = {
   name: string;
 } & Page;
 
-export type createLeadAndClientProps = {
+export type CreateLeadAndClientProps = {
   data: LeadAndClientValues;
 } & Id;
 
-export type editProps = {
-  data: LeadAndClientValues;
-} & Team;
-
-export type editClientProps = {
+export type EditClientProps = {
   client: number;
 } & editLeadAndClientProps;
 
-export type editLeadProps = {
+export type EditLeadProps = {
   lead: number;
 } & editLeadAndClientProps;
 
-export type editTeamProps = {
+export type EditTeamProps = {
   data: TeamValues;
 } & Id;
 
-export type deleteClientProps = {
+export type DeleteClientProps = {
   client: number;
 } & Team;
 
-export type deleteAndCovertLeadProps = {
+export type DeleteAndCovertLeadProps = {
   lead: number;
 } & Team;
 
-export type deleteTeamProps = {
+export type DeleteTeamProps = {
   teams: number;
 } & Id;
 
-export type addMemberProps = {
+export type AddMemberProps = {
   username: string;
 } & Id;
 
-export type createMessage = {
+export type CreateMessage = {
   message: "Create";
 };
 
-export type editMessage = {
+export type EditMessage = {
   message: "Update";
 };
 
-export type deleteMessage = {
+export type DeleteMessage = {
   message: "Deleted";
 };
 
-export type convertMessage = {
+export type ConvertMessage = {
   message: "Convert";
 };

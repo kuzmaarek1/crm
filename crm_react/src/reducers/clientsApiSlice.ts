@@ -1,19 +1,19 @@
 import { apiSlice } from "api/apiSlice";
 import type { LeadAndClientData } from "types";
 import type {
-  getProps,
-  createLeadAndClientProps,
-  editClientProps,
-  searchLeadAndClientProps,
-  deleteClientProps,
-  createMessage,
-  editMessage,
-  deleteMessage,
+  GetProps,
+  CreateLeadAndClientProps,
+  EditClientProps,
+  SearchLeadAndClientProps,
+  DeleteClientProps,
+  CreateMessage,
+  EditMessage,
+  DeleteMessage,
 } from "types/reducers";
 
 export const clientsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getClients: builder.query<LeadAndClientData, getProps>({
+    getClients: builder.query<LeadAndClientData, GetProps>({
       query: ({ id, page }) => ({
         url: `/api/clients/get_client/${id}/?page=${page}`,
         method: "GET",
@@ -29,7 +29,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Client", "Auth", "Team", "Lead"],
     }),
-    createClient: builder.mutation<createMessage, createLeadAndClientProps>({
+    createClient: builder.mutation<CreateMessage, CreateLeadAndClientProps>({
       query: ({ id, data }) => ({
         url: `api/clients/create_client/${id}/`,
         method: "POST",
@@ -37,7 +37,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    editClient: builder.mutation<editMessage, editClientProps>({
+    editClient: builder.mutation<EditMessage, EditClientProps>({
       query: ({ client, team, data }) => ({
         url: `/api/clients/update_client/${client}/${team}/`,
         method: "PUT",
@@ -45,7 +45,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Client"],
     }),
-    searchClient: builder.query<LeadAndClientData, searchLeadAndClientProps>({
+    searchClient: builder.query<LeadAndClientData, SearchLeadAndClientProps>({
       query: ({ team, name, page }) => ({
         url: `/api/clients/search_client/${team}/?search=${name}&page=${page}`,
         method: "GET",
@@ -70,7 +70,7 @@ export const clientsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    deleteClient: builder.mutation<deleteMessage, deleteClientProps>({
+    deleteClient: builder.mutation<DeleteMessage, DeleteClientProps>({
       query: ({ client, team }) => ({
         url: `/api/clients/delete_client/${client}/${team}/`,
         method: "PUT",

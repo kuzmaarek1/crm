@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
 import type { TeamValues, MemberValues } from "types";
-import type { editMessage, deleteMessage } from "types/reducers";
+import type { EditMessage, DeleteMessage } from "types/reducers";
 import {
   getUser,
   responseData,
@@ -88,7 +88,7 @@ export const team = [
   rest.put<TeamValues, IdRequest, EditResponse>(
     "http://localhost:8000/api/teams/update_team/:id/",
     (req, res, ctx) => {
-      const updateTeam = (): editMessage => {
+      const updateTeam = (): EditMessage => {
         const user = getUser();
         db.team.update({
           where: {
@@ -136,7 +136,7 @@ export const team = [
   rest.put<any, IdRequest, DeleteResponse>(
     "http://localhost:8000/api/teams/delete_team/:id/",
     (req, res, ctx) => {
-      const deleteTeam = (): deleteMessage => {
+      const deleteTeam = (): DeleteMessage => {
         const user = getUser();
         db.team.delete({
           where: {

@@ -2,10 +2,10 @@ import { rest } from "msw";
 import { db } from "mocks/db";
 import type { LeadAndClientValues } from "types";
 import type {
-  createMessage,
-  editMessage,
-  deleteMessage,
-  convertMessage,
+  CreateMessage,
+  EditMessage,
+  DeleteMessage,
+  ConvertMessage,
 } from "types/reducers";
 import {
   responseData,
@@ -55,7 +55,7 @@ export const lead = [
   rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
     "http://localhost:8000/api/leads/create_lead/:id/",
     (req, res, ctx) => {
-      const createLead = (): createMessage => {
+      const createLead = (): CreateMessage => {
         const user = getUser();
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
@@ -106,7 +106,7 @@ export const lead = [
   rest.put<LeadAndClientValues, UpdateConverAndDeleteLeadRequest, EditResponse>(
     "http://localhost:8000/api/leads/update_lead/:id_lead/:id_team/",
     (req, res, ctx) => {
-      const updateLead = (): editMessage => {
+      const updateLead = (): EditMessage => {
         const team = getTeam(req.params.id_team);
         const { assigned_to, ...otherData } = req.body;
         const assignedToUser = assigned_to !== "" ? getUser(assigned_to) : null;
@@ -128,7 +128,7 @@ export const lead = [
   rest.put<any, UpdateConverAndDeleteLeadRequest, DeleteResponse>(
     "http://localhost:8000/api/leads/delete_lead/:id_lead/:id_team",
     (req, res, ctx) => {
-      const deleteLead = (): deleteMessage => {
+      const deleteLead = (): DeleteMessage => {
         const team = getTeam(req.params.id_team);
         deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
         return { message: "Deleted" };
@@ -145,7 +145,7 @@ export const lead = [
   rest.post<any, UpdateConverAndDeleteLeadRequest, ConvertResponse>(
     "http://localhost:8000/api/convert_lead_to_client/:id_lead/:id_team/",
     (req, res, ctx) => {
-      const convertLeadToClient = (): convertMessage => {
+      const convertLeadToClient = (): ConvertMessage => {
         const team = getTeam(req.params.id_team);
         const lead = db.lead.findFirst({
           where: {

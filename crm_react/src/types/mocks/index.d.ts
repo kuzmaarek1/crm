@@ -1,9 +1,9 @@
 import type { LoginValues, User, Team, Page } from "types";
 import type {
-  createMessage,
-  editMessage,
-  deleteMessage,
-  convertMessage,
+  CreateMessage,
+  EditMessage,
+  DeleteMessage,
+  ConvertMessage,
 } from "types/reducers";
 
 export interface RegisterValues extends LoginValues {
@@ -91,10 +91,10 @@ export type ErrorMessage = {
 export type LogoutMessage = { message: "Logout" };
 
 export type ResponseMessage =
-  | createMessage
-  | editMessage
-  | deleteMessage
-  | convertMessage
+  | CreateMessage
+  | EditMessage
+  | DeleteMessage
+  | ConvertMessage
   | LogoutMessage;
 
 export type LogoutResponse = LogoutMessage | Error;
@@ -103,7 +103,7 @@ export type LoginResponse =
   | { auth_token: string }
   | { error: "Invalid user data" };
 
-export type RegisterResponse = createMessage | { error: string };
+export type RegisterResponse = CreateMessage | { error: string };
 
 export type Error = UnauthorizedError | ErrorMessage;
 
@@ -113,28 +113,28 @@ export type LeadAndClientDataResponse = DataPaginate<"LeadAndClient"> | Error;
 
 export type TeamDataResponse = DataPaginate<"Team"> | Error;
 
-export type CreateResponse = createMessage | Error;
+export type CreateResponse = CreateMessage | Error;
 
-export type EditResponse = editMessage | Error;
+export type EditResponse = EditMessage | Error;
 
-export type DeleteResponse = deleteMessage | Error;
+export type DeleteResponse = DeleteMessage | Error;
 
-export type ConvertResponse = convertMessage | Error;
+export type ConvertResponse = ConvertMessage | Error;
 
 export type TeamResponse = Team | Error;
 
 export type Response<T> = T extends "Edit"
-  ? editMessage
+  ? EditMessage
   : T extends "Delete"
-  ? deleteMessage
+  ? DeleteMessage
   : T extends "LeadAndClientData"
   ? DataPaginate<"LeadAndClient">
   : T extends "TeamData"
   ? DataPaginate<"Team">
   : T extends "Create"
-  ? createMessage
+  ? CreateMessage
   : T extends "Convert"
-  ? convertMessage
+  ? ConvertMessage
   : T extends "User"
   ? User
   : T extends "Team"

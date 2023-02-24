@@ -4,12 +4,12 @@ import type { RootState } from "store";
 import type { TeamData, TeamValues, Team, User } from "types";
 import type {
   Page,
-  editTeamProps,
-  searchTeamProps,
-  deleteTeamProps,
-  addMemberProps,
-  editMessage,
-  deleteMessage,
+  EditTeamProps,
+  SearchTeamProps,
+  DeleteTeamProps,
+  AddMemberProps,
+  EditMessage,
+  DeleteMessage,
 } from "types/reducers";
 
 export const teamsApiSlice = apiSlice.injectEndpoints({
@@ -37,7 +37,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ["Team", "Auth"],
     }),
-    editTeam: builder.mutation<editMessage, editTeamProps>({
+    editTeam: builder.mutation<EditMessage, EditTeamProps>({
       query: ({ id, data }) => ({
         url: `/api/teams/update_team/${id}/`,
         method: "PUT",
@@ -51,7 +51,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Team"],
     }),
-    searchTeam: builder.query<TeamData, searchTeamProps>({
+    searchTeam: builder.query<TeamData, SearchTeamProps>({
       query: ({ name, page }) => ({
         url: `api/teams/search_team/?search=${name}&page=${page}`,
         method: "GET",
@@ -76,7 +76,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
         } catch {}
       },
     }),
-    addMember: builder.mutation<User, addMemberProps>({
+    addMember: builder.mutation<User, AddMemberProps>({
       query: ({ id, username }) => ({
         url: `/api/teams/add_member/${id}/`,
         method: "PATCH",
@@ -98,7 +98,7 @@ export const teamsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Team"],
     }),
-    deleteTeam: builder.mutation<deleteMessage, deleteTeamProps>({
+    deleteTeam: builder.mutation<DeleteMessage, DeleteTeamProps>({
       query: ({ id, teams }) => ({
         url: `/api/teams/delete_team/${id}/`,
         method: "PUT",
