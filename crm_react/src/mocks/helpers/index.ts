@@ -1,12 +1,7 @@
 import { db } from "mocks/db";
 import { curry } from "ramda";
-import {
-  RestRequest,
-  ResponseComposition,
-  RestContext,
-  DefaultBodyType,
-  PathParams,
-} from "msw";
+import { RestRequest, ResponseComposition, RestContext } from "msw";
+import type { LeadAndClient } from "types/mocks";
 import type {
   RegisterValues,
   LeadAndClientValuesWithNull,
@@ -21,7 +16,6 @@ import type {
   UpdateAndDeleteClientRequest,
   Error,
 } from "types/mocks";
-import type { LeadAndClient } from "types/mocks";
 import type {
   Team,
   User,
@@ -191,11 +185,11 @@ export const responseData = <T>(
   );
 };
 
-export const paginate = (
-  array: LeadAndClient[] | Team[],
+export const paginate = <T>(
+  array: T extends "Team" ? Team[] : LeadAndClient[],
   page_size: number,
   page_number: string | null
-): DataPaginate => {
+): DataPaginate<T> => {
   const page = page_number != null ? Number(page_number) : 1;
   const condition =
     page > 0
@@ -211,5 +205,9 @@ export const paginate = (
 
   const paginator = array.slice(startSlice, endSlice);
   const hasNext = condition ? array.at(-1)?.id !== paginator.at(-1)?.id : false;
-  return { results: paginator, has_next: hasNext, page: page };
+  return {
+    results: paginator,
+    has_next: hasNext,
+    page: page,
+  } as DataPaginate<T>;
 };

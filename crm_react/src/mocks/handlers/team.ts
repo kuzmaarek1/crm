@@ -1,5 +1,7 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
+import type { TeamValues, MemberValues } from "types";
+import type { editMessage, deleteMessage } from "types/reducers";
 import {
   getUser,
   responseData,
@@ -17,10 +19,7 @@ import type {
   DeleteResponse,
   UserResponse,
   TeamResponse,
-  UnauthorizedError,
 } from "types/mocks";
-import type { TeamValues, MemberValues, Team } from "types";
-import type { editMessage, deleteMessage } from "types/reducers";
 
 export const team = [
   rest.get<any, any, TeamResponse>(
@@ -58,9 +57,9 @@ export const team = [
           },
         }) as TeamWithoutSanitize[];
         const data = teams.map(curriedSanitizeTeams);
-        return paginate(data, 17, page_number);
+        return paginate<"Team">(data, 17, page_number);
       };
-      return responseData<"Data">(req, res, ctx, true, getTeams);
+      return responseData<"TeamData">(req, res, ctx, true, getTeams);
     }
   ),
   rest.post<TeamValues, any, TeamResponse>(
@@ -124,9 +123,9 @@ export const team = [
             )
           : [];
         const data = teamsByFilter.map(curriedSanitizeTeams);
-        return paginate(data, 17, page_number);
+        return paginate<"Team">(data, 17, page_number);
       };
-      return responseData<"Data">(req, res, ctx, true, searchTeam);
+      return responseData<"TeamData">(req, res, ctx, true, searchTeam);
     }
   ),
   rest.put<any, IdRequest, DeleteResponse>(

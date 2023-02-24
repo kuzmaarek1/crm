@@ -82,8 +82,8 @@ export type LeadAndClientData = {
   page: number;
 };
 
-export type DataPaginate = {
-  results: LeadAndClient[] | Team[];
+export type DataPaginate<T> = {
+  results: T extends "Team" ? Team[] : LeadAndClient[];
   has_next: boolean;
   page: number;
 };
@@ -117,7 +117,9 @@ export type Error = UnauthorizedError | ErrorMessage;
 
 export type UserResponse = User | Error;
 
-export type LeadAndClientDataResponse = DataPaginate | Error;
+export type LeadAndClientDataResponse = DataPaginate<"LeadAndClient"> | Error;
+
+export type TeamDataResponse = DataPaginate<"Team"> | Error;
 
 export type CreateResponse = createMessage | Error;
 
@@ -129,14 +131,14 @@ export type ConvertResponse = convertMessage | Error;
 
 export type TeamResponse = Team | Error;
 
-export type TeamDataResponse = DataPaginate | Error;
-
 export type Response<T> = T extends "Edit"
   ? editMessage
   : T extends "Delete"
   ? deleteMessage
-  : T extends "Data"
-  ? DataPaginate
+  : T extends "LeadAndClientData"
+  ? DataPaginate<"LeadAndClient">
+  : T extends "TeamData"
+  ? DataPaginate<"Team">
   : T extends "Create"
   ? createMessage
   : T extends "Convert"

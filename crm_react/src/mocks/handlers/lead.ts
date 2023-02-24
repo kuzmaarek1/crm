@@ -1,5 +1,12 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
+import type { LeadAndClientValues } from "types";
+import type {
+  createMessage,
+  editMessage,
+  deleteMessage,
+  convertMessage,
+} from "types/reducers";
 import {
   responseData,
   getTeam,
@@ -22,13 +29,6 @@ import type {
   DeleteResponse,
   ConvertResponse,
 } from "types/mocks";
-import type { LeadAndClientValues } from "types";
-import type {
-  createMessage,
-  editMessage,
-  deleteMessage,
-  convertMessage,
-} from "types/reducers";
 
 export const lead = [
   rest.get<any, IdRequest, LeadAndClientDataResponse>(
@@ -39,10 +39,16 @@ export const lead = [
         const team = getTeam(req.params.id);
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
         const data = sanitizeLeadsAndClients(leadData);
-        return paginate(data, 17, page_number);
+        return paginate<"LeadAndClient">(data, 17, page_number);
       };
 
-      return responseData<"Data">(req, res, ctx, req.params.id, getLead);
+      return responseData<"LeadAndClientData">(
+        req,
+        res,
+        ctx,
+        req.params.id,
+        getLead
+      );
     }
   ),
   rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
@@ -84,9 +90,15 @@ export const lead = [
           }
         });
         const data = sanitizeLeadsAndClients(leadBySearch);
-        return paginate(data, 17, page_number);
+        return paginate<"LeadAndClient">(data, 17, page_number);
       };
-      return responseData<"Data">(req, res, ctx, req.params.id, searchLead);
+      return responseData<"LeadAndClientData">(
+        req,
+        res,
+        ctx,
+        req.params.id,
+        searchLead
+      );
     }
   ),
   rest.put<LeadAndClientValues, UpdateConverAndDeleteLeadRequest, EditResponse>(
@@ -140,8 +152,8 @@ export const lead = [
               id: { equals: team.id },
             },
           },
-        });
-        const { id, ...otherData } = lead as any;
+        }) as LeadAndClientWithoutSanitize;
+        const { id, ...otherData } = lead;
         create(db.client, otherData);
         deleteLeadOrClient(db.lead, req.params.id_lead, team.id);
         return { message: "Convert" };

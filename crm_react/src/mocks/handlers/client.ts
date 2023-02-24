@@ -1,5 +1,7 @@
 import { rest } from "msw";
 import { db } from "mocks/db";
+import type { LeadAndClientValues } from "types";
+import type { createMessage, editMessage, deleteMessage } from "types/reducers";
 import {
   getTeam,
   sanitizeLeadsAndClients,
@@ -12,7 +14,6 @@ import {
   deleteLeadOrClient,
   paginate,
 } from "mocks/helpers";
-import type { LeadAndClientValues } from "types";
 import type {
   LeadAndClientWithoutSanitize,
   IdRequest,
@@ -22,7 +23,6 @@ import type {
   EditResponse,
   DeleteResponse,
 } from "types/mocks";
-import type { createMessage, editMessage, deleteMessage } from "types/reducers";
 
 export const client = [
   rest.get<any, IdRequest, LeadAndClientDataResponse>(
@@ -33,9 +33,15 @@ export const client = [
         const page_number = req.url.searchParams.get("page");
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         const data = sanitizeLeadsAndClients(clientData);
-        return paginate(data, 17, page_number);
+        return paginate<"LeadAndClient">(data, 17, page_number);
       };
-      return responseData<"Data">(req, res, ctx, req.params.id, getClient);
+      return responseData<"LeadAndClientData">(
+        req,
+        res,
+        ctx,
+        req.params.id,
+        getClient
+      );
     }
   ),
   rest.post<LeadAndClientValues, IdRequest, CreateResponse>(
@@ -77,9 +83,15 @@ export const client = [
           }
         });
         const data = sanitizeLeadsAndClients(clientBySearch);
-        return paginate(data, 17, page_number);
+        return paginate<"LeadAndClient">(data, 17, page_number);
       };
-      return responseData<"Data">(req, res, ctx, req.params.id, searchClient);
+      return responseData<"LeadAndClientData">(
+        req,
+        res,
+        ctx,
+        req.params.id,
+        searchClient
+      );
     }
   ),
   rest.put<LeadAndClientValues, UpdateAndDeleteClientRequest, EditResponse>(
