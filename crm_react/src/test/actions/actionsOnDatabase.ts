@@ -1,7 +1,13 @@
 import { screen, fireEvent } from "test-utils";
-import * as actions from "test/actions/index.js";
+import * as actions from "test/actions/index";
+import type { TForm } from "types/test";
 
-export const addElement = async (dataForm, assigned, toast, numberElements) => {
+export const addElement = async (
+  dataForm: TForm,
+  assigned: string | null,
+  toast: RegExp,
+  numberElements: number
+) => {
   fireEvent.click(screen.getByRole("button", { name: /add-button/i }));
   await actions.handleChangeInputsForm(dataForm);
   assigned !== "team" && (await actions.handleChangeInputAssigned(assigned));
@@ -9,19 +15,23 @@ export const addElement = async (dataForm, assigned, toast, numberElements) => {
   await actions.displayList(numberElements);
 };
 
-export const searchElement = async (labelText, value, numberElements) => {
+export const searchElement = async (
+  labelText: RegExp,
+  value: string,
+  numberElements: number
+) => {
   const searchForm = screen.getByLabelText(labelText);
   fireEvent.change(searchForm, { target: { value: value } });
   await actions.displayList(numberElements);
 };
 
 export const updateElement = async (
-  updateElement,
-  formDataEdit,
-  toast,
-  numberElements,
-  updatedElement,
-  isManyElements
+  updateElement: RegExp | string,
+  formDataEdit: TForm,
+  toast: RegExp,
+  numberElements: number,
+  updatedElement: string,
+  isManyElements?: boolean
 ) => {
   await actions.loadingData();
   await actions.handleOpenDetailsModalAndAction(
@@ -45,11 +55,11 @@ export const updateElement = async (
 };
 
 export const deleteElement = async (
-  numberElementBeforeDelete,
-  deleteElement,
-  toast,
-  numberElementAfterDelete,
-  isManyElements
+  numberElementBeforeDelete: number,
+  deleteElement: string | RegExp,
+  toast: RegExp,
+  numberElementAfterDelete: number,
+  isManyElements?: boolean
 ) => {
   await actions.displayList(numberElementBeforeDelete);
   await actions.handleOpenDetailsModalAndAction(

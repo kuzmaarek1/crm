@@ -3,13 +3,18 @@ import { render, screen, fireEvent, waitFor } from "test-utils";
 import { formDataSignUp } from "test/constants";
 import { handleChangeInputsForm, displayToast } from "test/actions";
 import { Auth } from "views";
+import type { TForm } from "types/test";
 
 const handleChangePage = () => {
   const switchButton = screen.getByRole("button", { name: /switch-button/i });
   fireEvent.click(switchButton);
 };
 
-const createUser = async (data, toast, loadingToast) => {
+const createUser = async (
+  data: TForm,
+  toast: RegExp,
+  loadingToast: boolean
+) => {
   render(<Auth />);
   handleChangePage();
   const firstNameInput = await screen.findByLabelText(/first name/i);

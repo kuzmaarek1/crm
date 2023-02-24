@@ -49,7 +49,7 @@ export const client = [
     "http://localhost:8000/api/clients/create_client/:id/",
     (req, res, ctx) => {
       const createClient = (): createMessage => {
-        const user = getUser(undefined);
+        const user = getUser();
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
         const client = {

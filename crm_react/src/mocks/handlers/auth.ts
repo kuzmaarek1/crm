@@ -38,7 +38,7 @@ export const auth = [
     "http://localhost:8000/api/users/me/",
     (req, res, ctx) => {
       const getDetailsUser = () => {
-        const user = getUser(undefined);
+        const user = getUser();
         const data = user.id ? sanitizeData(user) : null;
         return data;
       };
@@ -82,7 +82,7 @@ export const auth = [
     "http://localhost:8000/api/token/logout/",
     (req, res, ctx) => {
       const logout = (): LogoutMessage | null => {
-        const user = getUser(undefined);
+        const user = getUser();
         localStorage.removeItem("__be_token__");
         if ("last_name" in user) {
           return { message: "Logout" };

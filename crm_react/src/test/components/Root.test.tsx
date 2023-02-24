@@ -9,7 +9,7 @@ import {
 } from "test-utils";
 import * as constants from "test/constants";
 import * as actions from "test/actions";
-import * as actionsOnDatabse from "test/actions/actionsOnDatabase.js";
+import * as actionsOnDatabse from "test/actions/actionsOnDatabase";
 import { Root } from "views";
 
 describe("Login", () => {

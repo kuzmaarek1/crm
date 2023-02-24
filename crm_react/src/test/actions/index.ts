@@ -1,13 +1,14 @@
 import { screen, fireEvent, waitForElementToBeRemoved } from "test-utils";
+import type { TForm } from "types/test";
 
-export const handleChangeInputsLogIn = (data) => {
+export const handleChangeInputsLogIn = (data: TForm) => {
   data.forEach(({ name, value }) => {
     const label = screen.getByLabelText(name);
     fireEvent.change(label, { target: { value } });
   });
 };
 
-export const handleChangeInputsForm = async (data) => {
+export const handleChangeInputsForm = async (data: TForm) => {
   for await (const { name, value } of data) {
     if (name !== "Name") {
       const label = await screen.findByLabelText(name);
@@ -19,7 +20,7 @@ export const handleChangeInputsForm = async (data) => {
   }
 };
 
-export const handleChangeInputAssigned = async (value) => {
+export const handleChangeInputAssigned = async (value?: string | null) => {
   const assignedToLabel = await screen.findAllByLabelText(/assigned/i);
   fireEvent.change(assignedToLabel[0], {
     target: { value: value ? value : "" },
@@ -31,12 +32,12 @@ export const loadingData = async () => {
   expect(loadingElement).toBeInTheDocument();
 };
 
-export const checkIsTeamActive = async (team, number) => {
+export const checkIsTeamActive = async (team: string, number: number) => {
   const cellElement = await screen.findAllByText(team);
   expect(cellElement).toHaveLength(number);
 };
 
-export const displayList = async (number) => {
+export const displayList = async (number?: number) => {
   await loadingData();
   if (number) {
     const cellElement = await screen.findAllByTestId(/cell/i);
@@ -49,13 +50,13 @@ export const displayList = async (number) => {
 };
 
 export const handleOpenDetailsModalAndAction = async (
-  name,
-  buttonName,
-  isManyElements,
-  numberElemenet,
-  numberElementsToActions
+  name: string | RegExp,
+  buttonName: RegExp,
+  isManyElements?: boolean,
+  numberElemenet?: number,
+  numberElementsToActions?: number
 ) => {
-  if (!isManyElements) {
+  if (!isManyElements || !numberElemenet || !numberElementsToActions) {
     const element = await screen.findByText(name);
     fireEvent.click(element);
   } else {
@@ -67,13 +68,13 @@ export const handleOpenDetailsModalAndAction = async (
   fireEvent.click(button);
 };
 
-export const handleSubmitAndDisplayToast = async (toast) => {
+export const handleSubmitAndDisplayToast = async (toast: RegExp) => {
   const submitButton = await screen.findByRole("button", { name: /submit/i });
   fireEvent.click(submitButton);
   await displayToast(toast);
 };
 
-export const displayToast = async (toast) => {
+export const displayToast = async (toast: RegExp) => {
   const element = await screen.findByText(toast);
   expect(element).toBeInTheDocument();
 };

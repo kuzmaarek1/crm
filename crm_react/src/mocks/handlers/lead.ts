@@ -56,7 +56,7 @@ export const lead = [
     "http://localhost:8000/api/leads/create_lead/:id/",
     (req, res, ctx) => {
       const createLead = (): createMessage => {
-        const user = getUser(undefined);
+        const user = getUser();
         const team = getTeam(req.params.id);
         const { assigned_to, ...otherData } = req.body;
         const lead = {

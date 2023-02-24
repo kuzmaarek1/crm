@@ -26,7 +26,7 @@ export const team = [
     "http://localhost:8000/api/teams/get_team/",
     (req, res, ctx) => {
       const getTeam = () => {
-        const user = getUser(undefined);
+        const user = getUser();
         if ("last_name" in user) {
           const team = db.team.findFirst({
             where: {
@@ -49,7 +49,7 @@ export const team = [
       const getTeams = () => {
         const page_number = req.url.searchParams.get("page");
         if (!page_number) return null;
-        const user = getUser(undefined);
+        const user = getUser();
         const teams = db.team.findMany({
           where: {
             members: {
@@ -70,7 +70,7 @@ export const team = [
     "http://localhost:8000/api/teams/",
     (req, res, ctx) => {
       const createTeam = () => {
-        const user = getUser(undefined);
+        const user = getUser();
         if ("last_name" in user) {
           const team = create(db.team, {
             ...req.body,
@@ -89,7 +89,7 @@ export const team = [
     "http://localhost:8000/api/teams/update_team/:id/",
     (req, res, ctx) => {
       const updateTeam = (): editMessage => {
-        const user = getUser(undefined);
+        const user = getUser();
         db.team.update({
           where: {
             id: { equals: Number(req.params.id) },
@@ -109,7 +109,7 @@ export const team = [
     (req, res, ctx) => {
       const searchTeam = () => {
         const page_number = req.url.searchParams.get("page");
-        const user = getUser(undefined);
+        const user = getUser();
         const search = req.url.searchParams.get("search");
         if (!search || !page_number) return null;
         const teams = db.team.findMany({
@@ -137,7 +137,7 @@ export const team = [
     "http://localhost:8000/api/teams/delete_team/:id/",
     (req, res, ctx) => {
       const deleteTeam = (): deleteMessage => {
-        const user = getUser(undefined);
+        const user = getUser();
         db.team.delete({
           where: {
             id: { equals: Number(req.params.id) },
@@ -156,7 +156,7 @@ export const team = [
     (req, res, ctx) => {
       const userMember = getUser(req.body.username);
       const addMember = () => {
-        const userCreated = getUser(undefined);
+        const userCreated = getUser();
         const editTeam = db.team.findFirst({
           where: {
             id: { equals: Number(req.params.id) },
