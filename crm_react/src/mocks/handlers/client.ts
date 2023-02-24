@@ -31,6 +31,7 @@ export const client = [
       const getClient = () => {
         const team = getTeam(req.params.id);
         const page_number = req.url.searchParams.get("page");
+        if (!page_number) return null;
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         const data = sanitizeLeadsAndClients(clientData);
         return paginate<"LeadAndClient">(data, 17, page_number);
@@ -73,6 +74,7 @@ export const client = [
         const team = getTeam(req.params.id);
         const page_number = req.url.searchParams.get("page");
         const searchParm = req.url.searchParams.get("search")?.split(" ");
+        if (!page_number || !searchParm) return null;
         const clientData = findLeadsOrClientsByTeam(db.client, team.id);
         let clientBySearch: LeadAndClientWithoutSanitize[] = [];
         searchParm?.forEach((search, index) => {

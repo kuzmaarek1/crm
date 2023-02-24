@@ -27,15 +27,18 @@ export const team = [
     (req, res, ctx) => {
       const getTeam = () => {
         const user = getUser(undefined);
-        const team = db.team.findFirst({
-          where: {
-            members: {
-              id: { equals: user.id },
+        if ("last_name" in user) {
+          const team = db.team.findFirst({
+            where: {
+              members: {
+                id: { equals: user.id },
+              },
             },
-          },
-        }) as TeamWithoutSanitize;
-        const data = sanitizeTeams(team);
-        return data;
+          }) as TeamWithoutSanitize;
+          const data = sanitizeTeams(team);
+          return data;
+        }
+        return null;
       };
       return responseData<"Team">(req, res, ctx, true, getTeam);
     }
@@ -45,6 +48,7 @@ export const team = [
     (req, res, ctx) => {
       const getTeams = () => {
         const page_number = req.url.searchParams.get("page");
+        if (!page_number) return null;
         const user = getUser(undefined);
         const teams = db.team.findMany({
           where: {
@@ -107,6 +111,7 @@ export const team = [
         const page_number = req.url.searchParams.get("page");
         const user = getUser(undefined);
         const search = req.url.searchParams.get("search");
+        if (!search || !page_number) return null;
         const teams = db.team.findMany({
           where: {
             members: {

@@ -81,9 +81,13 @@ export const auth = [
   rest.post<any, any, LogoutResponse>(
     "http://localhost:8000/api/token/logout/",
     (req, res, ctx) => {
-      const logout = (): LogoutMessage => {
+      const logout = (): LogoutMessage | null => {
+        const user = getUser(undefined);
         localStorage.removeItem("__be_token__");
-        return { message: "Logout" };
+        if ("last_name" in user) {
+          return { message: "Logout" };
+        }
+        return null;
       };
       return responseData<"LogoutResponse">(req, res, ctx, true, logout);
     }

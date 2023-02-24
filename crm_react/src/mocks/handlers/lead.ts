@@ -36,6 +36,7 @@ export const lead = [
     (req, res, ctx) => {
       const getLead = () => {
         const page_number = req.url.searchParams.get("page");
+        if (!page_number) return null;
         const team = getTeam(req.params.id);
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
         const data = sanitizeLeadsAndClients(leadData);
@@ -80,6 +81,7 @@ export const lead = [
         const page_number = req.url.searchParams.get("page");
         const team = getTeam(req.params.id);
         const searchParm = req.url.searchParams.get("search")?.split(" ");
+        if (!page_number || !searchParm) return null;
         const leadData = findLeadsOrClientsByTeam(db.lead, team.id);
         let leadBySearch: LeadAndClientWithoutSanitize[] = [];
         searchParm?.forEach((search, index) => {
